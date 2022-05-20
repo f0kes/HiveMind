@@ -146,8 +146,7 @@ namespace Player
 				// var toSwap = friends.First(x => x != ControlledCharacter);
 				if (_mouseOverCharacter != null && _mouseOverCharacter.Team == ControlledCharacter.Team)
 				{
-					ControlledCharacter.SwapBack();
-					ControlledCharacter.SwapWithNew(_mouseOverCharacter);
+					SwapWithNew(_mouseOverCharacter);
 				}
 			}
 
