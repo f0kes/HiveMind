@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7702586487117234607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7702586487117234605}
+  - component: {fileID: 7702586487117234604}
+  m_Layer: 0
+  m_Name: ContentContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7702586487117234605
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7702586487117234607}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18.745514, y: -21.794882, z: -15.605972}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7702586487117234604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7702586487117234607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2aac56f28774948bb04c263ce0ec066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prisoners:
+  - {fileID: 3299008662807429576, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
+  - {fileID: 7297174208794852310, guid: 30f0c508bfa26f344a20db6788ecddc1, type: 3}
+  - {fileID: 7877159746464000970, guid: 67558e3902dce264ea14c4cb4066b48e, type: 3}
+  - {fileID: 4092394766512764877, guid: cdb2d818283cfbd479766077c4dfc509, type: 3}
+  _monsterSpawners:
+  - {fileID: 3653447401887459387, guid: 4e05310876ebb8e4c8b4fbc58808a74b, type: 3}
+  - {fileID: 7761801187411253278, guid: 50208d2b92784834eb143f19ad3bd7db, type: 3}
+  - {fileID: 7564294115347473835, guid: 01d22995aa85c684b8ae2e9b6ecfd98d, type: 3}
+  _sphereGizmo: {fileID: 1886269017842401418, guid: 1ea90a0327d454d4284008630719dc34, type: 3}
