@@ -19,7 +19,7 @@ namespace DefaultNamespace.Content
 
 		private void Start()
 		{
-			_prisoner = ContentContainer.Instance.GetRandomPrisoner();
+			_prisoner = ContentContainer.I.GetRandomPrisoner();
 		}
 
 		private void Interact()

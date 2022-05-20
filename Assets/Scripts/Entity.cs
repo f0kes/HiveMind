@@ -12,6 +12,7 @@ namespace DefaultNamespace
 		private float _currentHealthPercent = 1f;
 		[SerializeField] private ushort _team;
 		public ushort Team => _team;
+		public float MaxHealth => _maxHealth;
 
 		public float CurrentHealth => _currentHealthPercent * _maxHealth;
 		public float CurrentHealthPercent => _currentHealthPercent;

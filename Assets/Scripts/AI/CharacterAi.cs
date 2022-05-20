@@ -19,6 +19,8 @@ namespace AI
 		[SerializeField] private float _avoidWallBehaivourWeight = 1f;
 		[SerializeField] private float _alignBehaivourWeight = 0f;
 
+		[SerializeField] private bool _debugDraw;
+
 		private Entity _currentEnemy;
 
 		private Vector3 _lastDirection;
@@ -37,8 +39,8 @@ namespace AI
 			(new EnemyPointGetter(0.1f),
 				new AttractBehaviour(), _chaseBehaivourWeight));
 			Behaviours.Add(new ComplexBehaviour
-			(new WallGetter(1, _circleDivisions),
-				new RepellBehaviour(), _avoidWallBehaivourWeight));
+			(new WallGetter(_viewDistance, _circleDivisions),
+				new RepellBehaviour(), _avoidWallBehaivourWeight*3));
 			Behaviours.Add(new ComplexBehaviour
 			(new EnemyPointGetter(3f, true),
 				new RepellBehaviour(), _fleeBehaivourWeight));
@@ -58,7 +60,7 @@ namespace AI
 			foreach (var behaviour in Behaviours)
 			{
 				desirabiltityMap +=
-					behaviour.GetDesirabilities(ControlledCharacter, entities, desirabiltityMap.Divisions);
+					behaviour.GetDesirabilities(ControlledCharacter, entities, desirabiltityMap.Divisions, _debugDraw);
 			}
 
 			desirabiltityMap.Remap();

@@ -13,6 +13,7 @@ namespace DefaultNamespace.AI
 		public EnemyPointGetter(float spaceToLeave, bool chaseThreat = false)
 		{
 			_spaceToLeave = spaceToLeave;
+			_chaseThreat = chaseThreat;
 		}
 
 		public override List<DesirabilityPoint> GetPoints(Character entity, List<Character> entities)

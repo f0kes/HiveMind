@@ -9,14 +9,16 @@ namespace Content
 	{
 		[SerializeField] private List<Character> _prisoners;
 		[SerializeField] private List<MonsterSpawner> _monsterSpawners;
+		[SerializeField] private MeshRenderer _sphereGizmo;
 
-		public static ContentContainer Instance;
+		public static ContentContainer I;
 
 		private void Awake()
 		{
-			if (Instance == null)
+			if (I == null)
 			{
-				Instance = this;
+				I = this;
+				transform.SetParent(null);
 				DontDestroyOnLoad(gameObject);
 			}
 			else
@@ -31,6 +33,10 @@ namespace Content
 		public MonsterSpawner GetRandomMonsterSpawner()
 		{
 			return _monsterSpawners[UnityEngine.Random.Range(0, _monsterSpawners.Count)];
+		}
+		public MeshRenderer GetSphere()
+		{
+			return _sphereGizmo;
 		}
 	}
 }

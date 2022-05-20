@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc024fa1037502141b696fdd95888a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 8
+  _moveSpeed: 5
   _acceleration: 5
   _deceleration: 20
 --- !u!114 &9088797799804059813
@@ -285,10 +285,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _viewDistance: 50
   _circleDivisions: 16
-  _chaseBehaivourWeight: 5.89
-  _fleeBehaivourWeight: 0
-  _avoidWallBehaivourWeight: 0.8
+  _chaseBehaivourWeight: 2.42
+  _fleeBehaivourWeight: 0.32
+  _avoidWallBehaivourWeight: 1.97
   _alignBehaivourWeight: 0
+  _debugDraw: 0
 --- !u!1001 &7672136445827772330
 PrefabInstance:
   m_ObjectHideFlags: 0

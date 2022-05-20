@@ -4,7 +4,7 @@ namespace AI.SteeringBehaviours
 {
 	public class StrafeBehaviour : SteeringBehaviour
 	{
-		public override DesirabilityMap CalculateForPoint(Vector3 position, DesirabilityPoint point, int divisions)
+		protected override DesirabilityMap CalculateForPoint(Vector3 position, DesirabilityPoint point, int divisions)
 		{
 			var map = new DesirabilityMap(divisions);
 			if (((Vector3) point - position).magnitude <= 1f)

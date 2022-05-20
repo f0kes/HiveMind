@@ -77,6 +77,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: ba6d6b8120ab7c4489a8e85fb06718ed, type: 2}
     m_RemovedComponents:
     - {fileID: 1287383567, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
+    - {fileID: 6137154294883633777, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
 --- !u!1 &3278101121340801363 stripped
 GameObject:
@@ -97,7 +98,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _viewDistance: 50
   _circleDivisions: 16
-  _chaseBehaivourWeight: 0.71
-  _fleeBehaivourWeight: 1.27
+  _chaseBehaivourWeight: 0.19
+  _fleeBehaivourWeight: 9.66
   _avoidWallBehaivourWeight: 1.12
-  _alignBehaivourWeight: 0
+  _alignBehaivourWeight: 0.24
+  _debugDraw: 0

@@ -317,9 +317,10 @@ MonoBehaviour:
   _viewDistance: 50
   _circleDivisions: 16
   _chaseBehaivourWeight: 1.2
-  _fleeBehaivourWeight: 0.33
-  _avoidWallBehaivourWeight: 1
-  _alignBehaivourWeight: 0
+  _fleeBehaivourWeight: 1.29
+  _avoidWallBehaivourWeight: 1.24
+  _alignBehaivourWeight: 0.7
+  _debugDraw: 0
 --- !u!1001 &9121527868687199466
 PrefabInstance:
   m_ObjectHideFlags: 0

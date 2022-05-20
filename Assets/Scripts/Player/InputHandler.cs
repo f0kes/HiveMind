@@ -49,8 +49,9 @@ namespace Player
 		}
 
 
-		private void Start()
+		protected override void Start()
 		{
+			base.Start();
 			NewCharacter(ControlledCharacter);
 			
 		}
@@ -145,7 +146,8 @@ namespace Player
 				// var toSwap = friends.First(x => x != ControlledCharacter);
 				if (_mouseOverCharacter != null && _mouseOverCharacter.Team == ControlledCharacter.Team)
 				{
-					ControlledCharacter.SwapControlsProvider(_mouseOverCharacter);
+					ControlledCharacter.SwapBack();
+					ControlledCharacter.SwapWithNew(_mouseOverCharacter);
 				}
 			}
 

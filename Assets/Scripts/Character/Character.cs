@@ -15,6 +15,10 @@ public class Character : Entity
 	public float AIDesirability = 1;
 	public float AIThreat = 1;
 
+	private bool _swapped;
+	public bool Swapped => _swapped;
+	private Character _swapTarget;
+
 	public CharacterControlsProvider ControlsProvider;
 	public CharacterMover CharacterMover { get; private set; }
 	public CharacterShooter CharacterShooter { get; private set; }
@@ -37,10 +41,26 @@ public class Character : Entity
 		CharacterShooter.Init(this);
 	}
 
-	public void SwapControlsProvider(Character other)
+	public void SwapWithNew(Character other)
+	{
+		_swapped = true;
+		_swapTarget = other;
+
+		Swap(other);
+	}
+
+	public void SwapBack()
+	{
+		_swapped = false;
+		Swap(_swapTarget);
+		_swapTarget = null;
+	}
+
+	private void Swap(Character other)
 	{
 		other.ControlsProvider.SetCharacter(this);
 		ControlsProvider.SetCharacter(other);
+
 		(other.ControlsProvider, ControlsProvider) = (ControlsProvider, other.ControlsProvider);
 	}
 
@@ -74,7 +94,8 @@ public class Character : Entity
 			if (Physics.Raycast(rayOrigin, Vector3.down, out var hit, 1000f, ~LayerMask.GetMask("RoomTrigger")))
 			{
 				Debug.DrawLine(rayOrigin, hit.point, Color.yellow, 1010f);
-				if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground") && isInRoom) // there was a room check
+				if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground") &&
+				    isInRoom) // there was a room check
 				{
 					foundPoint = true;
 					transform.position = point;

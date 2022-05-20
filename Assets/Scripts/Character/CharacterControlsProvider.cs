@@ -18,10 +18,16 @@ namespace Characters
 			{
 				throw new Exception("CharacterControlsProvider must be attached to a character");
 			}
-
+			
+			ControlledCharacter = character;
 			character.ControlsProvider = this;
-			SetCharacter(character);
+			
 			transform.parent = null;
+		}
+
+		protected virtual void Start()
+		{
+			SetCharacter(ControlledCharacter);
 		}
 
 		public void SetCharacter(Character newCharacter)
@@ -30,8 +36,9 @@ namespace Characters
 			{
 				OldCharacterReplaced?.Invoke(ControlledCharacter);
 			}
-
+			
 			ControlledCharacter = newCharacter;
+			Debug.Log(ControlledCharacter + " controlled");
 			CharacterMover = ControlledCharacter.CharacterMover;
 			OnNewCharacter?.Invoke(ControlledCharacter);
 		}

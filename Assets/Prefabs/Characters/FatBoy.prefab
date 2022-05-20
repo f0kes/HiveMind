@@ -106,5 +106,6 @@ MonoBehaviour:
   _circleDivisions: 16
   _chaseBehaivourWeight: 2
   _fleeBehaivourWeight: 1
-  _avoidWallBehaivourWeight: 1
+  _avoidWallBehaivourWeight: 2.53
   _alignBehaivourWeight: 0.5
+  _debugDraw: 0

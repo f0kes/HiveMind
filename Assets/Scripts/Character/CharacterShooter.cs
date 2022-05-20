@@ -28,7 +28,6 @@ namespace Characters
 		public void Init(Character character)
 		{
 			_character = character;
-			Debug.Log(_weapon + this.name);
 
 			_weapon = Instantiate(_weapon);
 		}

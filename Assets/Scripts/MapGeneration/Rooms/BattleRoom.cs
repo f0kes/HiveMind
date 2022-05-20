@@ -28,7 +28,7 @@ namespace MapGeneration.Rooms
 
 			for (int i = 0; i < count; i++)
 			{
-				var monsterSpawner = ContentContainer.Instance.GetRandomMonsterSpawner();
+				var monsterSpawner = ContentContainer.I.GetRandomMonsterSpawner();
 				_monsterSpawners.Add(monsterSpawner);
 			}
 		}
