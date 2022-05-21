@@ -33,6 +33,7 @@ namespace DefaultNamespace
 			EntityList.RemoveEntityFromTeam(this);
 			_team = team;
 			EntityList.AddToTeam(_team, this);
+			Debug.Log(MaxHealth + " " + gameObject.name);
 		}
 
 
@@ -64,6 +65,7 @@ namespace DefaultNamespace
 
 		public void SetMaxHealth(float maxHealth)
 		{
+			Debug.Log(name + " " + maxHealth);
 			_maxHealth = maxHealth;
 			OnHealthChanged?.Invoke(_currentHealthPercent);
 		}

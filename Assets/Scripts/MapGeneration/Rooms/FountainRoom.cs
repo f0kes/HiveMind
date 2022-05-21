@@ -12,7 +12,7 @@ namespace MapGeneration.Rooms
 		private void Start()
 		{
 			Fountain fountain = Instantiate(_fountainPrefab, MeshBulilder.I.ConvertPoint(Room.GetCenter()), quaternion.identity);
-			fountain.transform.parent = transform;
+			fountain.transform.SetParent(transform,true);
 			fountain.SetRoom(this);
 		}
 	}

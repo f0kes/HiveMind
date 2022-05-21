@@ -1065,7 +1065,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9c91670beaabf34e845480ff08737ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 35
+  _maxHealth: 20
   _team: 1
   AIDesirability: 1
   AIThreat: 1
@@ -1148,6 +1148,7 @@ MonoBehaviour:
   _fleeBehaivourWeight: 0.92
   _avoidWallBehaivourWeight: 1
   _alignBehaivourWeight: 0.41
+  _debugDraw: 0
 --- !u!114 &8556519358790101871
 MonoBehaviour:
   m_ObjectHideFlags: 0

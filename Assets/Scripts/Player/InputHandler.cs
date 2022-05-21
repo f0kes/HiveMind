@@ -7,6 +7,7 @@ using DefaultNamespace.UI;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 namespace Player
 {
@@ -26,9 +27,9 @@ namespace Player
 		private Vector3 _lookAt;
 
 		private float _savedDesirability;
-		
+
 		[SerializeField] private float _desirability = 10;
-		
+
 		[SerializeField] private bool _cheatsEnabled;
 
 		protected override void Awake()
@@ -52,8 +53,7 @@ namespace Player
 		protected override void Start()
 		{
 			base.Start();
-			NewCharacter(ControlledCharacter);
-			
+			//NewCharacter(ControlledCharacter);
 		}
 
 		private void OnOldCharacterReplaced(Character obj)
@@ -89,6 +89,7 @@ namespace Player
 		{
 			return ControlledCharacter;
 		}
+
 		private void Update()
 		{
 			if (!_inputEnabled)
@@ -105,12 +106,13 @@ namespace Player
 			if (success2)
 			{
 				_mouseOverCharacter = character;
+				_mouseOverObjectGizmo = ObjectGizmo.GetGizmo(_mouseOverCharacter.transform);
+				_mouseOverObjectGizmo.gameObject.SetActive(true);
+				_mouseOverObjectGizmo.healthBar.SetEntity(_mouseOverCharacter);
 				if (character.Team == ControlledCharacter.Team)
 				{
 					//_objectGizmo.gameObject.SetActive(false);
-					_mouseOverObjectGizmo = ObjectGizmo.GetGizmo(_mouseOverCharacter.transform);
-					_mouseOverObjectGizmo.gameObject.SetActive(true);
-					_mouseOverObjectGizmo.healthBar.SetEntity(_mouseOverCharacter);
+					
 					if (character != ControlledCharacter)
 						TextMessageRenderer.Instance.ShowActionPrompt("SPC-SWAP");
 				}
@@ -168,6 +170,7 @@ namespace Player
 				bool shouldDie = Input.GetKeyDown(KeyCode.F2);
 				bool shouldGodMode = Input.GetKeyDown(KeyCode.F3);
 				bool shouldKillTeam = Input.GetKeyDown(KeyCode.F4);
+				bool shouldKillRandom = Input.GetKeyDown(KeyCode.F5);
 
 				if (shouldGoToNextLevel)
 				{
@@ -194,6 +197,15 @@ namespace Player
 							entity.TakeDamage(10000);
 						}
 					}
+				}
+
+				if (shouldKillRandom)
+				{
+					var entities = EntityList.GetEntitiesOnTeam(ControlledCharacter.Team)
+						.Where(e => e != ControlledCharacter).ToList();
+					//choose random entity
+					var randomEntity = entities[Random.Range(0, entities.Count)];
+					randomEntity.TakeDamage(10000);
 				}
 			}
 		}

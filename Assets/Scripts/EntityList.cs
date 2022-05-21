@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace DefaultNamespace
@@ -8,7 +9,9 @@ namespace DefaultNamespace
 	public static class EntityList
 	{
 		public static event Action<ushort, Entity> OnEntityAdded;
-
+		
+		
+		private static List<Entity> _allEntities = new List<Entity>();
 		private static Dictionary<ushort, List<Entity>> _teams = new Dictionary<ushort, List<Entity>>();
 		private static Dictionary<ushort, List<Entity>> _graveyards = new Dictionary<ushort, List<Entity>>();
 
@@ -22,6 +25,7 @@ namespace DefaultNamespace
 		{
 			_graveyards.Clear();
 			_teams.Clear();
+			_allEntities.Clear();
 		}
 
 		public static void RemoveEntityFromTeam(Entity entity)
@@ -41,10 +45,7 @@ namespace DefaultNamespace
 
 		public static List<Entity> GetAllEntities()
 		{
-			List<Entity> allEntities = new List<Entity>();
-			allEntities.AddRange(_teams.Values.SelectMany(x => x));
-			allEntities.AddRange(_graveyards.Values.SelectMany(x => x));
-			return allEntities;
+			return new List<Entity>(_allEntities);
 		}
 
 		public static List<Entity> GetEntitiesOnTeam(ushort team)
@@ -75,9 +76,11 @@ namespace DefaultNamespace
 
 		public static void AddToTeam(ushort team, Entity entity)
 		{
+			Debug.Log(entity + " added to team " + team);
 			if (!GetAllEntities().Contains(entity))
 			{
 				OnEntityAdded?.Invoke(team, entity);
+				_allEntities.Add(entity);
 			}
 
 			if (_teams.ContainsKey(team))

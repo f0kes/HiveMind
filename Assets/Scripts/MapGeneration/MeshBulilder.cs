@@ -98,7 +98,7 @@ public class MeshBulilder : MonoBehaviour
 		
 
 
-		transform.rotation = Quaternion.Euler(0, 60, 0);
+		transform.rotation = Quaternion.Euler(0, 45, 0);
 		OnMapGenerated?.Invoke(TilemapGenerator);
 		Generated = true;
 
@@ -143,7 +143,8 @@ public class MeshBulilder : MonoBehaviour
 
 	private bool MarkRooms(List<Room> rooms)
 	{
-		foreach (var room in rooms)
+		if (rooms.Count < 5) return false;
+			foreach (var room in rooms)
 		{
 			room.Type = RoomType.Battle;
 		}

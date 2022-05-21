@@ -54,7 +54,7 @@ namespace MapGeneration.Rooms
 				_instantiatedMonsters.Add(monsterInstance);
 				_aliveMonsters.Add(monsterInstance);
 				monsterInstance.OnDeath += (e) => OnMonsterDeath(monsterInstance);
-				monster.SetTeam(1);
+				monsterInstance.SetTeam(1);
 			}
 
 			if (_monsters.Count == 0)
