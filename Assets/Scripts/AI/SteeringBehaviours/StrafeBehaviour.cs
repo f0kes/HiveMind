@@ -16,20 +16,9 @@ namespace AI.SteeringBehaviours
 
 			var left = new Vector2(-direction.z, direction.x);
 			var right = new Vector2(direction.z, -direction.x);
-			foreach (var kv in new DesirabilityMap(divisions).DirectionMap)
-			{
-				var desirabilty = Vector2.Dot(kv.Key, left);
-				if (desirabilty > 0)
-				{
-					map[kv.Key] += desirabilty;
-				}
-
-				desirabilty = Vector2.Dot(kv.Key, right);
-				if (desirabilty > 0)
-				{
-					map[kv.Key] += desirabilty;
-				}
-			}
+			
+			AddDotProduct(map, left);
+			AddDotProduct(map, right);
 
 			return map;
 		}

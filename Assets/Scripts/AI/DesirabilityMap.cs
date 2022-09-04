@@ -5,48 +5,73 @@ using UnityEngine;
 
 namespace AI
 {
-	public struct DesirabilityMap
+	public class DesirabilityMap
 	{
-		public Dictionary<Vector3, float> DirectionMap { get; private set; }
+		// public static readonly Dictionary<int, Dictionary<Vector3, float>> DesirabilityMaps =
+		// 	new Dictionary<int, Dictionary<Vector3, float>>();
+
+		public Dictionary<Vector3, float> DirectionMap
+		{
+			get
+			{
+				Dictionary<Vector3, float> directionMap = new Dictionary<Vector3, float>();
+				for (int i = 0; i < Divisions; i++)
+				{
+					Vector3 direction = _divider.IndexToVector(i);
+					float value = _arrayMap[i];
+					directionMap[direction] = value;
+				}
+
+				return directionMap;
+			}
+			private set
+			{
+				foreach (var kvp in value)
+				{
+					_arrayMap[_divider.VectorToIndex(kvp.Key)] = kvp.Value;
+				}
+			}
+		}
+
 		public int Divisions { get; private set; }
+		private CircleDivider _divider;
+		private float[] _arrayMap;
+		public Vector2[] Directions => _divider.GetDirections();
 
 		public DesirabilityMap(int divisions)
 		{
-			DirectionMap = new Dictionary<Vector3, float>();
-			var directions = CircleDivider.GetDivisions(divisions);
-			foreach (Vector3 direction in directions)
-			{
-				DirectionMap.Add(direction, 0);
-			}
-
+			_arrayMap = new float[divisions];
+			_divider = new CircleDivider(divisions);
 			Divisions = divisions;
-		}
-
-		public DesirabilityMap(DesirabilityMap map)
-		{
-			DirectionMap = new Dictionary<Vector3, float>();
-			var directions = CircleDivider.GetDivisions(map.Divisions);
-			foreach (Vector3 direction in directions)
-			{
-				DirectionMap.Add(direction, 0);
-			}
-
-			Divisions = map.Divisions;
 		}
 
 		public float this[Vector3 direction]
 		{
-			get => DirectionMap[direction];
-			set => DirectionMap[direction] = value;
+			get
+			{
+				int index = _divider.VectorToIndex(direction);
+				return this[index];
+			}
+			set
+			{
+				int index = _divider.VectorToIndex(direction);
+				this[index] = value;
+			}
+		}
+
+		public float this[int index]
+		{
+			get => _arrayMap[index];
+			set => _arrayMap[index] = value;
 		}
 
 		// override plus
 		public static DesirabilityMap operator +(DesirabilityMap a, DesirabilityMap b)
 		{
 			var result = new DesirabilityMap(a.Divisions);
-			foreach (var direction in a.DirectionMap)
+			for (int i = 0; i < a.Divisions; i++)
 			{
-				result[direction.Key] = a[direction.Key] + b[direction.Key];
+				result[i] = a[i] + b[i];
 			}
 
 			return result;
@@ -55,9 +80,9 @@ namespace AI
 		public static DesirabilityMap operator *(DesirabilityMap a, float b)
 		{
 			var result = new DesirabilityMap(a.Divisions);
-			foreach (var direction in a.DirectionMap)
+			for (int i = 0; i < a.Divisions; i++)
 			{
-				result[direction.Key] = a[direction.Key] * b;
+				result[i] = a[i] * b;
 			}
 
 			return result;

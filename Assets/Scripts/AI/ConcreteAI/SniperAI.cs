@@ -9,7 +9,7 @@ namespace AI.ConcreteAI
 		protected override void PopulateBehaviours()
 		{
 			base.PopulateBehaviours();
-			Behaviours.Add(new ComplexBehaviour(new BehindTankPointGetter(5f), new AttractBehaviour(), 8f));
+			Behaviours.Add(new ComplexBehaviour(new BehindTankPointGetter(5f), new AttractBehaviour(), 4f));
 		}
 	}
 }

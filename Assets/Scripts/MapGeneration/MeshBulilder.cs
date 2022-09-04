@@ -76,6 +76,7 @@ public class MeshBulilder : MonoBehaviour
 		if (triesSoFar > _generationTries)
 		{
 			Debug.LogError("Generation failed");
+			return;
 		}
 
 		TextMessageRenderer.Instance.ShowBlackScreen("LEVEL: " + _level, 1.5f);
@@ -89,7 +90,10 @@ public class MeshBulilder : MonoBehaviour
 		var rooms = TilemapGenerator.Rooms;
 
 		if (!MarkRooms(rooms))
+		{
 			Generate(triesSoFar + 1);
+			return;
+		}
 		MakeRooms(rooms);
 
 		BuildMap(tilemap, _voxelRenderers);
@@ -133,7 +137,7 @@ public class MeshBulilder : MonoBehaviour
 
 	private IEnumerator TeleportPlayerToSpawn()
 	{
-		yield return new WaitForSeconds(0.05f);
+		yield return new WaitForSeconds(0.15f);
 		Vector3 playerSpawnConverted = ConvertPoint(_playerSpawn);
 		Character player = InputHandler.Instance.GetControlledCharacter();
 		player.Teleport(playerSpawnConverted, _currentSpawnRoom, 3f);

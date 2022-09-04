@@ -40,13 +40,13 @@ namespace AI
 				new AttractBehaviour(), _chaseBehaivourWeight));
 			Behaviours.Add(new ComplexBehaviour
 			(new WallGetter(_viewDistance, _circleDivisions),
-				new RepellBehaviour(), _avoidWallBehaivourWeight*3));
+				new RepellBehaviour(), _avoidWallBehaivourWeight * 3));
 			Behaviours.Add(new ComplexBehaviour
 			(new EnemyPointGetter(3f, true),
 				new RepellBehaviour(), _fleeBehaivourWeight));
 			Behaviours.Add(new ComplexBehaviour
-			(new FriendPointGetter(2f),
-				new AttractBehaviour(), _alignBehaivourWeight));
+			(new FriendCenterPointGetter(),
+				new AttractBehaviour(), _alignBehaivourWeight*0.5f));
 		}
 
 
@@ -94,13 +94,15 @@ namespace AI
 			ControlledCharacter.CharacterMover.SetInput(maxDirection, lookAt);
 		}
 
-		private List<Entity> GetEntitiesInRange(float viewDistance)
+		private IEnumerable<Entity> GetEntitiesInRange(float viewDistance)
 		{
-			var colliders = Physics.OverlapSphere(ControlledCharacter.transform.position, viewDistance);
-			return colliders.Select(col => col.GetComponent<Entity>()).Where(entity => entity != null).ToList();
+			var entities = EntityList.GetAllEntities().Where(entity =>
+				!entity.IsDead && Vector3.Distance(entity.transform.position, ControlledCharacter.transform.position) <=
+				viewDistance);
+			return entities;
 		}
 
-		private Character GetClosestEnemy(List<Character> visibleEntities)
+		private Character GetClosestEnemy(IEnumerable<Character> visibleEntities)
 		{
 			return visibleEntities
 				.OrderBy(entity => Vector3.Distance(ControlledCharacter.transform.position, entity.transform.position))

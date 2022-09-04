@@ -19,10 +19,6 @@ namespace DefaultNamespace.MapGeneration
 
 		public TileMap GenerateTilemap()
 		{
-			//fill with 1
-			//fill  5 by 5 square in center with 0
-
-
 			var tilemap = new TileMap(_xSize, _zSize);
 			for (var x = 0; x < _xSize; x++)
 			{

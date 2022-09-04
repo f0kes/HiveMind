@@ -18,9 +18,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 513557a12e84a6a41aa1b4bcae48abcf, type: 3}
   - {fileID: 8300000, guid: 2f88d6dab373acc41ad6a17f9fb03501, type: 3}
   Range: 10
-  Damage: 3
+  Damage: 13
   FireRate: 0.02
   Spread: 30
   BulletsPerShot: 1
-  ClipSize: 18
-  ReloadTime: 1.3
+  ClipSize: 20
+  ReloadTime: 3

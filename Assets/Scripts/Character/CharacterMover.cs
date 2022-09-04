@@ -58,9 +58,9 @@ namespace Characters
 
 		private void AccelerateTowards(Vector3 dir, float acceleration)
 		{
-			Vector3 rbVelocity = _rigidbody.velocity;
-			Vector3 accel = dir * acceleration;
-			Vector3 newVel = rbVelocity + accel * Time.deltaTime;
+			var rbVelocity = _rigidbody.velocity;
+			var accel = dir * acceleration;
+			var newVel = rbVelocity + accel * Time.deltaTime;
 
 			rbVelocity = rbVelocity.magnitude * newVel.normalized;
 

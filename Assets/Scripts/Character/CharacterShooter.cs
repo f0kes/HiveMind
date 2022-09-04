@@ -49,8 +49,8 @@ namespace Characters
 			var offsetVector = offsetX + offsetY + offsetZ;
 			for (int i = 0; i < _weapon.BulletsPerShot; i++)
 			{
-				float spread = Random.Range(-_weapon.Spread, _weapon.Spread);
-				Quaternion rotationOffset = Quaternion.Euler(0, spread, 0);
+				var spread = Random.Range(-_weapon.Spread, _weapon.Spread);
+				var rotationOffset = Quaternion.Euler(0, spread, 0);
 
 				var bullet = Instantiate(BulletPrefab, t.position + offsetVector, t.rotation * rotationOffset);
 				bullet.Init(_weapon.Damage, _character.Team);

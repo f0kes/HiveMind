@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9c91670beaabf34e845480ff08737ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 170
+  _maxHealth: 540
   _team: 1
   AIDesirability: 10
   AIThreat: 1.01
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offset: {x: 0, y: 1.5, z: 1.5}
   _weapon: {fileID: 11400000, guid: 8d4f1362043ff304192751a444ca0113, type: 2}
-  BulletPrefab: {fileID: 1279516416041402737, guid: e40d6fe49f7d35f4b98be8ab69d13dce, type: 3}
+  BulletPrefab: {fileID: 3224261516102972089, guid: b7e55d7d90a24e745a0e21a73032c608, type: 3}
 --- !u!82 &4212109612124213420
 AudioSource:
   m_ObjectHideFlags: 0
@@ -285,9 +285,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _viewDistance: 50
   _circleDivisions: 16
-  _chaseBehaivourWeight: 2.42
+  _chaseBehaivourWeight: 2.45
   _fleeBehaivourWeight: 0.32
-  _avoidWallBehaivourWeight: 1.97
+  _avoidWallBehaivourWeight: 0.86
   _alignBehaivourWeight: 0
   _debugDraw: 0
 --- !u!1001 &7672136445827772330

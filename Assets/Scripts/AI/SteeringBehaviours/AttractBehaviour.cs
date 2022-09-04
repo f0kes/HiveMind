@@ -27,14 +27,7 @@ namespace AI.SteeringBehaviours
 				direction *= toPoint.magnitude;
 			}
 			var direction2D = new Vector2(direction.x, direction.z);
-			foreach (var kv in new DesirabilityMap(divisions).DirectionMap)
-			{
-				var desirabilty = Vector2.Dot(kv.Key, direction2D);
-				if (desirabilty > 0)
-				{
-					map[kv.Key] += desirabilty;
-				}
-			}
+			AddDotProduct(map, direction2D);
 
 			return map;
 		}

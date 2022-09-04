@@ -4,11 +4,15 @@ namespace AI.SteeringBehaviours
 {
 	public class RepellBehaviour : SteeringBehaviour
 	{
-		private bool _scaleWithDistance;
-		public RepellBehaviour(bool scaleWithDistance = true)
+		private readonly bool _scaleWithDistance;
+		private readonly float _repellDistance;
+
+		public RepellBehaviour(bool scaleWithDistance = true, float repellDistance = 2f)
 		{
 			_scaleWithDistance = scaleWithDistance;
+			_repellDistance = repellDistance;
 		}
+
 		protected override DesirabilityMap CalculateForPoint(Vector3 position, DesirabilityPoint point, int divisions)
 		{
 			DesirabilityMap map = new DesirabilityMap(divisions);
@@ -16,17 +20,11 @@ namespace AI.SteeringBehaviours
 			var direction = fromPoint.normalized;
 			if (_scaleWithDistance)
 			{
-				direction *= 1 / fromPoint.magnitude;
+				direction *= _repellDistance / fromPoint.magnitude;
 			}
+
 			Vector2 direction2D = new Vector2(direction.x, direction.z);
-			foreach (var kv in new DesirabilityMap(divisions).DirectionMap)
-			{
-				float desirabilty = Vector2.Dot(kv.Key, direction2D);
-				if (desirabilty > 0)
-				{
-					map[kv.Key] += desirabilty;
-				}
-			}
+			AddDotProduct(map, direction2D);
 
 			return map;
 		}

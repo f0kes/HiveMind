@@ -12,6 +12,7 @@ namespace DefaultNamespace
 		
 		
 		private static List<Entity> _allEntities = new List<Entity>();
+		private static List<Entity> _aliveEntities = new List<Entity>();
 		private static Dictionary<ushort, List<Entity>> _teams = new Dictionary<ushort, List<Entity>>();
 		private static Dictionary<ushort, List<Entity>> _graveyards = new Dictionary<ushort, List<Entity>>();
 
@@ -76,12 +77,12 @@ namespace DefaultNamespace
 
 		public static void AddToTeam(ushort team, Entity entity)
 		{
-			Debug.Log(entity + " added to team " + team);
 			if (!GetAllEntities().Contains(entity))
 			{
 				OnEntityAdded?.Invoke(team, entity);
 				_allEntities.Add(entity);
 			}
+			
 
 			if (_teams.ContainsKey(team))
 			{
@@ -133,5 +134,6 @@ namespace DefaultNamespace
 			entity.OnDeath += OnEntityDeath;
 			entity.OnRessurect -= OnEntityRessurect;
 		}
+		
 	}
 }

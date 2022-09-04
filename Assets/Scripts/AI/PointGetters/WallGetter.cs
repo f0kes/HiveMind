@@ -21,7 +21,7 @@ namespace DefaultNamespace.AI
 			var map = new DesirabilityMap(_divisions);
 			var points = new List<DesirabilityPoint>();
 			var position = entity.transform.position + Vector3.up;
-			foreach (var vector in map.DirectionMap.Keys)
+			foreach (var vector in map.Directions)
 			{
 				//raycast to see if there is a wall
 				RaycastHit hit;
@@ -34,8 +34,7 @@ namespace DefaultNamespace.AI
 					}
 
 					points.Add(point);
-					//draw  cube of debug lines
-					Debug.DrawLine(position, hit.point, Color.green);
+				
 				}
 			}
 

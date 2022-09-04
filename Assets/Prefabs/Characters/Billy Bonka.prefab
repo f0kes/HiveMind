@@ -25,7 +25,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5859680968761145486, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: AIThreat
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5859680968761145486, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: _maxHealth
@@ -108,7 +108,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _viewDistance: 50
   _circleDivisions: 16
-  _chaseBehaivourWeight: 1.07
+  _chaseBehaivourWeight: 0.1
   _fleeBehaivourWeight: 1
   _avoidWallBehaivourWeight: 1
-  _alignBehaivourWeight: 0.5
+  _alignBehaivourWeight: 0.4
+  _debugDraw: 0

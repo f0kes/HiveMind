@@ -69,20 +69,29 @@ namespace Characters
 			if (ControlledCharacter != null)
 			{
 				ControlledCharacter.OnDeath -= OnCharacterDeath;
+				ControlledCharacter.OnRessurect -= OnCharacterRessurect;
 				OldCharacterReplaced?.Invoke(ControlledCharacter);
 			}
 
 			ControlledCharacter = newCharacter;
 			ControlledCharacter.ControlsProvider = this;
 			ControlledCharacter.OnDeath += OnCharacterDeath;
-			Debug.Log(ControlledCharacter + " controlled");
+			ControlledCharacter.OnRessurect += OnCharacterRessurect;
 			CharacterMover = ControlledCharacter.CharacterMover;
+			if (!ControlledCharacter.IsDead)
+			{
+				gameObject.SetActive(true);
+			}
 			OnNewCharacter?.Invoke(ControlledCharacter);
 		}
 
 		private void OnCharacterDeath(Entity obj)
 		{
 			gameObject.SetActive(false);
+		}
+		private void OnCharacterRessurect(Entity obj)
+		{
+			gameObject.SetActive(true);
 		}
 
 		private void OnCharacterDestroy()

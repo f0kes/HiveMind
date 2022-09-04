@@ -11,12 +11,14 @@ namespace DefaultNamespace.Content
 		[SerializeField] private MeshRenderer _waterRenderer;
 		private Interactable _interactable;
 		private RoomTrigger _room;
+		private bool _used;
 
 		private void Awake()
 		{
 			_interactable = GetComponent<Interactable>();
 			_interactable.OnInteractWho += Interact;
 		}
+
 		public void SetRoom(RoomTrigger room)
 		{
 			_room = room;
@@ -24,6 +26,7 @@ namespace DefaultNamespace.Content
 
 		private void Interact(Character character)
 		{
+			if (_used) return;
 			var interactorTeammates = EntityList.GetEntitiesOnTeam(character.Team);
 			var interactorGraveyard = EntityList.GetGraveyard(character.Team);
 			_waterRenderer.enabled = false;
@@ -39,6 +42,7 @@ namespace DefaultNamespace.Content
 
 			character.TeleportTeam(_room);
 			TextMessageRenderer.Instance.ShowMessage("ALL CHARACTERS RESTORED", 3f);
+			_used = true;
 		}
 	}
 }

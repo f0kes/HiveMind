@@ -35,7 +35,9 @@ namespace DefaultNamespace
 
 			_currentLifeTime += Time.deltaTime;
 			if (_currentLifeTime >= _lifeTime)
+			{
 				Destroy(gameObject);
+			}
 		}
 
 		private void OnTriggerEnter(Collider collision)
@@ -54,7 +56,9 @@ namespace DefaultNamespace
 
 			if (!collision.gameObject.CompareTag("Bullet") &&
 			    !collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ground")))
+			{
 				Destroy(gameObject);
+			}
 		}
 	}
 }

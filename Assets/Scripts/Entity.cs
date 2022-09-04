@@ -11,6 +11,10 @@ namespace DefaultNamespace
 		[SerializeField] private float _maxHealth;
 		private float _currentHealthPercent = 1f;
 		[SerializeField] private ushort _team;
+		
+		private bool _isDead;
+		public bool IsDead => _isDead;
+		
 		public ushort Team => _team;
 		public float MaxHealth => _maxHealth;
 
@@ -18,7 +22,7 @@ namespace DefaultNamespace
 		public float CurrentHealthPercent => _currentHealthPercent;
 
 
-		protected void Awake()
+		private void Awake()
 		{
 			EntityList.AddToTeam(_team, this);
 			ChildAwake();
@@ -44,6 +48,7 @@ namespace DefaultNamespace
 			OnHealthChanged?.Invoke(_currentHealthPercent);
 			if (_currentHealthPercent <= 0)
 			{
+				_isDead = true;
 				OnDeath?.Invoke(this);
 				gameObject.SetActive(false);
 			}
@@ -58,6 +63,7 @@ namespace DefaultNamespace
 		public void Ressurect()
 		{
 			gameObject.SetActive(true);
+			_isDead = false;
 			_currentHealthPercent = 1f;
 			OnHealthChanged?.Invoke(_currentHealthPercent);
 			OnRessurect?.Invoke(this);
@@ -65,7 +71,6 @@ namespace DefaultNamespace
 
 		public void SetMaxHealth(float maxHealth)
 		{
-			Debug.Log(name + " " + maxHealth);
 			_maxHealth = maxHealth;
 			OnHealthChanged?.Invoke(_currentHealthPercent);
 		}

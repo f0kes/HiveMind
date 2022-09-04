@@ -65,7 +65,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3299008662807429576, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
       propertyPath: AIThreat
-      value: 1
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3299008662807429576, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
       propertyPath: _maxHealth
@@ -101,5 +101,5 @@ MonoBehaviour:
   _chaseBehaivourWeight: 0.19
   _fleeBehaivourWeight: 9.66
   _avoidWallBehaivourWeight: 1.12
-  _alignBehaivourWeight: 0.24
+  _alignBehaivourWeight: 1
   _debugDraw: 0

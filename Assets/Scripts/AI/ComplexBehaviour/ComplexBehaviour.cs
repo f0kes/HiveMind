@@ -46,7 +46,7 @@ namespace AI.ComplexBehaviours
 			return points;
 		}
 
-		private void DrawPoints(List<DesirabilityPoint> points)
+		private void DrawPoints(IEnumerable<DesirabilityPoint> points)
 		{
 			foreach (var point in _drawnPoints)
 			{
@@ -77,6 +77,7 @@ namespace AI.ComplexBehaviours
 
 				color.a = 0.4f;
 				pointObject.material.color = color;
+				pointObject.name = BaseBehaviour.GetType().Name + " " + PointGetter.GetType().Name;
 				_drawnPoints.Add(pointObject);
 			}
 		}

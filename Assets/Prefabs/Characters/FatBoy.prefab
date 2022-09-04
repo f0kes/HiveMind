@@ -21,7 +21,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5859680968761145486, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: _maxHealth
-      value: 270
+      value: 540
       objectReference: {fileID: 0}
     - target: {fileID: 5859680968761145486, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: AIDesirability
@@ -107,5 +107,5 @@ MonoBehaviour:
   _chaseBehaivourWeight: 2
   _fleeBehaivourWeight: 1
   _avoidWallBehaivourWeight: 2.53
-  _alignBehaivourWeight: 0.5
+  _alignBehaivourWeight: 1
   _debugDraw: 0

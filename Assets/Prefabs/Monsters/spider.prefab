@@ -1084,7 +1084,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offset: {x: 0, y: 0, z: 0}
   _weapon: {fileID: 11400000, guid: 748b2ead14ce40a4db526fbca487873b, type: 2}
-  BulletPrefab: {fileID: 1279516416041402737, guid: e40d6fe49f7d35f4b98be8ab69d13dce, type: 3}
+  BulletPrefab: {fileID: 3224261516102972089, guid: b7e55d7d90a24e745a0e21a73032c608, type: 3}
 --- !u!136 &7508329563466742636
 CapsuleCollider:
   m_ObjectHideFlags: 0

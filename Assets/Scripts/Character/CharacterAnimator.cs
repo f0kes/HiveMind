@@ -21,12 +21,12 @@ namespace Characters
 
 		private void Update()
 		{
-			Vector3 movement = new Vector3(_characterMover.Movement.x, 0, _characterMover.Movement.y);
-			float velocityX = Vector3.Dot(transform.right, movement);
-			float velocityZ = Vector3.Dot(transform.forward, movement);
-			
-			_animator.SetFloat(MoveX, velocityX);
-			_animator.SetFloat(MoveZ, velocityZ);
+			Vector3 movement = new Vector3(_characterMover.Movement.x, 0, _characterMover.Movement.y); //world space movement
+			float velocityX = Vector3.Dot(transform.right, movement); // rotate movement vector to match character's rotation
+			float velocityZ = Vector3.Dot(transform.forward, movement); // rotate movement vector to match character's rotation
+
+			_animator.SetFloat(MoveX, velocityX); // set animator float
+			_animator.SetFloat(MoveZ, velocityZ); // set animator float
 		}
 	}
 }

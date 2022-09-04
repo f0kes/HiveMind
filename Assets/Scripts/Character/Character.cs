@@ -24,6 +24,7 @@ public class Character : Entity
 	public CharacterShooter CharacterShooter { get; private set; }
 	public CharacterInteractor CharacterInteractor { get; private set; }
 
+	
 	protected override void ChildAwake()
 	{
 		gameObject.layer = LayerMask.NameToLayer("Character");

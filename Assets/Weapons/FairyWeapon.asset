@@ -15,7 +15,7 @@ MonoBehaviour:
   Icon: {fileID: 0}
   fireSounds: []
   Range: 0
-  Damage: 5
+  Damage: 10
   FireRate: 0.3
   Spread: 0
   BulletsPerShot: 1

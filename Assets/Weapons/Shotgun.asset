@@ -18,7 +18,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 09aac75637d0745468ca4a8c71203b1e, type: 3}
   - {fileID: 8300000, guid: 290bafc6450fbd745ae9347c392d6cce, type: 3}
   Range: 10
-  Damage: 6
+  Damage: 9
   FireRate: 0.7
   Spread: 20
   BulletsPerShot: 8
