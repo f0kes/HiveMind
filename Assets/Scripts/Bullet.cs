@@ -14,14 +14,16 @@ namespace DefaultNamespace
 		private bool _isInitialized;
 		private ushort _team;
 		private Rigidbody _rigidbody;
+		private Entity _owner;
 
 		private void Awake()
 		{
 			_rigidbody = GetComponent<Rigidbody>();
 		}
 
-		public void Init(float damage, ushort team)
+		public void Init(Entity owner, float damage, ushort team)
 		{
+			_owner = owner;
 			Damage = damage;
 			_team = team;
 			_isInitialized = true;
@@ -46,7 +48,8 @@ namespace DefaultNamespace
 			var damaged = collision.gameObject.GetComponent<Entity>();
 			if (damaged != null && damaged.Team != _team)
 			{
-				damaged.TakeDamage(Damage);
+				Debug.Log("Bullet hit");
+				_owner.Events.BulletHit?.Invoke(damaged);
 			}
 
 			if (damaged != null && damaged.Team == _team)

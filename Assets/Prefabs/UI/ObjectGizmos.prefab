@@ -166,6 +166,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthBar
       objectReference: {fileID: 0}
+    - target: {fileID: 1699454809955894963, guid: aba9e655a391b2a47a68b0eb41705e03, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1699454809955894964, guid: aba9e655a391b2a47a68b0eb41705e03, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -184,7 +188,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1699454809955894964, guid: aba9e655a391b2a47a68b0eb41705e03, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1699454809955894964, guid: aba9e655a391b2a47a68b0eb41705e03, type: 3}
       propertyPath: m_AnchorMin.x
@@ -192,7 +196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1699454809955894964, guid: aba9e655a391b2a47a68b0eb41705e03, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1699454809955894964, guid: aba9e655a391b2a47a68b0eb41705e03, type: 3}
       propertyPath: m_SizeDelta.x
@@ -232,11 +236,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1699454809955894964, guid: aba9e655a391b2a47a68b0eb41705e03, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1699454809955894964, guid: aba9e655a391b2a47a68b0eb41705e03, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -48.43
       objectReference: {fileID: 0}
     - target: {fileID: 1699454809955894964, guid: aba9e655a391b2a47a68b0eb41705e03, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

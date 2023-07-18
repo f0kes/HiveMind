@@ -9,7 +9,7 @@ namespace DefaultNamespace.UI
 		public void SetEntity(Entity entity)
 		{
 			_healthBarFill.fillAmount = entity.CurrentHealthPercent;
-			entity.OnHealthChanged += OnHealthChanged;
+			entity.Events.HealthChanged += OnHealthChanged;
 		}
 
 		private void OnHealthChanged(float obj)

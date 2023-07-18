@@ -6,9 +6,9 @@ namespace DefaultNamespace.Content
 	public  class Interactable : MonoBehaviour, IInteractable
 	{
 		public event Action OnInteract;
-		public event Action<Character> OnInteractWho;
+		public event Action<Character.Character> OnInteractWho;
 
-		public void Interact(Character c)
+		public void Interact(Character.Character c)
 		{
 			OnInteract?.Invoke();
 			OnInteractWho?.Invoke(c);

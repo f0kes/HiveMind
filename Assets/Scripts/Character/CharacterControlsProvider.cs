@@ -7,17 +7,17 @@ namespace Characters
 	public class CharacterControlsProvider : MonoBehaviour
 	{
 		private bool _swapped;
-		private Character _swapTarget;
+		private Character.Character _swapTarget;
 
-		public event Action<Character> OnNewCharacter;
-		public event Action<Character> OldCharacterReplaced;
+		public event Action<Character.Character> OnNewCharacter;
+		public event Action<Character.Character> OldCharacterReplaced;
 
-		protected Character ControlledCharacter;
+		protected Character.Character ControlledCharacter;
 		protected CharacterMover CharacterMover;
 
 		protected virtual void Awake()
 		{
-			Character character = GetComponentInParent<Character>();
+			Character.Character character = GetComponentInParent<Character.Character>();
 			if (character == null)
 			{
 				throw new Exception("CharacterControlsProvider must be attached to a character");
@@ -33,8 +33,9 @@ namespace Characters
 		{
 			SetCharacter(ControlledCharacter);
 		}
+		
 
-		public void SwapWithNew(Character other)
+		public void SwapWithNew(Character.Character other)
 		{
 			if (_swapped)
 			{
@@ -55,7 +56,7 @@ namespace Characters
 			_swapTarget = null;
 		}
 
-		private void Swap(Character other)
+		private void Swap(Character.Character other)
 		{
 			var otherControlsProvider = other.ControlsProvider;
 			
@@ -64,19 +65,19 @@ namespace Characters
 		
 		}
 
-		public void SetCharacter(Character newCharacter)
+		public void SetCharacter(Character.Character newCharacter)
 		{
 			if (ControlledCharacter != null)
 			{
-				ControlledCharacter.OnDeath -= OnCharacterDeath;
-				ControlledCharacter.OnRessurect -= OnCharacterRessurect;
+				ControlledCharacter.Events.Death -= OnCharacterDeath;
+				ControlledCharacter.Events.Ressurect -= OnCharacterRessurect;
 				OldCharacterReplaced?.Invoke(ControlledCharacter);
 			}
 
 			ControlledCharacter = newCharacter;
 			ControlledCharacter.ControlsProvider = this;
-			ControlledCharacter.OnDeath += OnCharacterDeath;
-			ControlledCharacter.OnRessurect += OnCharacterRessurect;
+			ControlledCharacter.Events.Death += OnCharacterDeath;
+			ControlledCharacter.Events.Ressurect += OnCharacterRessurect;
 			CharacterMover = ControlledCharacter.CharacterMover;
 			if (!ControlledCharacter.IsDead)
 			{

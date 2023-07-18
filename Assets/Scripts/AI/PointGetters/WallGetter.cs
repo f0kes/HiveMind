@@ -16,7 +16,7 @@ namespace DefaultNamespace.AI
 			_divisions = divisions;
 		}
 
-		public override List<DesirabilityPoint> GetPoints(Character entity, List<Character> entities)
+		public override List<DesirabilityPoint> GetPoints(Character.Character entity, List<Character.Character> entities)
 		{
 			var map = new DesirabilityMap(_divisions);
 			var points = new List<DesirabilityPoint>();

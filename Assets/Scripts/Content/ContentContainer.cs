@@ -7,7 +7,7 @@ namespace Content
 {
 	public class ContentContainer : MonoBehaviour
 	{
-		[SerializeField] private List<Character> _prisoners;
+		[SerializeField] private List<Character.Character> _prisoners;
 		[SerializeField] private List<MonsterSpawner> _monsterSpawners;
 		[SerializeField] private MeshRenderer _sphereGizmo;
 
@@ -26,7 +26,7 @@ namespace Content
 				Destroy(gameObject);
 			}
 		}
-		public Character GetRandomPrisoner()
+		public Character.Character GetRandomPrisoner()
 		{
 			return _prisoners[UnityEngine.Random.Range(0, _prisoners.Count)];
 		}

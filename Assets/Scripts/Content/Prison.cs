@@ -8,7 +8,7 @@ namespace DefaultNamespace.Content
 	[RequireComponent(typeof(Interactable))]
 	public class Prison : MonoBehaviour
 	{
-		private Character _prisoner;
+		private Character.Character _prisoner;
 		private Interactable _interactable;
 
 		private void Awake()

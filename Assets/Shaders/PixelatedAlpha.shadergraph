@@ -11,6 +11,9 @@
         },
         {
             "m_Id": "3395b273ca0144b496dce87bde740910"
+        },
+        {
+            "m_Id": "cff14e4468164bee9b408dd5dc5b669d"
         }
     ],
     "m_Keywords": [],
@@ -1224,7 +1227,7 @@
     },
     "m_PreviewData": {
         "serializedMesh": {
-            "m_SerializedMesh": "{\"mesh\":{\"instanceID\":0}}",
+            "m_SerializedMesh": "{\"mesh\":{\"fileID\":10210,\"guid\":\"0000000000000000e000000000000000\",\"type\":0}}",
             "m_Guid": ""
         }
     },
@@ -6239,7 +6242,7 @@
     "m_ShaderOutputName": "Max",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": 1.0,
+        "x": 8.989999771118164,
         "y": 1.0,
         "z": 1.0,
         "w": 1.0
@@ -6429,7 +6432,7 @@
     "m_ShaderOutputName": "B",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": 0.6000000238418579,
+        "x": 0.9200000166893005,
         "y": 2.0,
         "z": 2.0,
         "w": 2.0
@@ -6840,6 +6843,29 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "SurfaceDescription.Alpha"
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "cff14e4468164bee9b408dd5dc5b669d",
+    "m_Guid": {
+        "m_GuidSerialized": "8d62f83a-edff-490e-b2fb-f2374eb2ef4e"
+    },
+    "m_Name": "OutlineSIze",
+    "m_DefaultReferenceName": "Vector1_cff14e4468164bee9b408dd5dc5b669d",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 1245.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
 }
 
 {
@@ -7744,7 +7770,7 @@
     "m_ShaderOutputName": "B",
     "m_StageCapability": 3,
     "m_Value": {
-        "e00": 300.0,
+        "e00": 200.0,
         "e01": 2.0,
         "e02": 2.0,
         "e03": 2.0,

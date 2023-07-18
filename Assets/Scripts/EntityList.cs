@@ -87,7 +87,7 @@ namespace DefaultNamespace
 			if (_teams.ContainsKey(team))
 			{
 				_teams[team].Add(entity);
-				entity.OnDeath += OnEntityDeath;
+				entity.Events.Death += OnEntityDeath;
 			}
 			else
 			{
@@ -111,8 +111,8 @@ namespace DefaultNamespace
 				_graveyards.Add(entity.Team, new List<Entity>() {entity});
 			}
 
-			entity.OnDeath -= OnEntityDeath;
-			entity.OnRessurect += OnEntityRessurect;
+			entity.Events.Death -= OnEntityDeath;
+			entity.Events.Ressurect += OnEntityRessurect;
 		}
 
 		private static void OnEntityRessurect(Entity entity)
@@ -131,8 +131,8 @@ namespace DefaultNamespace
 				_teams.Add(entity.Team, new List<Entity>() {entity});
 			}
 
-			entity.OnDeath += OnEntityDeath;
-			entity.OnRessurect -= OnEntityRessurect;
+			entity.Events.Death += OnEntityDeath;
+			entity.Events.Ressurect -= OnEntityRessurect;
 		}
 		
 	}

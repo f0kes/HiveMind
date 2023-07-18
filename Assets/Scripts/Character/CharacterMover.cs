@@ -1,4 +1,5 @@
 using System;
+using DefaultNamespace;
 using UnityEngine;
 
 namespace Characters
@@ -18,6 +19,7 @@ namespace Characters
 		private Rigidbody _rigidbody;
 
 		public Vector2 Movement => _moveDirection;
+		public Entity CursorTarget { get; private set; }
 
 		private void Awake()
 		{
@@ -34,7 +36,19 @@ namespace Characters
 			_moveDirection = moveDirection;
 			_lookAt = lookAt;
 		}
-
+		public Entity GetCursorTarget()
+		{
+			return CursorTarget;
+		}
+		public void SetCursorTarget(Entity target)
+		{
+			CursorTarget = target;
+		}
+		public Vector3 GetCursor()
+		{
+			return _lookAt;
+		}
+		
 
 		private void Move()
 		{
@@ -66,5 +80,7 @@ namespace Characters
 
 			_rigidbody.velocity = newVel.magnitude <= _moveSpeed ? newVel : rbVelocity;
 		}
+
+	
 	}
 }

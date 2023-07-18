@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1514417676831664263, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5183779135791113690, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -23,6 +27,10 @@ PrefabInstance:
       propertyPath: _deceleration
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5859680968761145486, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
+      propertyPath: _stats
+      value: 
+      objectReference: {fileID: 11400000, guid: 4d44390da360a73449104a3beb72d5c8, type: 2}
     - target: {fileID: 5859680968761145486, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: AIThreat
       value: 4

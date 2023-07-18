@@ -52,8 +52,9 @@ namespace AI
 
 		private void Update()
 		{
-			var entities = GetEntitiesInRange(_viewDistance).OfType<Character>().ToList();
-			_currentEnemy = GetClosestEnemy(entities);
+			var entities = GetEntitiesInRange(_viewDistance).OfType<Character.Character>().ToList();
+			if(_currentEnemy == null ||_currentEnemy.IsDead)
+				_currentEnemy = GetClosestEnemy(entities);
 
 			var desirabiltityMap = new DesirabilityMap(_circleDivisions);
 
@@ -92,6 +93,7 @@ namespace AI
 			}
 
 			ControlledCharacter.CharacterMover.SetInput(maxDirection, lookAt);
+			ControlledCharacter.CharacterMover.SetCursorTarget(_currentEnemy);
 		}
 
 		private IEnumerable<Entity> GetEntitiesInRange(float viewDistance)
@@ -102,7 +104,7 @@ namespace AI
 			return entities;
 		}
 
-		private Character GetClosestEnemy(IEnumerable<Character> visibleEntities)
+		private Character.Character GetClosestEnemy(IEnumerable<Character.Character> visibleEntities)
 		{
 			return visibleEntities
 				.OrderBy(entity => Vector3.Distance(ControlledCharacter.transform.position, entity.transform.position))

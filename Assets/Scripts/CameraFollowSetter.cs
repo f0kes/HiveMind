@@ -15,7 +15,7 @@ public class CameraFollowSetter : MonoBehaviour
         InputHandler.Instance.OnNewCharacter += SetCameraFollow;
     }
 
-    private void SetCameraFollow(Character obj)
+    private void SetCameraFollow(Character.Character obj)
     {
         _virtualCamera.Follow = obj.transform;
     }

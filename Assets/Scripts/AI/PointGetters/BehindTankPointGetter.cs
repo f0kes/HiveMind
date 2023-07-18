@@ -14,7 +14,7 @@ namespace DefaultNamespace.AI
 			_distanceToTank = distanceToTank;
 		}
 
-		public override List<DesirabilityPoint> GetPoints(Character entity, List<Character> entities)
+		public override List<DesirabilityPoint> GetPoints(Character.Character entity, List<Character.Character> entities)
 		{
 			var points = new List<DesirabilityPoint>();
 			//get friendly character with most desirability

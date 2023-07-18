@@ -13,9 +13,9 @@ namespace MapGeneration.Rooms
 
 		private RoomTrigger _room;
 
-		[SerializeField] private List<Character> _monsters;
-		private List<Character> _instantiatedMonsters = new List<Character>();
-		private List<Character> _aliveMonsters = new List<Character>();
+		[SerializeField] private List<Character.Character> _monsters;
+		private List<Character.Character> _instantiatedMonsters = new List<Character.Character>();
+		private List<Character.Character> _aliveMonsters = new List<Character.Character>();
 
 		public void SetRoom(RoomTrigger room)
 		{
@@ -53,7 +53,7 @@ namespace MapGeneration.Rooms
 				monsterInstance.transform.parent = transform;
 				_instantiatedMonsters.Add(monsterInstance);
 				_aliveMonsters.Add(monsterInstance);
-				monsterInstance.OnDeath += (e) => OnMonsterDeath(monsterInstance);
+				monsterInstance.Events.Death += (e) => OnMonsterDeath(monsterInstance);
 				monsterInstance.SetTeam(1);
 			}
 
@@ -63,7 +63,7 @@ namespace MapGeneration.Rooms
 				IsCleared = false;
 		}
 
-		private void OnMonsterDeath(Character monsterInstance)
+		private void OnMonsterDeath(Character.Character monsterInstance)
 		{
 			if (_aliveMonsters.Contains(monsterInstance))
 			{

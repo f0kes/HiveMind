@@ -13,13 +13,13 @@ namespace Player
 {
 	public class InputHandler : CharacterControlsProvider
 	{
-		//singleton
+		public event Action<Character.Character> OnMouseOverCharacter;
+		public event Action<Character.Character> OnMouseOverCharacterEnd;
 		public static InputHandler Instance;
-
 		private Camera _mainCamera;
 		private bool _inputEnabled = true;
 
-		private Character _mouseOverCharacter;
+		private Character.Character _mouseOverCharacter;
 
 
 		private ObjectGizmo _mouseOverObjectGizmo;
@@ -28,14 +28,14 @@ namespace Player
 
 		private float _savedDesirability;
 
-		[SerializeField] private float _desirability = 10;
+		//[SerializeField] private float _desirability = 10;
 
 		[SerializeField] private bool _cheatsEnabled;
 
 		protected override void Awake()
 		{
 			base.Awake();
-			if (Instance == null)
+			if(Instance == null)
 			{
 				Instance = this;
 			}
@@ -48,25 +48,23 @@ namespace Player
 			OnNewCharacter += NewCharacter;
 			_mainCamera = Camera.main;
 		}
-
-
-		protected override void Start()
+		private void OnDestroy()
 		{
-			base.Start();
-			//NewCharacter(ControlledCharacter);
+			OldCharacterReplaced -= OnOldCharacterReplaced;
+			OnNewCharacter -= NewCharacter;
 		}
 
-		private void OnOldCharacterReplaced(Character obj)
+		private void OnOldCharacterReplaced(Character.Character obj)
 		{
 			//obj.AIDesirability = _savedDesirability;
-			obj.OnDeath -= OnCharacterDeath;
+			obj.Events.Death -= OnCharacterDeath;
 		}
 
-		private void NewCharacter(Character obj)
+		private void NewCharacter(Character.Character obj)
 		{
 			//_savedDesirability = obj.AIDesirability;
 			//obj.AIDesirability = _desirability;
-			obj.OnDeath += OnCharacterDeath;
+			obj.Events.Death += OnCharacterDeath;
 		}
 
 		private void OnCharacterDeath(Entity character)
@@ -85,128 +83,142 @@ namespace Player
 			_inputEnabled = true;
 		}
 
-		public Character GetControlledCharacter()
+		public Character.Character GetControlledCharacter()
 		{
 			return ControlledCharacter;
 		}
 
 		private void Update()
 		{
-			if (!_inputEnabled)
+			if(!_inputEnabled)
 				return;
+
 			Vector2 moveDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
 			var (success, position) = GetMousePosition();
-			if (success)
+			if(success)
 			{
 				_lookAt = position;
 			}
 
 			var (success2, character) = GetMouseOverCharacter();
-			if (success2)
+			if(success2)
 			{
-				_mouseOverCharacter = character;
-				_mouseOverObjectGizmo = ObjectGizmo.GetGizmo(_mouseOverCharacter.transform);
-				_mouseOverObjectGizmo.gameObject.SetActive(true);
-				_mouseOverObjectGizmo.healthBar.SetEntity(_mouseOverCharacter);
-				if (character.Team == ControlledCharacter.Team)
+				CharacterMover.SetCursorTarget(character);
+				if(_mouseOverCharacter != character)
 				{
-					//_objectGizmo.gameObject.SetActive(false);
-					
-					if (character != ControlledCharacter)
-						TextMessageRenderer.Instance.ShowActionPrompt("SPC-SWAP");
+					OnMouseOverCharacterEnd?.Invoke(_mouseOverCharacter);
+					_mouseOverCharacter = character;
+					OnMouseOverCharacter?.Invoke(character);
+					if(character.Team == ControlledCharacter.Team)
+					{
+						if(character != ControlledCharacter)
+							TextMessageRenderer.Instance.ShowActionPrompt("SPC-SWAP");
+					}
 				}
 			}
 			else
 			{
+				CharacterMover.SetCursorTarget(null);
 				TextMessageRenderer.Instance.HideActionPrompt();
+				OnMouseOverCharacterEnd?.Invoke(_mouseOverCharacter);
 				_mouseOverCharacter = null;
-				if (_mouseOverObjectGizmo != null)
+				if(_mouseOverObjectGizmo != null)
 				{
 					_mouseOverObjectGizmo.gameObject.SetActive(false);
 				}
 			}
 
+			bool shouldCast = Input.GetMouseButtonDown(1);
+			if(shouldCast)
+			{
+				var result = ControlledCharacter.Spell.Cast();
+				if(!result)
+				{
+					TextMessageRenderer.Instance.ShowMessage(result.Message);
+				}
+				Debug.Log((bool)result + ": " + result.Message);
+			}
+
 			bool shouldShoot = Input.GetMouseButton(0);
 			CharacterMover.SetInput(moveDirection, _lookAt);
-			if (shouldShoot)
+			if(shouldShoot)
 			{
 				ControlledCharacter.CharacterShooter.Shoot();
 			}
 
 			bool shouldInteract = Input.GetKeyDown(KeyCode.E);
-			if (shouldInteract)
+			if(shouldInteract)
 			{
 				ControlledCharacter.CharacterInteractor.Interact();
 			}
 
 			bool shouldSwap = Input.GetKeyDown(KeyCode.Space);
-			if (shouldSwap)
+			if(shouldSwap)
 			{
 				// var entities = EntityList.GetEntitiesOnTeam(ControlledCharacter.Team);
 				// var friends = entities.Select(e => e as Prison).Where(c => c != null).ToList();
 				// var toSwap = friends.First(x => x != ControlledCharacter);
-				if (_mouseOverCharacter != null && _mouseOverCharacter.Team == ControlledCharacter.Team)
+				if(_mouseOverCharacter != null && _mouseOverCharacter.Team == ControlledCharacter.Team)
 				{
 					SwapWithNew(_mouseOverCharacter);
 				}
 			}
 
-			bool shouldReload = Input.GetKeyDown(KeyCode.R);
-			if (shouldReload)
-			{
-				ControlledCharacter.CharacterShooter.Reload();
-			}
 
 			bool shouldToggleMap = Input.GetKeyDown(KeyCode.Tab);
-			if (shouldToggleMap)
+			if(shouldToggleMap)
 			{
 				Map.Instance.ToggleMap();
 			}
 
-			if (_cheatsEnabled)
+			if(_cheatsEnabled)
 			{
-				bool shouldGoToNextLevel = Input.GetKeyDown(KeyCode.F1);
-				bool shouldDie = Input.GetKeyDown(KeyCode.F2);
-				bool shouldGodMode = Input.GetKeyDown(KeyCode.F3);
-				bool shouldKillTeam = Input.GetKeyDown(KeyCode.F4);
-				bool shouldKillRandom = Input.GetKeyDown(KeyCode.F5);
+				HandleCheats();
+			}
+		}
+		private void HandleCheats()
+		{
+			bool shouldGoToNextLevel = Input.GetKeyDown(KeyCode.F1);
+			bool shouldDie = Input.GetKeyDown(KeyCode.F2);
+			bool shouldGodMode = Input.GetKeyDown(KeyCode.F3);
+			bool shouldKillTeam = Input.GetKeyDown(KeyCode.F4);
+			bool shouldKillRandom = Input.GetKeyDown(KeyCode.F5);
 
-				if (shouldGoToNextLevel)
-				{
-					MeshBulilder.I.NextLevel();
-				}
+			if(shouldGoToNextLevel)
+			{
+				MeshBulilder.I.NextLevel();
+			}
 
-				if (shouldDie)
-				{
-					ControlledCharacter.TakeDamage(10000);
-				}
+			if(shouldDie)
+			{
+				ControlledCharacter.TakeDamage(10000);
+			}
 
-				if (shouldGodMode)
-				{
-					ControlledCharacter.SetMaxHealth(10000);
-				}
+			if(shouldGodMode)
+			{
+				ControlledCharacter.SetMaxHealth(10000);
+			}
 
-				if (shouldKillTeam)
+			if(shouldKillTeam)
+			{
+				var entities = EntityList.GetEntitiesOnTeam(ControlledCharacter.Team);
+				foreach(var entity in entities)
 				{
-					var entities = EntityList.GetEntitiesOnTeam(ControlledCharacter.Team);
-					foreach (var entity in entities)
+					if(entity != ControlledCharacter)
 					{
-						if (entity != ControlledCharacter)
-						{
-							entity.TakeDamage(10000);
-						}
+						entity.TakeDamage(10000);
 					}
 				}
+			}
 
-				if (shouldKillRandom)
-				{
-					var entities = EntityList.GetEntitiesOnTeam(ControlledCharacter.Team)
-						.Where(e => e != ControlledCharacter).ToList();
-					//choose random entity
-					var randomEntity = entities[Random.Range(0, entities.Count)];
-					randomEntity.TakeDamage(10000);
-				}
+			if(shouldKillRandom)
+			{
+				var entities = EntityList.GetEntitiesOnTeam(ControlledCharacter.Team)
+					.Where(e => e != ControlledCharacter).ToList();
+				//choose random entity
+				var randomEntity = entities[Random.Range(0, entities.Count)];
+				randomEntity.TakeDamage(10000);
 			}
 		}
 
@@ -219,20 +231,25 @@ namespace Player
 				: (success: false, position: Vector3.zero);
 		}
 
-		private (bool success, Character character) GetMouseOverCharacter()
+		public (bool success, Character.Character character) GetMouseOverCharacter()
 		{
 			var ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hitInfo;
+			var toGround = Physics.Raycast(ray, out hitInfo, Mathf.Infinity, LayerMask.GetMask("Ground"));
+			if(!toGround) return (success: false, character: null);
+			var groundPoint = hitInfo.point;
 
-			//spherecast to find character
-			bool success = Physics.SphereCast(ray, 1.5f, out hitInfo, Mathf.Infinity, LayerMask.GetMask("Character"));
-			//bool success = Physics.Raycast(ray, out hitInfo, Mathf.Infinity, LayerMask.GetMask("Prison"));
-			if (!success)
+			var toCharacterRay = new Ray(groundPoint + Vector3.up * 100, Vector3.down);
+			var success = Physics.SphereCast(toCharacterRay, 3f, out hitInfo, Mathf.Infinity, LayerMask.GetMask("Character"));
+
+			if(!success)
 			{
 				return (success: false, character: null);
 			}
 
-			var character = hitInfo.transform.GetComponent<Character>();
+			var character = hitInfo.transform.GetComponent<Character.Character>();
+
+
 			return character != null ? (success: true, character: character) : (success: false, character: null);
 		}
 	}

@@ -12,10 +12,6 @@ public class AmmoText : MonoBehaviour
 
 	void Update()
 	{
-		CharacterShooter shooter = InputHandler.Instance.GetControlledCharacter().CharacterShooter;
-		var ammo = shooter.GetAmmo();
-		TextAsset.text = shooter.IsReloading()
-			? "R " + shooter.GetReloadTime().ToString("F2").Replace(",", ".")
-			: ammo.ToString();
+		
 	}
 }

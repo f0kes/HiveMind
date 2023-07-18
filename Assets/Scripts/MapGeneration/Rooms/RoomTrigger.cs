@@ -27,7 +27,7 @@ namespace MapGeneration.Rooms
 		}
 		private void OnTriggerEnter(Collider other)
 		{
-			var character = other.GetComponent<Character>();
+			var character = other.GetComponent<Character.Character>();
 			if (character!= null && character==InputHandler.Instance.GetControlledCharacter())
 			{
 				OnPlayerEnter?.Invoke();
@@ -37,7 +37,7 @@ namespace MapGeneration.Rooms
 
 		private void OnTriggerExit(Collider other)
 		{
-			var character = other.GetComponent<Character>();
+			var character = other.GetComponent<Character.Character>();
 			if (character!= null && character==InputHandler.Instance.GetControlledCharacter())
 			{
 				OnPlayerExit?.Invoke();
