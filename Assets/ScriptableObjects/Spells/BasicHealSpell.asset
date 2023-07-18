@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc79d20d16074970af750650f71c9153, type: 3}
+  m_Name: BasicHealSpell
+  m_EditorClassIdentifier: 
+  Level: 10
+  Target: {fileID: 0}
+  Behaviour: 2
+  Tags: 
+  _healVal:
+    Min: 100
+    Max: 10000
+  _healInterval:
+    Min: 0
+    Max: 0
+  _healDuration:
+    Min: 0
+    Max: 0
