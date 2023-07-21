@@ -13,13 +13,13 @@ namespace Player
 {
 	public class InputHandler : CharacterControlsProvider
 	{
-		public event Action<Character.Character> OnMouseOverCharacter;
-		public event Action<Character.Character> OnMouseOverCharacterEnd;
+		public event Action<Characters.Character> OnMouseOverCharacter;
+		public event Action<Characters.Character> OnMouseOverCharacterEnd;
 		public static InputHandler Instance;
 		private Camera _mainCamera;
 		private bool _inputEnabled = true;
 
-		private Character.Character _mouseOverCharacter;
+		private Characters.Character _mouseOverCharacter;
 
 
 		private ObjectGizmo _mouseOverObjectGizmo;
@@ -54,13 +54,13 @@ namespace Player
 			OnNewCharacter -= NewCharacter;
 		}
 
-		private void OnOldCharacterReplaced(Character.Character obj)
+		private void OnOldCharacterReplaced(Characters.Character obj)
 		{
 			//obj.AIDesirability = _savedDesirability;
 			obj.Events.Death -= OnCharacterDeath;
 		}
 
-		private void NewCharacter(Character.Character obj)
+		private void NewCharacter(Characters.Character obj)
 		{
 			//_savedDesirability = obj.AIDesirability;
 			//obj.AIDesirability = _desirability;
@@ -70,6 +70,23 @@ namespace Player
 		private void OnCharacterDeath(Entity character)
 		{
 			//reload scene
+			//SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			var possibleTargets = character
+				.GetTeam()
+				.GetCharacters();
+
+			if(possibleTargets.Count == 0)
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+				return;
+			}
+			var random = Random.Range(0, possibleTargets.Count);
+			var newCharacter = possibleTargets[random];
+			var result = SwapWithNew(newCharacter, true);
+			if(result)
+				return;
+			
+			Debug.LogError("Failed to swap with new character");
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 
@@ -83,7 +100,7 @@ namespace Player
 			_inputEnabled = true;
 		}
 
-		public Character.Character GetControlledCharacter()
+		public Characters.Character GetControlledCharacter()
 		{
 			return ControlledCharacter;
 		}
@@ -156,12 +173,10 @@ namespace Player
 			bool shouldSwap = Input.GetKeyDown(KeyCode.Space);
 			if(shouldSwap)
 			{
-				// var entities = EntityList.GetEntitiesOnTeam(ControlledCharacter.Team);
-				// var friends = entities.Select(e => e as Prison).Where(c => c != null).ToList();
-				// var toSwap = friends.First(x => x != ControlledCharacter);
 				if(_mouseOverCharacter != null && _mouseOverCharacter.Team == ControlledCharacter.Team)
 				{
-					SwapWithNew(_mouseOverCharacter);
+					var result = SwapWithNew(_mouseOverCharacter);
+					if(!result) TextMessageRenderer.Instance.ShowMessage(result.Message);
 				}
 			}
 
@@ -231,7 +246,7 @@ namespace Player
 				: (success: false, position: Vector3.zero);
 		}
 
-		public (bool success, Character.Character character) GetMouseOverCharacter()
+		public (bool success, Characters.Character character) GetMouseOverCharacter()
 		{
 			var ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hitInfo;
@@ -247,7 +262,7 @@ namespace Player
 				return (success: false, character: null);
 			}
 
-			var character = hitInfo.transform.GetComponent<Character.Character>();
+			var character = hitInfo.transform.GetComponent<Characters.Character>();
 
 
 			return character != null ? (success: true, character: character) : (success: false, character: null);

@@ -15,25 +15,49 @@ MonoBehaviour:
   enumeratedStats:
   - Name: 0
     Value:
-      baseValue: 1
+      _baseValue: 1
+      _scalingRange:
+        _min: 1
+        _max: 20
   - Name: 1
     Value:
-      baseValue: 1
+      _baseValue: 1
+      _scalingRange:
+        _min: 1
+        _max: 1
   - Name: 2
     Value:
-      baseValue: 0
+      _baseValue: 0
+      _scalingRange:
+        _min: 0
+        _max: 0
   - Name: 3
     Value:
-      baseValue: 25
-  - Name: 4
-    Value:
-      baseValue: 5
+      _baseValue: 25
+      _scalingRange:
+        _min: 40
+        _max: 1000
   - Name: 5
     Value:
-      baseValue: 5
+      _baseValue: 5
+      _scalingRange:
+        _min: 1
+        _max: 1000
   - Name: 6
     Value:
-      baseValue: 5
+      _baseValue: 5
+      _scalingRange:
+        _min: 1
+        _max: 1000
   - Name: 7
     Value:
-      baseValue: 100
+      _baseValue: 100
+      _scalingRange:
+        _min: 1
+        _max: 1000
+  - Name: 4
+    Value:
+      _baseValue: 100
+      _scalingRange:
+        _min: 1000
+        _max: 10000

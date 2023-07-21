@@ -24,7 +24,7 @@ namespace AI.ComplexBehaviours
 			Weight = weight;
 		}
 
-		public DesirabilityMap GetDesirabilities(Character.Character entity, List<Character.Character> other, int divisions,
+		public DesirabilityMap GetDesirabilities(Characters.Character entity, List<Characters.Character> other, int divisions,
 			bool drawPoints = false)
 		{
 			var desirabilities = new DesirabilityMap(divisions);
@@ -40,7 +40,7 @@ namespace AI.ComplexBehaviours
 			return desirabilities * Weight;
 		}
 
-		public List<DesirabilityPoint> GetDesirabilityPoints(Character.Character entity, List<Character.Character> other)
+		public List<DesirabilityPoint> GetDesirabilityPoints(Characters.Character entity, List<Characters.Character> other)
 		{
 			var points = PointGetter.GetPoints(entity, other);
 			return points;

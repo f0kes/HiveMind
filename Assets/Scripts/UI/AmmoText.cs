@@ -12,6 +12,18 @@ public class AmmoText : MonoBehaviour
 
 	void Update()
 	{
+		var playerTeam = InputHandler.Instance.GetControlledCharacter().GetTeam();
+		if (playerTeam == null) return;
+		if(playerTeam.CanSwap())
+		{
+			TextAsset.text = "R";
+		}
+		else
+		{
+			var cooldown = playerTeam.GetSwapCooldown();
+			TextAsset.text = cooldown.ToString("F2", CultureInfo.InvariantCulture);
+		}
+		
 		
 	}
 }

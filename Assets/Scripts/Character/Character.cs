@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,14 @@ using Combat.Spells.Heal;
 using DefaultNamespace;
 using DefaultNamespace.Settings;
 using Enums;
+using GameState;
 using MapGeneration.Rooms;
 using Stats;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-namespace Character
+namespace Characters
 {
 	[RequireComponent(typeof(CharacterShooter))]
 	[RequireComponent(typeof(CharacterInteractor))]
@@ -26,10 +29,7 @@ namespace Character
 		private bool _swapped;
 		public bool Swapped => _swapped;
 		private Character _swapTarget;
-
-		[SerializeField] private SerializableCharacterStats _stats;
-		public StatDictFiltered<CS, SpellTag> Stats;
-
+		
 
 		public CharacterControlsProvider ControlsProvider;
 		public CharacterMover CharacterMover{get; private set;}
@@ -43,7 +43,7 @@ namespace Character
 
 		protected override void ChildAwake()
 		{
-			_stats = Instantiate(_stats);
+			
 			gameObject.layer = LayerMask.NameToLayer("Character");
 			CharacterMover = gameObject.GetComponent<CharacterMover>();
 			if(CharacterMover == null)
@@ -58,7 +58,7 @@ namespace Character
 			CharacterInteractor.Init(this);
 			CharacterShooter.Init(this);
 
-			Stats = _stats.GetStats().GetFiltered<SpellTag>();
+			
 		}
 		public void InitSpell(BaseSpell spell)
 		{
@@ -87,9 +87,32 @@ namespace Character
 		{
 			base.ChildStart();
 			InitSpells();
+			SubscribeToEvents();
+		}
+		private void OnDestroy()
+		{
+			UnSubscribeFromEvents();
+		}
+		private void SubscribeToEvents()
+		{
+			Ticker.OnTick += OnTick;
+		}
+		private void UnSubscribeFromEvents()
+		{
+			Ticker.OnTick -= OnTick;
+		}
+		private void OnTick(Ticker.OnTickEventArgs obj)
+		{
+			
 		}
 
-
+		public void CastSpell(int index = 0)
+		{
+			if(index < _spells.Count)
+			{
+				_spells[index].Cast();
+			}
+		}
 		public void SwapWithNew(Character other)
 		{
 			_swapped = true;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DefaultNamespace;
 using Enums;
+using Stats;
 using Stats.Structures;
 using UnityEngine;
 
@@ -10,11 +11,10 @@ namespace Combat.Spells.PoisonGrenade
 	[Serializable]
 	public class PoisonGrenadeSpell : BaseSpell
 	{
-		[SerializeField] private SpellParam _dotDamage;
-		[SerializeField] private SpellParam _dotDuration;
-		[SerializeField] private SpellParam _splashRadius;
-		[SerializeField] private SpellParam _splashDamagePercent;
-		[SerializeField] private SpellParam _greenAmmoSteal;
+		[SerializeField] private MinMaxStatRange _dotDamage;
+		[SerializeField] private MinMaxStatRange _dotDuration;
+		[SerializeField] private MinMaxStatRange _splashRadius;
+		[SerializeField] private MinMaxStatRange _splashDamagePercent;
 
 		protected override void PopulateParams()
 		{
@@ -22,7 +22,6 @@ namespace Combat.Spells.PoisonGrenade
 			AddParam(CS.Duration, _dotDuration);
 			AddParam(CS.Radius, _splashRadius);
 			AddParam(CS.SplashDamage, _splashDamagePercent);
-			AddParam(CS.GreenAmmoSteal, _greenAmmoSteal);
 		}
 
 		public override void OnBulletHit(Entity target)

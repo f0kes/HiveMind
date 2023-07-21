@@ -14,7 +14,7 @@ namespace DefaultNamespace.AI
 			_spaceToLeave = spaceToLeave;
 		}
 
-		public override List<DesirabilityPoint> GetPoints(Character.Character entity, List<Character.Character> entities)
+		public override List<DesirabilityPoint> GetPoints(Characters.Character entity, List<Characters.Character> entities)
 		{
 			var points = new List<DesirabilityPoint>();
 			var myPos = entity.transform.position;

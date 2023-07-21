@@ -15,7 +15,7 @@ namespace Content
 			_interactable.OnInteractWho += Interact;
 		}
 
-		private void Interact(Character.Character obj)
+		private void Interact(Characters.Character obj)
 		{
 			if (obj.ControlsProvider == InputHandler.Instance)
 			{

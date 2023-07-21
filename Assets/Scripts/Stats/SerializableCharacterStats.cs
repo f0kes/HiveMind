@@ -22,8 +22,18 @@ namespace Stats
 		public StatDict<CS> GetStats()
 		{
 			var stats = new StatDict<CS>();
-			foreach (var stat in enumeratedStats)
+			foreach(var stat in enumeratedStats)
 			{
+				stats.SetStat(stat.Name, stat.Value);
+			}
+			return stats;
+		}
+		public StatDict<CS> GetStats(uint level)
+		{
+			var stats = new StatDict<CS>();
+			foreach(var stat in enumeratedStats)
+			{
+				stat.Value.SetLevel(level);
 				stats.SetStat(stat.Name, stat.Value);
 			}
 			return stats;

@@ -137,7 +137,7 @@ public class MeshBulilder : MonoBehaviour
 	{
 		yield return new WaitForSeconds(0.15f);
 		Vector3 playerSpawnConverted = ConvertPoint(_playerSpawn);
-		Character.Character player = InputHandler.Instance.GetControlledCharacter();
+		Characters.Character player = InputHandler.Instance.GetControlledCharacter();
 		player.Teleport(playerSpawnConverted, _currentSpawnRoom, 3f);
 		player.TeleportTeam(_currentSpawnRoom,3f);
 		UnblockPaths();

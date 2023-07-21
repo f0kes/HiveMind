@@ -6,6 +6,6 @@ namespace DefaultNamespace.AI
 {
 	public abstract class PointGetter
 	{
-		public abstract List<DesirabilityPoint> GetPoints(Character.Character entity, List<Character.Character> entities);
+		public abstract List<DesirabilityPoint> GetPoints(Characters.Character entity, List<Characters.Character> entities);
 	}
 }

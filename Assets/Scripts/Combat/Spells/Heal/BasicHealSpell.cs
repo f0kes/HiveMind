@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DefaultNamespace;
 using DefaultNamespace.Settings;
 using Enums;
+using Stats;
 using UnityEngine;
 
 namespace Combat.Spells.Heal
@@ -10,9 +11,9 @@ namespace Combat.Spells.Heal
 	[Serializable]
 	public class BasicHealSpell : BaseSpell
 	{
-		[SerializeField] private SpellParam _healVal;
-		[SerializeField] private SpellParam _healInterval;
-		[SerializeField] private SpellParam _healDuration;
+		[SerializeField] private MinMaxStatRange _healVal;
+		[SerializeField] private MinMaxStatRange _healInterval;
+		[SerializeField] private MinMaxStatRange _healDuration;
 
 		protected override void PopulateParams()
 		{
@@ -23,7 +24,7 @@ namespace Combat.Spells.Heal
 		protected override void OnSpellStart()
 		{
 			base.OnSpellStart();
-			var target = Target as Character.Character;
+			var target = Target as Characters.Character;
 			if(target == null) return;
 			var effect = CreateInstance<BasicHealEffect>();
 			target.ApplyNewEffect(GetOwnerCharacter(), this, effect, GetParam(CS.Duration));
@@ -31,7 +32,7 @@ namespace Combat.Spells.Heal
 
 		public override CastResult CanCastTarget(Entity target)
 		{
-			var targetCharacter = target as Character.Character;
+			var targetCharacter = target as Characters.Character;
 
 			if(targetCharacter == null)
 			{
@@ -48,10 +49,10 @@ namespace Combat.Spells.Heal
 		{
 			var instance = CreateInstance<BasicHealSpell>();
 			instance.name = "Basic Heal";
-			instance.Level = (int)GameSettings.MaxStatValue;
-			instance._healVal = new SpellParam { Min = 10, Max = 20000 };
-			instance._healInterval = new SpellParam { Min = 5, Max = 0.01f };
-			instance._healDuration = new SpellParam { Min = 1, Max = 100 };
+			instance.Level = (int)GameSettings.MaxStatValue / 10;
+			instance._healVal = new MinMaxStatRange(40, 8000);
+			instance._healInterval = new MinMaxStatRange(1f, 0.1f); //{ Min = 0.5f, Max = 0.01f };
+			instance._healDuration = new MinMaxStatRange(5, 100); //{ Min = 1, Max = 100 };
 			instance.Behaviour = SpellBehaviour.UnitTarget;
 			instance.PopulateParams();
 			return instance;

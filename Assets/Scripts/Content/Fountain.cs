@@ -24,7 +24,7 @@ namespace DefaultNamespace.Content
 			_room = room;
 		}
 
-		private void Interact(Character.Character character)
+		private void Interact(Characters.Character character)
 		{
 			if (_used) return;
 			var interactorTeammates = EntityList.GetEntitiesOnTeam(character.Team);

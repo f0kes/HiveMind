@@ -9,15 +9,22 @@ namespace Combat.Spells
 {
 	public abstract class BaseEffect : BaseSpell
 	{
-		public BaseSpell SourceSpell;
+		protected BaseSpell SourceSpell;
 		public float TimeLeft{get; protected set;}
-		
 
+		public virtual void ApplyEffect(Entity owner, Entity target, BaseSpell source, float duration)
+		{
+			SetOwner(owner);
+			Target = target;
+			SourceSpell = source;
+			SetTimeLeft(duration);
+			OnCreated();
+		}
 		public override float GetParam(CS statName)
 		{
 			return base.ContainsParam(statName) ? base.GetParam(statName) : SourceSpell.GetParam(statName);
 		}
-		
+
 		public void SetTimeLeft(float timeLeft)
 		{
 			TimeLeft = timeLeft;

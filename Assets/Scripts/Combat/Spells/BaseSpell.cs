@@ -9,6 +9,7 @@ using GameState;
 using Stats;
 using Stats.Structures;
 using UnityEngine;
+using VFX;
 
 namespace Combat.Spells
 {
@@ -16,29 +17,18 @@ namespace Combat.Spells
 	public struct MinMaxStat
 	{
 		public CS StatName;
-		public SpellParam Range;
+		public MinMaxStatRange Range;
 	}
-	[System.Serializable]
-	public class SpellParam
-	{
-		public float Min;
-		public float Max;
-		public uint Level{get; private set;}
-		public float Value => Min + (Max - Min) * Level;
-		public SpellParam Reverse => new SpellParam { Min = Max, Max = Min };
-		public void SetLevel(uint level)
-		{
-			Level = level;
-		}
-	}
+
 
 	public abstract class BaseSpell : ScriptableObject
 	{
 		public int Level = 10;
 		public Entity Owner{get; private set;}
-		[HideInInspector] public Entity Target;
+		[HideInInspector] protected Entity Target;
+		[SerializeField] private Sprite _icon;
 
-		protected Dictionary<CS, SpellParam> Params = new();
+		protected Dictionary<CS, MinMaxStatRange> Params = new();
 		protected StatDict<CS> Stats;
 		public IEnumerable<CS> DependantStats => Params.Keys;
 
@@ -51,7 +41,7 @@ namespace Combat.Spells
 			Tags ??= new List<SpellTag>();
 			Tags.Add(SpellTag.All);
 			PopulateParams();
-			Stats = new StatDict<CS>(Level);
+			Stats = Owner.Stats;
 			Ticker.OnTick += OnTick;
 		}
 		public virtual void OnDestroyed()
@@ -66,7 +56,7 @@ namespace Combat.Spells
 
 		protected abstract void PopulateParams();
 
-		protected void AddParam(CS paramName, SpellParam param)
+		protected void AddParam(CS paramName, MinMaxStatRange param)
 		{
 			Params[paramName] = param;
 		}
@@ -82,19 +72,19 @@ namespace Combat.Spells
 			SubscribeToEvents();
 			OnAttachedToCharacter();
 		}
-		public Character.Character GetCursorTarget()
+		public Characters.Character GetCursorTarget()
 		{
-			var character = Owner as Character.Character;
+			var character = Owner as Characters.Character;
 			if(character == null)
 				return null;
-			var target = character.GetCursorTarget() as Character.Character;
+			var target = character.GetCursorTarget() as Characters.Character;
 			if(target == null)
 				Debug.LogError("No target found!!!, check filters");
 			return target;
 		}
 		public Vector3 GetCursor()
 		{
-			var character = Owner as Character.Character;
+			var character = Owner as Characters.Character;
 			if(character == null)
 			{
 				Debug.LogError("Owner is not a character");
@@ -106,6 +96,10 @@ namespace Combat.Spells
 		public CastResult Cast()
 		{
 			var result = CastResult.Success;
+			if(!Owner.ReadyToCast())
+			{
+				return new CastResult(CastResultType.Fail, "Swap to cast");
+			}
 			switch(Behaviour)
 			{
 				case SpellBehaviour.PointTarget:
@@ -140,6 +134,11 @@ namespace Combat.Spells
 					OnSpellStart();
 					break;
 			}
+			if(result)
+			{
+				Owner.Events.SpellCasted?.Invoke(this);
+				VFXSystem.I.SpawnSpellIcon(_icon, Owner.transform);
+			}
 			return result;
 		}
 		public virtual CastResult CanCastTarget(Entity target)
@@ -168,7 +167,7 @@ namespace Combat.Spells
 				Debug.LogError("Stat " + statName + " is not dependant on this spell");
 				return 0;
 			}
-			var stat = Stats[statName];
+			var stat = Mathf.Min(Stats[statName], GameSettings.MaxStatValue);
 			var minMaxStat = Params[statName];
 
 			return stat / GameSettings.MaxStatValue * (minMaxStat.Max - minMaxStat.Min) + minMaxStat.Min;
@@ -199,9 +198,9 @@ namespace Combat.Spells
 		protected virtual void OnDetachedFromCharacter()
 		{
 		}
-		public Character.Character GetOwnerCharacter()
+		public Characters.Character GetOwnerCharacter()
 		{
-			return Owner as Character.Character;
+			return Owner as Characters.Character;
 		}
 
 		public void ApplySpell(BaseSpell spell, Entity target)

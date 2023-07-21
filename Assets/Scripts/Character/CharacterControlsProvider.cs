@@ -1,5 +1,7 @@
 ﻿using System;
+using Combat;
 using DefaultNamespace;
+using Enums;
 using UnityEngine;
 
 namespace Characters
@@ -7,18 +9,18 @@ namespace Characters
 	public class CharacterControlsProvider : MonoBehaviour
 	{
 		private bool _swapped;
-		private Character.Character _swapTarget;
+		private Characters.Character _swapTarget;
 
-		public event Action<Character.Character> OnNewCharacter;
-		public event Action<Character.Character> OldCharacterReplaced;
+		public event Action<Characters.Character> OnNewCharacter;
+		public event Action<Characters.Character> OldCharacterReplaced;
 
-		protected Character.Character ControlledCharacter;
+		protected Characters.Character ControlledCharacter;
 		protected CharacterMover CharacterMover;
 
 		protected virtual void Awake()
 		{
-			Character.Character character = GetComponentInParent<Character.Character>();
-			if (character == null)
+			Characters.Character character = GetComponentInParent<Characters.Character>();
+			if(character == null)
 			{
 				throw new Exception("CharacterControlsProvider must be attached to a character");
 			}
@@ -33,11 +35,16 @@ namespace Characters
 		{
 			SetCharacter(ControlledCharacter);
 		}
-		
 
-		public void SwapWithNew(Character.Character other)
+		//TODO: Move to elsewhere
+		public CastResult SwapWithNew(Character other, bool forceSwap = false)
 		{
-			if (_swapped)
+			if(other == ControlledCharacter) return new CastResult(CastResultType.Fail, "Can't swap with self");
+			if(other.IsDead) return new CastResult(CastResultType.Fail, "Can't swap with dead character");
+			var team = ControlledCharacter.GetTeam();
+			if(!team.CanSwap() && !forceSwap) return new CastResult(CastResultType.Fail, "Swap on cooldown");
+			ControlledCharacter.Events.SwappedWithCharacter?.Invoke(other);
+			if(_swapped)
 			{
 				SwapBack();
 			}
@@ -46,6 +53,7 @@ namespace Characters
 			_swapTarget = ControlledCharacter;
 
 			Swap(other);
+			return new CastResult(CastResultType.Success);
 		}
 
 		public void SwapBack()
@@ -56,18 +64,17 @@ namespace Characters
 			_swapTarget = null;
 		}
 
-		private void Swap(Character.Character other)
+		private void Swap(Characters.Character other)
 		{
 			var otherControlsProvider = other.ControlsProvider;
-			
+
 			otherControlsProvider.SetCharacter(ControlledCharacter);
 			SetCharacter(other);
-		
 		}
 
-		public void SetCharacter(Character.Character newCharacter)
+		public void SetCharacter(Characters.Character newCharacter)
 		{
-			if (ControlledCharacter != null)
+			if(ControlledCharacter != null)
 			{
 				ControlledCharacter.Events.Death -= OnCharacterDeath;
 				ControlledCharacter.Events.Ressurect -= OnCharacterRessurect;
@@ -79,7 +86,7 @@ namespace Characters
 			ControlledCharacter.Events.Death += OnCharacterDeath;
 			ControlledCharacter.Events.Ressurect += OnCharacterRessurect;
 			CharacterMover = ControlledCharacter.CharacterMover;
-			if (!ControlledCharacter.IsDead)
+			if(!ControlledCharacter.IsDead)
 			{
 				gameObject.SetActive(true);
 			}

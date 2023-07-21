@@ -4,49 +4,57 @@ using Stats.Structures;
 
 namespace Stats
 {
-	public class StatDict<T> where T : System.Enum
+	public class StatDict<TStatName> where TStatName : System.Enum
 	{
-		protected  Stat[] _stats;
+		protected Stat[] _stats;
 
-		public virtual float this[T name, bool forceUpdate = false] => _stats[GetIndex(name)].GetValue(forceUpdate);
-		public StatDict()
+		public virtual float this[TStatName name, bool forceUpdate = false] => _stats[GetIndex(name)].GetValue(forceUpdate);
+		public StatDict(float baseValue = 0, uint level = 1)
 		{
-			//cast to int to get the number of enum values
-			_stats = new Stat[System.Enum.GetValues(typeof(T)).Length];
-			foreach(T name in System.Enum.GetValues(typeof(T)))
+			_stats = new Stat[System.Enum.GetValues(typeof(TStatName)).Length];
+			foreach(TStatName name in System.Enum.GetValues(typeof(TStatName)))
 			{
-				_stats[(int)(object)name] = new Stat();
+				var stat = new Stat(baseValue, level);
+				_stats[(int)(object)name] = stat;
 			}
 		}
-		public StatDict(float baseValue)
+		public StatDict(StatDict<TStatName> other)
 		{
-			_stats = new Stat[System.Enum.GetValues(typeof(T)).Length];
-			foreach(T name in System.Enum.GetValues(typeof(T)))
+			_stats = new Stat[System.Enum.GetValues(typeof(TStatName)).Length];
+			foreach(TStatName name in System.Enum.GetValues(typeof(TStatName)))
 			{
-				_stats[(int)(object)name] = new Stat(baseValue);
+				var stat = new Stat(other[name]);
+				_stats[(int)(object)name] = stat;
+			}
+		}
+		public void SetLevel(uint level)
+		{
+			foreach(var stat in _stats)
+			{
+				stat.SetLevel(level);
 			}
 		}
 		public Stat[] GetStats()
 		{
 			return _stats;
 		}
-		private int GetIndex(T name)
+		private int GetIndex(TStatName name)
 		{
 			return (int)(object)name;
 		}
-		public Stat GetStat(T name)
+		public Stat GetStat(TStatName name)
 		{
 			return _stats[GetIndex(name)];
 		}
 
-		public void SetStat(T name, Stat stat)
+		public void SetStat(TStatName name, Stat stat)
 		{
 			_stats[GetIndex(name)] = stat;
 		}
-		public StatDictFiltered<T, T2> GetFiltered<T2>()
+		public StatDictFiltered<TStatName, T2> GetFiltered<T2>()
 		{
-			return new StatDictFiltered<T, T2>(this);
+			return new StatDictFiltered<TStatName, T2>(this);
 		}
-		
+
 	}
 }

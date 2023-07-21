@@ -12,7 +12,7 @@ public class UnitSelection : MonoBehaviour
 		public int Team;
 		public Color Color;
 	}
-	[SerializeField] private Character.Character _character;
+	[SerializeField] private Characters.Character _character;
 	[SerializeField] private List<ColorCode> _colorCodes;
 	[SerializeField] private MeshRenderer _meshRenderer;
 	private Material _material;
@@ -43,14 +43,14 @@ public class UnitSelection : MonoBehaviour
 		InputHandler.Instance.OnMouseOverCharacter -= OnMouseOverCharacter;
 		InputHandler.Instance.OnMouseOverCharacterEnd -= OnMouseOverCharacterEnd;
 	}
-	private void OnMouseOverCharacterEnd(Character.Character character)
+	private void OnMouseOverCharacterEnd(Characters.Character character)
 	{
 		if(!_isPlayer)
 		{
 			_material.color = _colors[_character.Team];
 		}
 	}
-	private void OnMouseOverCharacter(Character.Character character)
+	private void OnMouseOverCharacter(Characters.Character character)
 	{
 		if(character == _character && !_isPlayer)
 		{
@@ -58,7 +58,7 @@ public class UnitSelection : MonoBehaviour
 		}
 	}
 
-	private void OnNewCharacter(Character.Character obj)
+	private void OnNewCharacter(Characters.Character obj)
 	{
 		if(obj == _character)
 		{

@@ -1,4 +1,7 @@
-﻿using DefaultNamespace;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Combat.Spells;
+using DefaultNamespace;
 using Enums;
 
 namespace Combat
@@ -9,9 +12,7 @@ namespace Combat
 		{
 			if(targetTeam == TeamFilter.Both)
 			{
-				return toFilter.Tags.HasFlag(targetTags) ?
-					CastResult.Success : 
-					new CastResult(CastResultType.Fail, "Target does not have required tags");
+				return toFilter.Tags.HasFlag(targetTags) ? CastResult.Success : new CastResult(CastResultType.Fail, "Target does not have required tags");
 			}
 			if(filterer.Team == toFilter.Team)
 			{
@@ -28,9 +29,11 @@ namespace Combat
 				}
 			}
 
-			return toFilter.Tags.HasFlag(targetTags) ?
-				CastResult.Success :
-				new CastResult(CastResultType.Fail, "Target does not have required tags");
+			return toFilter.Tags.HasFlag(targetTags) ? CastResult.Success : new CastResult(CastResultType.Fail, "Target does not have required tags");
+		}
+		public static List<Entity> FilterEntitiesWithSpell(Entity filterer, IEnumerable<Entity> toFilter, BaseSpell spell)
+		{
+			return toFilter.Where(entity => spell.CanCastTarget(entity).ResultType == CastResultType.Success).ToList();
 		}
 	}
 }

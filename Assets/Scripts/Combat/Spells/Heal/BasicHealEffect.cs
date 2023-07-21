@@ -10,6 +10,7 @@ namespace Combat.Spells.Heal
 		public override void OnCreated()
 		{
 			base.OnCreated();
+			_timeToNextTick = GetParam(CS.Interval);
 		}
 
 		protected override void PopulateParams()

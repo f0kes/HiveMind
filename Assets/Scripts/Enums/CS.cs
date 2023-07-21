@@ -6,22 +6,17 @@
 		BulletsPerShot,
 		Spread,
 		Damage,
-		
-		RedAmmoCost, // Red Ammo Spend
-		BlueAmmoCost, // Blue Ammo Spend
-		GreenAmmoCost, // Green Ammo Spend
+		Health,
 
-		AmmoCapacity,
 		DOT,
 		Duration,
 		Radius,
-		GreenAmmoSteal,
 		SplashDamage,
 		Bonus,
 		Heal,
 		PoisonDamage,
 		AttackSpeedPenalty,
 		DamageBonus,
-		Interval
+		Interval,
 	}
 }

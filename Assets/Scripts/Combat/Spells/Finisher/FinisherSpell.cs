@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DefaultNamespace;
 using Enums;
+using Stats;
 using Stats.Modifiers;
 using UnityEngine;
 
@@ -10,14 +11,14 @@ namespace Combat.Spells.Finisher
 	[Serializable]
 	public class FinisherSpell : BaseSpell
 	{
-		[SerializeField] private SpellParam _damageBonus;
-		[SerializeField] private SpellParam _attackSpeedPenalty;
+		[SerializeField] private MinMaxStatRange _damageBonus;
+		[SerializeField] private MinMaxStatRange _attackSpeedPenalty;
 
 
 		protected override void PopulateParams()
 		{
 			AddParam(CS.DamageBonus, _damageBonus);
-			AddParam(CS.AttackSpeedPenalty, _attackSpeedPenalty.Reverse);
+			AddParam(CS.AttackSpeedPenalty, _attackSpeedPenalty);
 		}
 		protected override void OnAttachedToCharacter()
 		{
@@ -28,9 +29,7 @@ namespace Combat.Spells.Finisher
 			GetOwnerCharacter().Stats.GetStat(CS.FireRate)
 				.AddMod(modfier);
 		}
-
-
-
+		
 		public override CastResult CanCastTarget(Entity target)
 		{
 			return EntityFilterer.FilterEntity(Owner, target, TeamFilter.Enemy);

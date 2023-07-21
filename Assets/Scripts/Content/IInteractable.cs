@@ -5,8 +5,8 @@ namespace DefaultNamespace.Content
 	public interface IInteractable
 	{
 		public event Action OnInteract;
-		public event Action<Character.Character> OnInteractWho; 
-		public void Interact(Character.Character character);
+		public event Action<Characters.Character> OnInteractWho; 
+		public void Interact(Characters.Character character);
 		
 	}
 }

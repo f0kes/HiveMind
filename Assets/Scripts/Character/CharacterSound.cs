@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEngine;
 
-[RequireComponent(typeof(Character.Character))]
+[RequireComponent(typeof(Characters.Character))]
 [RequireComponent(typeof(AudioSource))]
 public class CharacterSound : MonoBehaviour
 {
-	private Character.Character _character;
+	private Characters.Character _character;
 	private AudioSource _audioSource;
 
 	private void Awake()
 	{
-		_character = GetComponent<Character.Character>();
+		_character = GetComponent<Characters.Character>();
 		_audioSource = GetComponent<AudioSource>();
 	}
 

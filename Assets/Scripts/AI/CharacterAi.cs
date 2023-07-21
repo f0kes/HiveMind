@@ -52,7 +52,7 @@ namespace AI
 
 		private void Update()
 		{
-			var entities = GetEntitiesInRange(_viewDistance).OfType<Character.Character>().ToList();
+			var entities = GetEntitiesInRange(_viewDistance).OfType<Character>().ToList();
 			if(_currentEnemy == null ||_currentEnemy.IsDead)
 				_currentEnemy = GetClosestEnemy(entities);
 
@@ -104,7 +104,7 @@ namespace AI
 			return entities;
 		}
 
-		private Character.Character GetClosestEnemy(IEnumerable<Character.Character> visibleEntities)
+		private Character GetClosestEnemy(IEnumerable<Character> visibleEntities)
 		{
 			return visibleEntities
 				.OrderBy(entity => Vector3.Distance(ControlledCharacter.transform.position, entity.transform.position))

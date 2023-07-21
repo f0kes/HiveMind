@@ -13,9 +13,9 @@ namespace MapGeneration.Rooms
 
 		private RoomTrigger _room;
 
-		[SerializeField] private List<Character.Character> _monsters;
-		private List<Character.Character> _instantiatedMonsters = new List<Character.Character>();
-		private List<Character.Character> _aliveMonsters = new List<Character.Character>();
+		[SerializeField] private List<Characters.Character> _monsters;
+		private List<Characters.Character> _instantiatedMonsters = new List<Characters.Character>();
+		private List<Characters.Character> _aliveMonsters = new List<Characters.Character>();
 
 		public void SetRoom(RoomTrigger room)
 		{
@@ -63,7 +63,7 @@ namespace MapGeneration.Rooms
 				IsCleared = false;
 		}
 
-		private void OnMonsterDeath(Character.Character monsterInstance)
+		private void OnMonsterDeath(Characters.Character monsterInstance)
 		{
 			if (_aliveMonsters.Contains(monsterInstance))
 			{

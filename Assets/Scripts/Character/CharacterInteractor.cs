@@ -11,8 +11,8 @@ namespace Characters
 	{
 		[SerializeField] private float _interactionDistance = 1.5f;
 		private Interactable _closestInteractable;
-		private Character.Character _character;
-		public void Init(Character.Character character)
+		private Characters.Character _character;
+		public void Init(Characters.Character character)
 		{
 			_character = character;
 		}

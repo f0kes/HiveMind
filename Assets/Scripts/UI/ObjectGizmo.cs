@@ -8,18 +8,31 @@ namespace DefaultNamespace.UI
 	{
 		[SerializeField] private ObjectGizmo _defaultGizmo;
 		private static ObjectGizmo _default;
-
+		private Entity _attachedEntity;
+		private Vector3 _offset;
 		public static ObjectGizmo Default;
 
-		public HealthBar healthBar;
+		[SerializeField] private HealthBar healthBar;
 		private static Dictionary<Transform, ObjectGizmo> Gizmos = new Dictionary<Transform, ObjectGizmo>();
 
 		private void Awake()
 		{
-			gameObject.SetActive(true);
 			if(Default == null)
 			{
 				Default = _defaultGizmo;
+			}
+		}
+		public void AttachTo(Entity e)
+		{
+			healthBar.SetEntity(e);
+			_attachedEntity = e;
+			_offset = transform.position - e.transform.position;
+		}
+		private void Update()
+		{
+			if(_attachedEntity != null)
+			{
+				transform.position = _attachedEntity.transform.position + _offset;
 			}
 		}
 

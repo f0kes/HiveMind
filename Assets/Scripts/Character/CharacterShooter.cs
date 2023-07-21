@@ -15,7 +15,7 @@ namespace Characters
 		[SerializeField] private Weapon _weapon;
 		public Bullet BulletPrefab;
 
-		private Character.Character _character;
+		private Characters.Character _character;
 		private float _timeSinceShot = 0;
 
 		private bool _reloading;
@@ -26,7 +26,7 @@ namespace Characters
 			_timeSinceShot += Time.deltaTime;
 		}
 
-		public void Init(Character.Character character)
+		public void Init(Characters.Character character)
 		{
 			_character = character;
 
