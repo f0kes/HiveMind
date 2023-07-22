@@ -75,17 +75,14 @@ namespace Player
 				.GetTeam()
 				.GetCharacters();
 
-			if(possibleTargets.Count == 0)
-			{
-				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-				return;
-			}
+			if(possibleTargets.Count == 0) return;
+
 			var random = Random.Range(0, possibleTargets.Count);
 			var newCharacter = possibleTargets[random];
 			var result = SwapWithNew(newCharacter, true);
 			if(result)
 				return;
-			
+
 			Debug.LogError("Failed to swap with new character");
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
@@ -217,7 +214,7 @@ namespace Player
 
 			if(shouldKillTeam)
 			{
-				var entities = EntityList.GetEntitiesOnTeam(ControlledCharacter.Team);
+				var entities = GlobalEntities.GetEntitiesOnTeam(ControlledCharacter.Team);
 				foreach(var entity in entities)
 				{
 					if(entity != ControlledCharacter)
@@ -229,7 +226,7 @@ namespace Player
 
 			if(shouldKillRandom)
 			{
-				var entities = EntityList.GetEntitiesOnTeam(ControlledCharacter.Team)
+				var entities = GlobalEntities.GetEntitiesOnTeam(ControlledCharacter.Team)
 					.Where(e => e != ControlledCharacter).ToList();
 				//choose random entity
 				var randomEntity = entities[Random.Range(0, entities.Count)];

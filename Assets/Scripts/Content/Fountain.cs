@@ -27,8 +27,8 @@ namespace DefaultNamespace.Content
 		private void Interact(Characters.Character character)
 		{
 			if (_used) return;
-			var interactorTeammates = EntityList.GetEntitiesOnTeam(character.Team);
-			var interactorGraveyard = EntityList.GetGraveyard(character.Team);
+			var interactorTeammates = GlobalEntities.GetEntitiesOnTeam(character.Team);
+			var interactorGraveyard = GlobalEntities.GetGraveyard(character.Team);
 			_waterRenderer.enabled = false;
 			foreach (var entity in interactorTeammates)
 			{

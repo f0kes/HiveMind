@@ -32,7 +32,7 @@ namespace DefaultNamespace
 
 		private void Awake()
 		{
-			EntityList.AddToTeam(_team, this);
+			GlobalEntities.AddToTeam(_team, this);
 			_stats = Instantiate(_stats);
 			ChildAwake();
 			Stats = _stats.GetStats(Level).GetFiltered<SpellTag>();
@@ -57,15 +57,15 @@ namespace DefaultNamespace
 		{
 		}
 
-		public EntityTeam GetTeam()
+		public EntityList GetTeam()
 		{
-			return EntityList.GetTeam(_team);
+			return GlobalEntities.GetTeam(_team);
 		}
 		public void SetTeam(ushort team)
 		{
-			EntityList.RemoveEntityFromTeam(this);
+			GlobalEntities.RemoveEntityFromTeam(this);
 			_team = team;
-			EntityList.AddToTeam(_team, this);
+			GlobalEntities.AddToTeam(_team, this);
 			Debug.Log(MaxHealth + " " + gameObject.name);
 		}
 

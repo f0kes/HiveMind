@@ -1,154 +1,171 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using Characters;
+using Combat.Spells;
+using DefaultNamespace.Settings;
+using GameState;
+using Stats.Structures;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 namespace DefaultNamespace
 {
-	public static class EntityList
+
+	public class EntityList : IEnumerable<Entity>
 	{
-		public static event Action<ushort, Entity> OnEntityAdded;
+		public event Action<EntityList> OnTeamWiped;
 
-
-		private static List<Entity> _allEntities = new();
-		private static List<Entity> _aliveEntities = new();
-		private static Dictionary<ushort, EntityTeam> _teams = new();
-		private static Dictionary<ushort, EntityTeam> _graveyards = new();
-
-		static EntityList()
+		private ushort _teamId;
+		private readonly List<Entity> _list = new();
+		public Stat SwapCooldown = new(GameSettings.SwapCooldown);
+		public Stat CastCooldown = new(GameSettings.SwapCooldown);
+		private float _swapCooldownTimer;
+		private float _castCooldownTimer;
+		private bool _canCast;
+		public EntityList(ushort teamId)
 		{
-			//on scene loaded clear the list
-			SceneManager.sceneUnloaded += OnSceneUnloaded;
+			_teamId = teamId;
+			GlobalEntities.SetTeam(teamId, this);
+			SubscribeToEvents();
 		}
 
-		private static void OnSceneUnloaded(Scene x)
+
+		~EntityList()
 		{
-			_graveyards.Clear();
-			_teams.Clear();
-			_allEntities.Clear();
+			UnsubscribeFromEvents();
 		}
-
-		public static void RemoveEntityFromTeam(Entity entity)
+		private void SubscribeToEvents()
 		{
-			if(_teams.ContainsKey(entity.Team) && _teams[entity.Team].Contains(entity))
-			{
-				_teams[entity.Team].Remove(entity);
-			}
-
-
-			if(_graveyards.ContainsKey(entity.Team) && _graveyards[entity.Team].Contains(entity))
-			{
-				_graveyards[entity.Team].Remove(entity);
-			}
+			Ticker.OnTick += OnTick;
 		}
-
-		public static EntityTeam GetTeam(ushort team)
+		private void UnsubscribeFromEvents()
 		{
-			if(_teams.ContainsKey(team))
+			Ticker.OnTick -= OnTick;
+		}
+		private void SubscribeToEntityEvents(Entity entity)
+		{
+			entity.Events.SpellCasted += OnCast;
+			entity.Events.SwappedWithCharacter += OnSwap;
+		}
+		private void UnsubscribeFromEntityEvents(Entity entity)
+		{
+			entity.Events.SpellCasted -= OnCast;
+			entity.Events.SwappedWithCharacter -= OnSwap;
+		}
+		public void SetList(List<Entity> list)
+		{
+			Clear();
+			foreach(var entity in list)
 			{
-				return _teams[team];
-			}
-			else
-			{
-				_teams.Add(team, new EntityTeam(team));
-				return _teams[team];
+				Add(entity);
 			}
 		}
-		public static List<Entity> GetAllEntities()
+		public void Clear()
 		{
-			return new List<Entity>(_allEntities);
+			foreach(var entity in _list)
+			{
+				UnsubscribeFromEntityEvents(entity);
+			}
+			_list.Clear();
 		}
-		public static List<Entity> GetEntitiesInRange(Vector3 position, float range)
+		public void Reset()
 		{
-			return GetAllEntities().Where(x => Vector3.Distance(x.transform.position, position) <= range).ToList();
+			_swapCooldownTimer = 0;
+			_castCooldownTimer = 0;
 		}
-
-		public static List<Entity> GetEntitiesOnTeam(ushort team)
+		private void OnTick(Ticker.OnTickEventArgs obj)
 		{
-			if(_teams.ContainsKey(team))
+			_swapCooldownTimer += Ticker.TickInterval;
+			_castCooldownTimer += Ticker.TickInterval;
+		}
+		public Entity GetRandom()
+		{
+			return _list[Random.Range(0, _list.Count)];
+		}
+		public Character GetRandomCharacter()
+		{
+			var chars = _list.FindAll(entity => entity is Character);
+			return (Character)chars[Random.Range(0, chars.Count)];
+		}
+		public int Count()
+		{
+			return _list.Count;
+		}
+		public bool IsPlayerTeam()
+		{
+			return _teamId == 0;
+		}
+		public bool CanCast()
+		{
+			if(IsPlayerTeam())
 			{
-				return new List<Entity>(_teams[team]);
+				return _canCast;
 			}
-			else
+			return _castCooldownTimer >= CastCooldown;
+		}
+		public bool CanSwap()
+		{
+			return _swapCooldownTimer >= SwapCooldown;
+		}
+		private void OnSwap(Character character)
+		{
+			_swapCooldownTimer = 0;
+			_canCast = true;
+		}
+		private void OnCast(BaseSpell spell)
+		{
+			_castCooldownTimer = 0;
+			_canCast = false;
+		}
+		public void Add(Entity entity)
+		{
+			_list.Add(entity);
+			SubscribeToEntityEvents(entity);
+		}
+		public void Remove(Entity entity)
+		{
+			_list.Remove(entity);
+			UnsubscribeFromEntityEvents(entity);
+			if(_list.Count == 0)
 			{
-				_teams.Add(team, new EntityTeam(team));
-				return new List<Entity>(_teams[team]);
+				OnTeamWiped?.Invoke(this);
 			}
 		}
-
-		public static List<Entity> GetGraveyard(ushort team)
+		public IEnumerator<Entity> GetEnumerator()
 		{
-			if(_graveyards.ContainsKey(team))
-			{
-				return new List<Entity>(_graveyards[team]);
-			}
-			else
-			{
-				_graveyards.Add(team, new EntityTeam(team));
-				return new List<Entity>(_graveyards[team]);
-			}
-		}
-
-		public static void AddToTeam(ushort team, Entity entity)
-		{
-			if(!GetAllEntities().Contains(entity))
-			{
-				OnEntityAdded?.Invoke(team, entity);
-				_allEntities.Add(entity);
-			}
-
-
-			if(_teams.ContainsKey(team))
-			{
-				_teams[team].Add(entity);
-				entity.Events.Death += OnEntityDeath;
-			}
-			else
-			{
-				_teams.Add(team, new EntityTeam(team) { entity });
-			}
-		}
-
-		private static void OnEntityDeath(Entity entity)
-		{
-			if(_teams.ContainsKey(entity.Team))
-			{
-				_teams[entity.Team].Remove(entity);
-			}
-
-			if(_graveyards.ContainsKey(entity.Team))
-			{
-				_graveyards[entity.Team].Add(entity);
-			}
-			else
-			{
-				_graveyards.Add(entity.Team, new EntityTeam(entity.Team) { entity });
-			}
-
-			entity.Events.Death -= OnEntityDeath;
-			entity.Events.Ressurect += OnEntityRessurect;
-		}
-
-		private static void OnEntityRessurect(Entity entity)
-		{
-			if(_graveyards.ContainsKey(entity.Team))
-			{
-				_graveyards[entity.Team].Remove(entity);
-			}
-
-			if(_teams.ContainsKey(entity.Team))
-			{
-				_teams[entity.Team].Add(entity);
-			}
-			else
-			{
-				_teams.Add(entity.Team, new EntityTeam(entity.Team) { entity });
-			}
-
-			entity.Events.Death += OnEntityDeath;
-			entity.Events.Ressurect -= OnEntityRessurect;
+			return _list.GetEnumerator();
 		}
 
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+		public List<Entity> GetListCopy()
+		{
+			return new List<Entity>(_list);
+		}
+		public List<Character> GetCharacters()
+		{
+			var casters = new List<Character>();
+			foreach(var entity in _list)
+			{
+				if(entity is Character character)
+				{
+					casters.Add(character);
+				}
+			}
+			return casters;
+		}
+
+		public float GetSwapCooldown()
+		{
+			return SwapCooldown - _swapCooldownTimer;
+		}
+
+		public float GetCastCooldown()
+		{
+			return CastCooldown - _castCooldownTimer;
+		}
 	}
 }

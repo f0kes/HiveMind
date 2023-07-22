@@ -11,6 +11,8 @@ namespace DefaultNamespace.UI
 		[SerializeField] private RectTransform _damageBarTemplate;
 		[SerializeField] private RectTransform _damageBarContainer;
 		[SerializeField] private TextMeshProUGUI _levelText;
+		[SerializeField] private Color _playerColor = Color.green;
+		[SerializeField] private Color _enemyColor = Color.red;
 
 		private float _currentHealthPercent = 1f;
 		private float _previousHealthPercent = 1f;
@@ -29,9 +31,9 @@ namespace DefaultNamespace.UI
 			entity.Events.HealthChanged += OnHealthChanged;
 			entity.Events.Death += OnDeath;
 			if(entity.Team == 0)
-				SetColor(Color.green);
+				SetColor(_playerColor);
 			else
-				SetColor(Color.red);
+				SetColor(_enemyColor);
 		}
 		private void Update()
 		{

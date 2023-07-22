@@ -14,13 +14,13 @@ namespace Characters
 
 		private void Start()
 		{
-			var entities = EntityList.GetAllEntities();
+			var entities = GlobalEntities.GetAllEntities();
 			foreach (var entity in entities)
 			{
 				BuffEntity(entity);
 			}
 
-			EntityList.OnEntityAdded += OnEntityAdded;
+			GlobalEntities.OnEntityAdded += OnEntityAdded;
 		}
 
 		private void OnEntityAdded(ushort team, Entity entity)
