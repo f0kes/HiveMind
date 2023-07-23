@@ -13,13 +13,13 @@ namespace Player
 {
 	public class InputHandler : CharacterControlsProvider
 	{
-		public event Action<Characters.Character> OnMouseOverCharacter;
-		public event Action<Characters.Character> OnMouseOverCharacterEnd;
+		public event Action<Character> OnMouseOverCharacter;
+		public event Action<Character> OnMouseOverCharacterEnd;
 		public static InputHandler Instance;
 		private Camera _mainCamera;
 		private bool _inputEnabled = true;
 
-		private Characters.Character _mouseOverCharacter;
+		private Character _mouseOverCharacter;
 
 
 		private ObjectGizmo _mouseOverObjectGizmo;

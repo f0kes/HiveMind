@@ -14,7 +14,7 @@ namespace DefaultNamespace.UI
 		[SerializeField] private Color _playerColor = Color.green;
 		[SerializeField] private Color _enemyColor = Color.red;
 
-		private float _currentHealthPercent = 1f;
+		
 		private float _previousHealthPercent = 1f;
 		private Entity _entity;
 		private float _maxHealth;

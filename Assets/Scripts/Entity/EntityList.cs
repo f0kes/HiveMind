@@ -26,7 +26,7 @@ namespace DefaultNamespace
 		public EntityList(ushort teamId)
 		{
 			_teamId = teamId;
-			GlobalEntities.SetTeam(teamId, this);
+			//GlobalEntities.SetTeam(teamId, this);
 			SubscribeToEvents();
 		}
 

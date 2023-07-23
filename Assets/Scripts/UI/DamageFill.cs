@@ -8,7 +8,6 @@ namespace UI
 	[RequireComponent(typeof(Image))]
 	public class DamageFill : MonoBehaviour
 	{
-		[SerializeField] private float _glowTime = 0.01f;
 		[SerializeField] private float _fadeTime = 0.5f;
 		[SerializeField] private float _distToTravel = 2f;
 		[SerializeField][ColorUsage(true,true)] private Color _startColor = new Color(1.05f, 1.05f, 1.05f, 1.05f);

@@ -3,26 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using Combat.Battle;
 using DefaultNamespace;
+using DefaultNamespace.Configs;
+using Player;
 using UnityEngine;
 
 namespace GameState
 {
 	public class GameStateController : MonoBehaviour
 	{
+		public static GameStateController Instance{get; private set;}
 		[SerializeField] private List<Entity> _playerTeamInitial;
 		[SerializeField] private List<Entity> _enemyTeamInitial;
+		[SerializeField] private ContentDatabase _contentDatabase;
+		private PlayerData _playerData;
 
 
+		public static ContentDatabase ContentDatabase => Instance._contentDatabase;
+		public static PlayerData PlayerData => Instance._playerData;
 		private List<Entity> _playerTeam = new List<Entity>();
 
 		private Battle _battle;
 		private void Awake()
 		{
+			if(Instance == null)
+			{
+				Instance = this;
+				DontDestroyOnLoad(gameObject);
+			}
+			else
+			{
+				Destroy(gameObject);
+			}
 			_playerTeam.AddRange(_playerTeamInitial);
+		}
+		private void OnDestroy()
+		{
+			if(Instance == this)
+			{
+				Instance = null;
+			}
 		}
 		private void Start()
 		{
-			StartBattle();
+			ResetPlayerData();
+			//StartBattle();
+		}
+		private void ResetPlayerData()
+		{
+			_playerData = new PlayerData { Gold = 20 };
 		}
 		public void StartBattle()
 		{
@@ -43,6 +71,7 @@ namespace GameState
 			}
 			else
 			{
+				ResetPlayerData();
 				_playerTeam.AddRange(_playerTeamInitial);
 			}
 			StartBattle();

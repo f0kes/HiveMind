@@ -119,16 +119,7 @@ namespace DefaultNamespace
 			}
 			else
 			{
-				var temp = _teams.ContainsKey(team);
-				try
-				{
-					//here is the problem, when entitylist is instantied it adds itself to the team
-					_teams.Add(team, new EntityList(team) { entity });
-				}
-				catch(Exception e)
-				{
-					Debug.LogError(team + " " + temp + " " + _teams.ContainsKey(team) + " " + e.Message + " " + e.StackTrace);
-				}
+				_teams.Add(team, new EntityList(team) { entity });
 			}
 		}
 

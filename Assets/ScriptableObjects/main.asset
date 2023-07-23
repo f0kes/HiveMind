@@ -9,15 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccead9f0550746aeb538e473bb07e13c, type: 3}
-  m_Name: Spider
+  m_Script: {fileID: 11500000, guid: 4932120c9a9a4403b67d607ee5a736df, type: 3}
+  m_Name: main
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
-  fireSounds: []
-  Range: 1
-  Damage: 3
-  FireRate: 0.05
-  Spread: 0
-  BulletsPerShot: 1
-  ClipSize: 2
-  ReloadTime: 0
+  Characters: []
+  Spells: []

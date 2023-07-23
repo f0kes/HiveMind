@@ -24,7 +24,7 @@ namespace UI
 
 		public void Awake()
 		{
-			if (Instance != null)
+			if(Instance != null)
 			{
 				Debug.LogWarning("Multiple instances of TextMessageRenderer found!, Destroying old one");
 				Destroy(Instance.gameObject);
@@ -50,7 +50,7 @@ namespace UI
 
 		public void ShowBlackScreen(string message, float time = 10f)
 		{
-			if (message == "")
+			if(message == "")
 			{
 				message = _defaultBlackScreenText;
 			}
@@ -82,7 +82,7 @@ namespace UI
 
 		private void Update()
 		{
-			if (_messageTimer > 0)
+			if(_messageTimer > 0)
 			{
 				_messageTimer -= Time.deltaTime;
 				_messageText.alpha = _messageTimer / _messageMaxTime;
@@ -92,7 +92,7 @@ namespace UI
 				_messageText.text = "";
 			}
 
-			if (_blackScreenTimer > 0)
+			if(_blackScreenTimer > 0)
 			{
 				_blackScreenTimer -= Time.deltaTime;
 			}
