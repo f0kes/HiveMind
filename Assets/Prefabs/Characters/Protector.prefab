@@ -96,3 +96,4 @@ MonoBehaviour:
   _fleeBehaivourWeight: 1
   _avoidWallBehaivourWeight: 1
   _alignBehaivourWeight: 2
+  _debugDraw: 0

@@ -1,9 +1,11 @@
 ﻿using System;
 using Combat;
+using Combat.Battle;
 using Combat.Spells;
 using Combat.Spells.PoisonGrenade;
 using DefaultNamespace.UI;
 using Enums;
+using GameState;
 using Stats;
 using UnityEngine;
 
@@ -32,7 +34,7 @@ namespace DefaultNamespace
 
 		private void Awake()
 		{
-			GlobalEntities.AddToTeam(_team, this);
+			//GlobalEntities.AddToTeam(_team, this);
 			_stats = Instantiate(_stats);
 			ChildAwake();
 			Stats = _stats.GetStats(Level).GetFiltered<SpellTag>();
@@ -42,6 +44,11 @@ namespace DefaultNamespace
 			InitGizmo();
 			ChildStart();
 		}
+		public void SetTeam(ushort team)
+		{
+			_team = team;
+			
+		}
 		private void InitGizmo()
 		{
 			Gizmo = Instantiate(ObjectGizmo.Default);
@@ -50,6 +57,7 @@ namespace DefaultNamespace
 
 			Gizmo.AttachTo(this);
 		}
+
 		protected virtual void ChildAwake()
 		{
 		}
@@ -59,14 +67,7 @@ namespace DefaultNamespace
 
 		public EntityList GetTeam()
 		{
-			return GlobalEntities.GetTeam(_team);
-		}
-		public void SetTeam(ushort team)
-		{
-			GlobalEntities.RemoveEntityFromTeam(this);
-			_team = team;
-			GlobalEntities.AddToTeam(_team, this);
-			Debug.Log(MaxHealth + " " + gameObject.name);
+			return GameStateController.CurrentBattle.GetTeam(_team);
 		}
 
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DefaultNamespace;
+using GameState;
 using UnityEngine;
 
 namespace Combat
@@ -8,11 +9,12 @@ namespace Combat
 	{
 		public static List<Entity> FindEntitiesInRadius(Vector3 point, float radius)
 		{
-			var all = GlobalEntities.GetAllEntities();
+			var battle = GameStateController.Instance.Battle;
+			var all = battle.GetAllEntities();
 			var result = new List<Entity>();
-			foreach (var entity in all)
+			foreach(var entity in all)
 			{
-				if (Vector3.Distance(entity.transform.position, point) <= radius)
+				if(Vector3.Distance(entity.transform.position, point) <= radius)
 				{
 					result.Add(entity);
 				}

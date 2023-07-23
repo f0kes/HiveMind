@@ -1626,9 +1626,8 @@ GameObject:
   - component: {fileID: 7784035763747362988}
   - component: {fileID: 1514417676831664263}
   - component: {fileID: 6380666764391630418}
-  - component: {fileID: 3545875671195959530}
   m_Layer: 0
-  m_Name: Character
+  m_Name: 0Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1731,13 +1730,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tags: 0
-  _maxHealth: 100
   _team: 0
+  _level: 1
+  _stats: {fileID: 11400000, guid: 4d44390da360a73449104a3beb72d5c8, type: 2}
   AIDesirability: 1
   AIThreat: 1
-  WeaponParts: []
-  _stats: {fileID: 11400000, guid: 4d44390da360a73449104a3beb72d5c8, type: 2}
   ControlsProvider: {fileID: 0}
+  _spells: []
 --- !u!114 &5859680968761145472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1873,19 +1872,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a83df318db4e142b47f40a5477d170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3545875671195959530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6742078971301774809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 246387ff37ba4f649a508a61cb0c76d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactionDistance: 1.5
 --- !u!1 &6797273616228755074
 GameObject:
   m_ObjectHideFlags: 0

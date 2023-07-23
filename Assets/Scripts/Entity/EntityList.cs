@@ -23,10 +23,12 @@ namespace DefaultNamespace
 		private float _swapCooldownTimer;
 		private float _castCooldownTimer;
 		private bool _canCast;
+
+		private int _deadCount;
 		public EntityList(ushort teamId)
 		{
 			_teamId = teamId;
-			GlobalEntities.SetTeam(teamId, this);
+			//GlobalEntities.SetTeam(teamId, this);
 			SubscribeToEvents();
 		}
 
@@ -35,6 +37,8 @@ namespace DefaultNamespace
 		{
 			UnsubscribeFromEvents();
 		}
+		public ushort Id => _teamId;
+
 		private void SubscribeToEvents()
 		{
 			Ticker.OnTick += OnTick;
@@ -47,11 +51,29 @@ namespace DefaultNamespace
 		{
 			entity.Events.SpellCasted += OnCast;
 			entity.Events.SwappedWithCharacter += OnSwap;
+			entity.Events.Death += OnDeath;
+			entity.Events.Ressurect += OnRessurect;
 		}
+
+
 		private void UnsubscribeFromEntityEvents(Entity entity)
 		{
 			entity.Events.SpellCasted -= OnCast;
 			entity.Events.SwappedWithCharacter -= OnSwap;
+			entity.Events.Death -= OnDeath;
+			entity.Events.Ressurect -= OnRessurect;
+		}
+		private void OnDeath(Entity obj)
+		{
+			_deadCount++;
+			if(_deadCount == _list.Count)
+			{
+				OnTeamWiped?.Invoke(this);
+			}
+		}
+		private void OnRessurect(Entity obj)
+		{
+			_deadCount--;
 		}
 		public void SetList(List<Entity> list)
 		{

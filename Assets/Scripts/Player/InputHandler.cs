@@ -13,13 +13,13 @@ namespace Player
 {
 	public class InputHandler : CharacterControlsProvider
 	{
-		public event Action<Characters.Character> OnMouseOverCharacter;
-		public event Action<Characters.Character> OnMouseOverCharacterEnd;
+		public event Action<Character> OnMouseOverCharacter;
+		public event Action<Character> OnMouseOverCharacterEnd;
 		public static InputHandler Instance;
 		private Camera _mainCamera;
 		private bool _inputEnabled = true;
 
-		private Characters.Character _mouseOverCharacter;
+		private Character _mouseOverCharacter;
 
 
 		private ObjectGizmo _mouseOverObjectGizmo;
@@ -50,6 +50,10 @@ namespace Player
 		}
 		private void OnDestroy()
 		{
+			if(Instance == this)
+			{
+				Instance = null;
+			}
 			OldCharacterReplaced -= OnOldCharacterReplaced;
 			OnNewCharacter -= NewCharacter;
 		}
@@ -73,7 +77,10 @@ namespace Player
 			//SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 			var possibleTargets = character
 				.GetTeam()
-				.GetCharacters();
+				.GetCharacters()
+				.Where(c => !c.IsDead)
+				.Where(c => c != character)
+				.ToList();
 
 			if(possibleTargets.Count == 0) return;
 
@@ -82,9 +89,9 @@ namespace Player
 			var result = SwapWithNew(newCharacter, true);
 			if(result)
 				return;
-
+			Debug.Log(result.Message);
 			Debug.LogError("Failed to swap with new character");
-			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			//SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 
 		public void DisableInputs()
@@ -164,7 +171,6 @@ namespace Player
 			bool shouldInteract = Input.GetKeyDown(KeyCode.E);
 			if(shouldInteract)
 			{
-				ControlledCharacter.CharacterInteractor.Interact();
 			}
 
 			bool shouldSwap = Input.GetKeyDown(KeyCode.Space);
@@ -181,7 +187,6 @@ namespace Player
 			bool shouldToggleMap = Input.GetKeyDown(KeyCode.Tab);
 			if(shouldToggleMap)
 			{
-				Map.Instance.ToggleMap();
 			}
 
 			if(_cheatsEnabled)
@@ -199,7 +204,6 @@ namespace Player
 
 			if(shouldGoToNextLevel)
 			{
-				MeshBulilder.I.NextLevel();
 			}
 
 			if(shouldDie)
@@ -214,23 +218,10 @@ namespace Player
 
 			if(shouldKillTeam)
 			{
-				var entities = GlobalEntities.GetEntitiesOnTeam(ControlledCharacter.Team);
-				foreach(var entity in entities)
-				{
-					if(entity != ControlledCharacter)
-					{
-						entity.TakeDamage(10000);
-					}
-				}
 			}
 
 			if(shouldKillRandom)
 			{
-				var entities = GlobalEntities.GetEntitiesOnTeam(ControlledCharacter.Team)
-					.Where(e => e != ControlledCharacter).ToList();
-				//choose random entity
-				var randomEntity = entities[Random.Range(0, entities.Count)];
-				randomEntity.TakeDamage(10000);
 			}
 		}
 
@@ -243,7 +234,7 @@ namespace Player
 				: (success: false, position: Vector3.zero);
 		}
 
-		public (bool success, Characters.Character character) GetMouseOverCharacter()
+		public (bool success, Character character) GetMouseOverCharacter()
 		{
 			var ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hitInfo;
