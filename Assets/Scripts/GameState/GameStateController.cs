@@ -35,6 +35,7 @@ namespace GameState
 				Destroy(gameObject);
 			}
 			_playerTeam.AddRange(_playerTeamInitial);
+			ResetPlayerData();
 		}
 		private void OnDestroy()
 		{
@@ -45,12 +46,11 @@ namespace GameState
 		}
 		private void Start()
 		{
-			ResetPlayerData();
 			//StartBattle();
 		}
 		private void ResetPlayerData()
 		{
-			_playerData = new PlayerData { Gold = 20 };
+			_playerData = new PlayerData { Gold = 100 }; //TODO: load from config
 		}
 		public void StartBattle()
 		{

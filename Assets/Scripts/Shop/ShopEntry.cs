@@ -3,7 +3,7 @@ using DefaultNamespace;
 
 namespace Shop
 {
-	public struct ShopEntry
+	public class ShopEntry
 	{
 		public CharacterData CharacterData;
 		public int Cost;

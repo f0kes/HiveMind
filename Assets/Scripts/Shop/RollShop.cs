@@ -25,6 +25,7 @@ namespace Shop
 		private readonly int _rollCost;
 		private readonly int _shopSize;
 
+
 		public RollShop(List<ShopEntry> pool, int rollCost = 2, int shopSize = 6)
 		{
 			_pool = pool;
@@ -37,11 +38,10 @@ namespace Shop
 		{
 			return _shop;
 		}
-
-		public BuyResult Buy(PlayerData player, ShopEntry entry)
+		public BuyResult CanBuy(PlayerData player, ShopEntry entry)
 		{
 			var result = new BuyResult { Entry = entry };
-			if(!(_pool.Contains(entry) && _shop.Contains(entry)))
+			if(!_shop.Contains(entry))
 			{
 				result.Success = false;
 				result.Message = "Entry not found in shop";
@@ -54,10 +54,15 @@ namespace Shop
 				return result;
 			}
 			result.Success = true;
+			return result;
+		}
+		public BuyResult Buy(PlayerData player, ShopEntry entry)
+		{
+			var result = CanBuy(player, entry);
+			if(!result.Success) return result;
 			player.Gold -= entry.Cost;
 
 			_shop.Remove(entry);
-			_pool.Remove(entry);
 
 			return result;
 		}
@@ -76,26 +81,27 @@ namespace Shop
 				result.Message = "Not enough gold";
 				return result;
 			}
+
 			player.Gold -= _rollCost;
 			result.Success = true;
-			_shop.Clear();
-			for(var i = 0; i < _shopSize; i++)
-			{
-				var entry = _pool[Random.Range(0, _pool.Count)];
-				_shop.Add(entry);
-				result.Entries.Add(entry);
-			}
+			result.Entries = RollUnconditional();
 
 			return result;
 		}
-		private void RollUnconditional()
+		private List<ShopEntry> RollUnconditional()
 		{
+			var result = new List<ShopEntry>();
+			_pool.AddRange(_shop);
 			_shop.Clear();
-			for(var i = 0; i < _shopSize; i++)
+			var count = Mathf.Min(_pool.Count, _shopSize);
+			for(var i = 0; i < count; i++)
 			{
 				var entry = _pool[Random.Range(0, _pool.Count)];
+				_pool.Remove(entry);
 				_shop.Add(entry);
+				result.Add(entry);
 			}
+			return result;
 		}
 	}
 }

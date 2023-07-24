@@ -1658,7 +1658,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2796240887144553903, guid: 8857a2281b65e594e8f2ceac3104dd1a, type: 3}
       propertyPath: m_Antialiasing
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2796240887144553903, guid: 8857a2281b65e594e8f2ceac3104dd1a, type: 3}
       propertyPath: m_RenderPostProcessing
