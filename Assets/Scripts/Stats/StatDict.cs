@@ -51,10 +51,6 @@ namespace Stats
 		{
 			_stats[GetIndex(name)] = stat;
 		}
-		public StatDictFiltered<TStatName, T2> GetFiltered<T2>()
-		{
-			return new StatDictFiltered<TStatName, T2>(this);
-		}
 
 	}
 }

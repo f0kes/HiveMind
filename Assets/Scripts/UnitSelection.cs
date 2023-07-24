@@ -33,6 +33,7 @@ public class UnitSelection : MonoBehaviour
 	void Start()
 	{
 		_material.color = _colors[_character.Team];
+
 		InputHandler.Instance.OnNewCharacter += OnNewCharacter;
 		InputHandler.Instance.OnMouseOverCharacter += OnMouseOverCharacter;
 		InputHandler.Instance.OnMouseOverCharacterEnd += OnMouseOverCharacterEnd;

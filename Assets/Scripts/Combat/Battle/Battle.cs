@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Characters;
 using DefaultNamespace;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -14,14 +15,14 @@ namespace Combat.Battle
 
 		private List<EntityList> _teams = new();
 		private Dictionary<EntityList, List<SpawnPoint>> _spawnPoints = new();
-		private Dictionary<Entity, Entity> _originalEntities = new();
+
 		private uint _teamsLength;
 		private uint _teamsAlive;
 
-		public void StartBattle(List<Entity> playerTeam, List<Entity> enemyTeam)
+		public void StartBattle(List<Character> playerTeam, List<Character> enemyTeam)
 		{
 			var teams = new List<EntityList>();
-			
+
 			var playerEntityTeam = new EntityList(0);
 			playerEntityTeam.SetList(playerTeam);
 
@@ -32,7 +33,6 @@ namespace Combat.Battle
 			teams.Add(new EntityList(1));
 
 			SetTeams(teams);
-			GetSpawnPointsOnScene();
 			Spawn();
 		}
 		public void GetSpawnPointsOnScene()
@@ -42,7 +42,9 @@ namespace Combat.Battle
 			foreach(var spawnPoint in all)
 			{
 				if(!_spawnPoints.ContainsKey(_teams[spawnPoint.TeamId]))
+				{
 					_spawnPoints.Add(_teams[spawnPoint.TeamId], new List<SpawnPoint>());
+				}
 				_spawnPoints[_teams[spawnPoint.TeamId]].Add(spawnPoint);
 			}
 		}
@@ -94,12 +96,12 @@ namespace Combat.Battle
 			{
 				var spawnPoints = _spawnPoints[team];
 				var entities = team.ToList();
+				
 				for(var i = 0; i < Mathf.Min(entities.Count, spawnPoints.Count); i++)
 				{
 					var entity = entities[i];
 					var spawnPoint = spawnPoints[i];
-					var copy = Object.Instantiate(entity, spawnPoint.transform.position, Quaternion.identity);
-					_originalEntities.Add(copy, entity);
+					entity.transform.position = spawnPoint.transform.position;
 				}
 			}
 		}

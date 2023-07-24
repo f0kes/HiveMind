@@ -5,21 +5,27 @@ using FightGeneration;
 using GameState;
 using UI.Inventory;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI.Fight
 {
 	public class FightUI : MonoBehaviour
 	{
+		[SerializeField] private Button _startButton;
 		[SerializeField] private List<InventorySlotUI> _enemySlots;
 		[SerializeField] private List<InventorySlotUI> _partySlots;
 
-		[SerializeField] private uint _enemyLevel = 10; //todo: move to config
+		[SerializeField] private uint _enemyLevel = 10; //todo: load from config
 
 		private FightGenerator _fightGenerator;
+
+		private List<CharacterData> _party;
 		private List<CharacterData> _enemies;
+
 		private bool _initialized;
 		private void Start()
 		{
+			UpdateParty();
 			InitFightGenerator();
 			RenderContent();
 			foreach(var slot in _partySlots)
@@ -30,12 +36,22 @@ namespace UI.Fight
 			{
 				slot.SetConditions(() => false, () => false);
 			}
+			_startButton.onClick.AddListener(StartBattle);
 			_initialized = true;
 		}
 		private void OnEnable()
 		{
 			if(!_initialized) return;
+			UpdateParty();
 			RenderContent();
+		}
+		private void UpdateParty()
+		{
+			_party = GameStateController.PlayerData.Party;
+		}
+		private void StartBattle()
+		{
+			GameStateController.Instance.StartBattle(_party, _enemies);
 		}
 		private void InitFightGenerator()
 		{
@@ -45,11 +61,8 @@ namespace UI.Fight
 		}
 		private void RenderContent()
 		{
-			var party = GameStateController.PlayerData.Party;
-			var enemies = _enemies;
-
-			InventoryRendererUI.FillSlotList(_partySlots, party);
-			InventoryRendererUI.FillSlotList(_enemySlots, enemies);
+			InventoryRendererUI.FillSlotList(_partySlots, _party);
+			InventoryRendererUI.FillSlotList(_enemySlots, _enemies);
 		}
 	}
 }

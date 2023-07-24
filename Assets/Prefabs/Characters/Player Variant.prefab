@@ -65,12 +65,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742078971301774809, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: Player Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7784035763747362988, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: _weapon
       value: 
-      objectReference: {fileID: 11400000, guid: 04cf2f8ed9206d942a3d89f2f8f3ce0e, type: 2}
+      objectReference: {fileID: 11400000, guid: 21a7402676eac504482234f05cfec246, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
 --- !u!1 &2043076259495918568 stripped
@@ -90,5 +90,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5034de9056e4e3f9d3aa6d9a8c78ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _desirability: 3
   _cheatsEnabled: 1

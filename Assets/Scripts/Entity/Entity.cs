@@ -11,31 +11,36 @@ namespace DefaultNamespace
 {
 	public class Entity : MonoBehaviour
 	{
-		public EntityTag Tags;
+		private EntityData _data;
+
+		public EntityTag Tags => _data.Tags;
 		public EntityEvents Events = new EntityEvents();
 
 		private float _currentHealthPercent = 1f;
-		[SerializeField] private ushort _team;
-		[SerializeField] private uint _level = 100;
-		[SerializeField] private SerializableCharacterStats _stats;
-		public StatDictFiltered<CS, SpellTag> Stats;
+		private ushort _team;
+
+		private SerializableCharacterStats _stats;
+		public StatDict<CS> Stats;
 		public ObjectGizmo Gizmo{get; private set;}
 
 		private bool _isDead;
 		public bool IsDead => _isDead;
-		public uint Level => _level;
+		public uint Level => _data.Level;
 		public ushort Team => _team;
 		public float MaxHealth => Stats[CS.Health];
-
+		public EntityData DataCopy => new(_data);
 		public float CurrentHealth => _currentHealthPercent * MaxHealth;
 		public float CurrentHealthPercent => _currentHealthPercent;
 
 		private void Awake()
 		{
-			GlobalEntities.AddToTeam(_team, this);
-			_stats = Instantiate(_stats);
 			ChildAwake();
-			Stats = _stats.GetStats(Level).GetFiltered<SpellTag>();
+		}
+		public void SetData(EntityData data)
+		{
+			_data = data;
+			_stats = Instantiate(data.Stats);
+			Stats = _stats.GetStats(Level);
 		}
 		private void Start()
 		{

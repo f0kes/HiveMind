@@ -15,6 +15,7 @@ namespace DefaultNamespace
 		public EntityTag Tags;
 		public SerializableCharacterStats Stats;
 		public uint Level;
+		
 		public EntityData()
 		{
 		}
@@ -26,5 +27,6 @@ namespace DefaultNamespace
 			Stats = Object.Instantiate(original.Stats);
 			Level = original.Level;
 		}
+
 	}
 }

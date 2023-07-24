@@ -18,6 +18,10 @@ namespace Player
 
 		public List<CharacterData> Party => _party;
 		public List<CharacterData> Inventory => _inventory;
+		public void SetParty(List<CharacterData> data)
+		{
+			_party = data;
+		}
 
 		public void AddToParty(CharacterData data)
 		{

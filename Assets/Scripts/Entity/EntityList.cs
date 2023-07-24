@@ -53,7 +53,7 @@ namespace DefaultNamespace
 			entity.Events.SpellCasted -= OnCast;
 			entity.Events.SwappedWithCharacter -= OnSwap;
 		}
-		public void SetList(List<Entity> list)
+		public void SetList<T>(List<T> list) where T : Entity
 		{
 			Clear();
 			foreach(var entity in list)

@@ -3735,9 +3735,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd96c6e038c5401d85a64307103ce8e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerTeamInitial: []
-  _enemyTeamInitial: []
+  _goldPerBattle: 10
+  _battleScene:
+    m_SceneAsset: {fileID: 102900000, guid: 5008e56c3c94ec74995a9d786330e984, type: 3}
+    m_SceneName: Tutorial
+  _shopScene:
+    m_SceneAsset: {fileID: 102900000, guid: f7a9335e30ad0a14bb9b02739b8d984e, type: 3}
+    m_SceneName: Rest
   _contentDatabase: {fileID: 11400000, guid: eb8e27e5d7b834a46a51825b906f0af9, type: 2}
+  _singletonsPrefab: {fileID: 3958228411152845740, guid: 7ed088fa86d0b7a42855e1b22e4208bc, type: 3}
 --- !u!4 &1273200707
 Transform:
   m_ObjectHideFlags: 0
@@ -15425,6 +15431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 693941b3bad247428b4fa84b9a72ec26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _startButton: {fileID: 4474895043101355622}
   _enemySlots:
   - {fileID: 1404013084}
   - {fileID: 998187917}

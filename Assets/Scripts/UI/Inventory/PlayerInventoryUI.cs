@@ -28,6 +28,7 @@ namespace UI.Inventory
 		{
 			var party = GameStateController.PlayerData.Party;
 			var inventory = GameStateController.PlayerData.Inventory;
+			
 			InventoryRendererUI.FillSlotList(_partySlots, party);
 			InventoryRendererUI.FillSlotList(_inventorySlots, inventory);
 		}

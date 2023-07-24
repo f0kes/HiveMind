@@ -1,28 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Characters;
 using Combat.Battle;
 using DefaultNamespace;
 using DefaultNamespace.Configs;
+using Misc;
 using Player;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameState
 {
 	public class GameStateController : MonoBehaviour
 	{
 		public static GameStateController Instance{get; private set;}
-		[SerializeField] private List<Entity> _playerTeamInitial;
-		[SerializeField] private List<Entity> _enemyTeamInitial;
+
+		[SerializeField] private uint _goldPerBattle = 10; //TODO: load from config
+
+		[SerializeField] private SceneField _battleScene;
+		[SerializeField] private SceneField _shopScene;
+
 		[SerializeField] private ContentDatabase _contentDatabase;
-		private PlayerData _playerData;
-
-
+		[SerializeField] private GameObject _singletonsPrefab;
 		public static ContentDatabase ContentDatabase => Instance._contentDatabase;
+
+
+		private PlayerData _playerData;
 		public static PlayerData PlayerData => Instance._playerData;
-		private List<Entity> _playerTeam = new List<Entity>();
+
 
 		private Battle _battle;
+		private CharacterFactory _characterFactory;
+
+
 		private void Awake()
 		{
 			if(Instance == null)
@@ -34,7 +45,6 @@ namespace GameState
 			{
 				Destroy(gameObject);
 			}
-			_playerTeam.AddRange(_playerTeamInitial);
 			ResetPlayerData();
 		}
 		private void OnDestroy()
@@ -44,37 +54,42 @@ namespace GameState
 				Instance = null;
 			}
 		}
-		private void Start()
-		{
-			//StartBattle();
-		}
+		private async 
 		private void ResetPlayerData()
 		{
 			_playerData = new PlayerData { Gold = 100 }; //TODO: load from config
 		}
-		public void StartBattle()
+		public async void StartBattle(IEnumerable<CharacterData> party, IEnumerable<CharacterData> enemies)
 		{
+			SceneManager.LoadScene(_battleScene);
+			Instantiate(_singletonsPrefab);
+			_characterFactory = new CharacterFactory();
 			_battle = new Battle();
-			_battle.StartBattle(_playerTeam, _enemyTeamInitial);
+
+			var partyEntities = _characterFactory.Create(party, 0);
+			var enemyEntities = _characterFactory.Create(enemies, 1);
+
+			_battle.StartBattle(partyEntities, enemyEntities);
 			_battle.BattleEnded += OnBattleEnded;
 		}
 
-		private void OnBattleEnded(BattleResult obj)
+		private void OnBattleEnded(BattleResult battleResult)
 		{
+			SceneManager.LoadScene(_shopScene);
+
 			_battle.BattleEnded -= OnBattleEnded;
 			GlobalEntities.DestroyDeadEntities();
 			GlobalEntities.Clear();
-			_playerTeam = new List<Entity>();
-			if(obj.ResultType == BattleResult.BattleResultType.Win)
+			if(battleResult.ResultType == BattleResult.BattleResultType.Win)
 			{
-				_playerTeam.AddRange(obj.Winner.GetListCopy().Where(e => !e.IsDead));
+				var playerParty = _characterFactory.GetAliveOriginals(0);
+				_playerData.SetParty(playerParty);
+				_playerData.Gold += (int)_goldPerBattle;
 			}
 			else
 			{
 				ResetPlayerData();
-				_playerTeam.AddRange(_playerTeamInitial);
 			}
-			StartBattle();
 		}
 	}
 }

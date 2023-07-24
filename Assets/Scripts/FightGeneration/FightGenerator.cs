@@ -16,7 +16,7 @@ namespace FightGeneration
 			_enemyCount = enemyCount;
 			_enemyLevel = enemyLevel;
 		}
-
+		
 		public List<CharacterData> Generate()
 		{
 			var result = new List<CharacterData>();

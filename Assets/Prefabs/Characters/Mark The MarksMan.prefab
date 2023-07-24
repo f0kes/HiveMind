@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 1197915053325820394, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
       propertyPath: _weapon
       value: 
-      objectReference: {fileID: 11400000, guid: a96ed5443260f3448af425f74d9d4f3e, type: 2}
+      objectReference: {fileID: 11400000, guid: 21a7402676eac504482234f05cfec246, type: 2}
     - target: {fileID: 1197915053325820394, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
       propertyPath: BulletPrefab
       value: 

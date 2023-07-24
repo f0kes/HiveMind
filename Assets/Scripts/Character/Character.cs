@@ -23,27 +23,37 @@ namespace Characters
 	[RequireComponent(typeof(CharacterInteractor))]
 	public class Character : Entity
 	{
-		public float AIDesirability = 1;
-		public float AIThreat = 1;
-
+		private CharacterData _characterData;
 		private bool _swapped;
 		public bool Swapped => _swapped;
 		private Character _swapTarget;
-		
+
 
 		public CharacterControlsProvider ControlsProvider;
 		public CharacterMover CharacterMover{get; private set;}
 		public CharacterShooter CharacterShooter{get; private set;}
 		public CharacterInteractor CharacterInteractor{get; private set;}
 
-		[SerializeField] private List<BaseSpell> _spells = new();
+		private List<BaseSpell> Spells => _characterData.Spells;
 
-		public BaseSpell Spell => _spells.Count != 0 ? _spells[0] : null;
+		public BaseSpell Spell => Spells.Count != 0 ? Spells[0] : null;
+		public float AIDesirability => _characterData.AIDesirability;
+		public float AIThreat => _characterData.AIThreat;
 
-
+		public static Character FromData(CharacterData data)
+		{
+			var result = Instantiate(data.Prefab);
+			result.SetData(data);
+			return result;
+		}
+		public void SetData(CharacterData data)
+		{
+			_characterData = CharacterData.Copy(data);
+			SetData(_characterData.EntityData);
+			InitSpells();
+		}
 		protected override void ChildAwake()
 		{
-			
 			gameObject.layer = LayerMask.NameToLayer("Character");
 			CharacterMover = gameObject.GetComponent<CharacterMover>();
 			if(CharacterMover == null)
@@ -57,32 +67,7 @@ namespace Characters
 
 			CharacterInteractor.Init(this);
 			CharacterShooter.Init(this);
-
-			
 		}
-		public void InitSpell(BaseSpell spell)
-		{
-			spell = Instantiate(spell);
-			spell.SetOwner(this);
-			spell.OnCreated();
-			_spells.Add(spell);
-		}
-		public void InitSpells()
-		{
-			if(_spells.Count == 0)
-			{
-				var heal = BasicHealSpell.CreateDefault();
-				var attack = BaseSpell.CreateDefault();
-				InitSpell(heal);
-				InitSpell(attack);
-			}
-			foreach(var copy in new List<BaseSpell>(_spells.Select(Instantiate)))
-			{
-				InitSpell(copy);
-			}
-		}
-
-
 		protected override void ChildStart()
 		{
 			base.ChildStart();
@@ -103,14 +88,35 @@ namespace Characters
 		}
 		private void OnTick(Ticker.OnTickEventArgs obj)
 		{
-			
+		}
+		public void InitSpells()
+		{
+			if(Spells.Count == 0)
+			{
+				var heal = BasicHealSpell.CreateDefault();
+				var attack = BaseSpell.CreateDefault();
+				InitSpell(heal);
+				InitSpell(attack);
+			}
+			foreach(var copy in new List<BaseSpell>(Spells.Select(Instantiate)))
+			{
+				InitSpell(copy);
+			}
+		}
+
+		public void InitSpell(BaseSpell spell)
+		{
+			spell = Instantiate(spell);
+			spell.SetOwner(this);
+			spell.OnCreated();
+			Spells.Add(spell);
 		}
 
 		public void CastSpell(int index = 0)
 		{
-			if(index < _spells.Count)
+			if(index < Spells.Count)
 			{
-				_spells[index].Cast();
+				Spells[index].Cast();
 			}
 		}
 		public void SwapWithNew(Character other)
@@ -185,5 +191,6 @@ namespace Characters
 		{
 			return CharacterMover.GetCursorTarget();
 		}
+
 	}
 }
