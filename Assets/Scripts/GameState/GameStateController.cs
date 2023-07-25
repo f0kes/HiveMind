@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Characters;
 using Combat.Battle;
+using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using DefaultNamespace.Configs;
 using Misc;
@@ -54,15 +54,16 @@ namespace GameState
 				Instance = null;
 			}
 		}
-		private async 
 		private void ResetPlayerData()
 		{
 			_playerData = new PlayerData { Gold = 100 }; //TODO: load from config
 		}
 		public async void StartBattle(IEnumerable<CharacterData> party, IEnumerable<CharacterData> enemies)
 		{
-			SceneManager.LoadScene(_battleScene);
+			await SceneManager.LoadSceneAsync(_battleScene);
+			
 			Instantiate(_singletonsPrefab);
+			
 			_characterFactory = new CharacterFactory();
 			_battle = new Battle();
 
@@ -73,9 +74,9 @@ namespace GameState
 			_battle.BattleEnded += OnBattleEnded;
 		}
 
-		private void OnBattleEnded(BattleResult battleResult)
+		private async void OnBattleEnded(BattleResult battleResult)
 		{
-			SceneManager.LoadScene(_shopScene);
+			await SceneManager.LoadSceneAsync(_shopScene);
 
 			_battle.BattleEnded -= OnBattleEnded;
 			GlobalEntities.DestroyDeadEntities();

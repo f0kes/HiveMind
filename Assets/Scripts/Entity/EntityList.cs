@@ -23,10 +23,10 @@ namespace DefaultNamespace
 		private float _swapCooldownTimer;
 		private float _castCooldownTimer;
 		private bool _canCast;
+		public int Count => _list.Count;
 		public EntityList(ushort teamId)
 		{
 			_teamId = teamId;
-			//GlobalEntities.SetTeam(teamId, this);
 			SubscribeToEvents();
 		}
 
@@ -53,6 +53,8 @@ namespace DefaultNamespace
 			entity.Events.SpellCasted -= OnCast;
 			entity.Events.SwappedWithCharacter -= OnSwap;
 		}
+		
+
 		public void SetList<T>(List<T> list) where T : Entity
 		{
 			Clear();
@@ -88,7 +90,7 @@ namespace DefaultNamespace
 			var chars = _list.FindAll(entity => entity is Character);
 			return (Character)chars[Random.Range(0, chars.Count)];
 		}
-		public int Count()
+		public int GetCount()
 		{
 			return _list.Count;
 		}

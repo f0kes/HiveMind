@@ -34,9 +34,9 @@ namespace Characters
 		public CharacterShooter CharacterShooter{get; private set;}
 		public CharacterInteractor CharacterInteractor{get; private set;}
 
-		private List<BaseSpell> Spells => _characterData.Spells;
+		private List<BaseSpell> _spells = new List<BaseSpell>();
 
-		public BaseSpell Spell => Spells.Count != 0 ? Spells[0] : null;
+		public BaseSpell Spell => _spells.Count != 0 ? _spells[0] : null;
 		public float AIDesirability => _characterData.AIDesirability;
 		public float AIThreat => _characterData.AIThreat;
 
@@ -71,7 +71,6 @@ namespace Characters
 		protected override void ChildStart()
 		{
 			base.ChildStart();
-			InitSpells();
 			SubscribeToEvents();
 		}
 		private void OnDestroy()
@@ -91,32 +90,41 @@ namespace Characters
 		}
 		public void InitSpells()
 		{
-			if(Spells.Count == 0)
+			if(_characterData.Spells == null)
+			{
+				Debug.LogError("Spells are null");
+				return;
+			}
+
+			if(_characterData.Spells.Count == 0)
 			{
 				var heal = BasicHealSpell.CreateDefault();
-				var attack = BaseSpell.CreateDefault();
 				InitSpell(heal);
-				InitSpell(attack);
 			}
-			foreach(var copy in new List<BaseSpell>(Spells.Select(Instantiate)))
+			foreach(var copy in _characterData.Spells)
 			{
+				Debug.Log(copy.Behaviour);
 				InitSpell(copy);
 			}
+
+			var attack = AutoAttackSpell.CreateDefault();
+			InitSpell(attack);
 		}
 
 		public void InitSpell(BaseSpell spell)
 		{
 			spell = Instantiate(spell);
+			Debug.Log(spell.Behaviour);
 			spell.SetOwner(this);
 			spell.OnCreated();
-			Spells.Add(spell);
+			_spells.Add(spell);
 		}
 
 		public void CastSpell(int index = 0)
 		{
-			if(index < Spells.Count)
+			if(index < _spells.Count)
 			{
-				Spells[index].Cast();
+				_spells[index].Cast();
 			}
 		}
 		public void SwapWithNew(Character other)

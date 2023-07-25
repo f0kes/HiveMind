@@ -18,7 +18,7 @@ MonoBehaviour:
     Name: Anti Mage
     Tags: 2
     Stats: {fileID: 11400000, guid: 4d44390da360a73449104a3beb72d5c8, type: 2}
-    Level: 10
+    Level: 1
   Spells:
   - {fileID: 11400000, guid: 2dd184bf1efabc84cb2f32927c14cd9c, type: 2}
   AIDesirability: 1

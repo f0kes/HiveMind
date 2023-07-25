@@ -50,6 +50,10 @@ namespace Player
 		}
 		private void OnDestroy()
 		{
+			if(Instance == this)
+			{
+				Instance = null;
+			}
 			OldCharacterReplaced -= OnOldCharacterReplaced;
 			OnNewCharacter -= NewCharacter;
 		}
@@ -65,6 +69,15 @@ namespace Player
 			//_savedDesirability = obj.AIDesirability;
 			//obj.AIDesirability = _desirability;
 			obj.Events.Death += OnCharacterDeath;
+		}
+		public void AssignRandomCharacter(uint teamId)
+		{
+			var team = GlobalEntities.GetTeam((ushort)teamId);
+			var possibleTargets = team
+				.GetCharacters();
+			var random = Random.Range(0, possibleTargets.Count);
+			var newCharacter = possibleTargets[random];
+			SetCharacter(newCharacter);
 		}
 
 		private void OnCharacterDeath(Entity character)
@@ -82,9 +95,7 @@ namespace Player
 			var result = SwapWithNew(newCharacter, true);
 			if(result)
 				return;
-
-			Debug.LogError("Failed to swap with new character");
-			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			Debug.LogError("Failed to swap with new character " + result.Message);
 		}
 
 		public void DisableInputs()
@@ -104,7 +115,7 @@ namespace Player
 
 		private void Update()
 		{
-			if(!_inputEnabled)
+			if(!_inputEnabled || ControlledCharacter == null)
 				return;
 
 			Vector2 moveDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));

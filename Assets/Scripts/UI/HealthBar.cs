@@ -8,13 +8,14 @@ namespace DefaultNamespace.UI
 	public class HealthBar : MonoBehaviour
 	{
 		[SerializeField] private Image _healthBarFill;
+		[SerializeField] private Image _icon;
 		[SerializeField] private RectTransform _damageBarTemplate;
 		[SerializeField] private RectTransform _damageBarContainer;
 		[SerializeField] private TextMeshProUGUI _levelText;
 		[SerializeField] private Color _playerColor = Color.green;
 		[SerializeField] private Color _enemyColor = Color.red;
 
-		
+
 		private float _previousHealthPercent = 1f;
 		private Entity _entity;
 		private float _maxHealth;
@@ -28,6 +29,7 @@ namespace DefaultNamespace.UI
 		{
 			_entity = entity;
 			_healthBarFill.fillAmount = entity.CurrentHealthPercent;
+			_icon.sprite = entity.DataCopy.Icon;
 			entity.Events.HealthChanged += OnHealthChanged;
 			entity.Events.Death += OnDeath;
 			if(entity.Team == 0)

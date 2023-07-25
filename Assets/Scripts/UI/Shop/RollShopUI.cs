@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Characters;
 using GameState;
 using Player;
 using Shop;
@@ -33,7 +34,7 @@ namespace UI.Shop
 			{
 				for(var i = 0; i < _entryCount; i++)
 				{
-					var entry = new ShopEntry { CharacterData = characterData, Cost = _charCost };
+					var entry = new ShopEntry { CharacterData = CharacterData.Copy(characterData), Cost = _charCost };
 					entries.Add(entry);
 				}
 			}

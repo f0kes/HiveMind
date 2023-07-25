@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Characters;
 using DefaultNamespace;
+using Player;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -13,97 +14,61 @@ namespace Combat.Battle
 	{
 		public event Action<BattleResult> BattleEnded;
 
-		private List<EntityList> _teams = new();
-		private Dictionary<EntityList, List<SpawnPoint>> _spawnPoints = new();
+		private Dictionary<uint, List<SpawnPoint>> _spawnPoints = new();
+		private List<Character> _toSpawn = new();
 
 		private uint _teamsLength;
 		private uint _teamsAlive;
 
-		public void StartBattle(List<Character> playerTeam, List<Character> enemyTeam)
+		public void StartBattle(IEnumerable<Character> playerTeam, IEnumerable<Character> enemyTeam)
 		{
-			var teams = new List<EntityList>();
+			_toSpawn.AddRange(playerTeam);
+			_toSpawn.AddRange(enemyTeam);
 
-			var playerEntityTeam = new EntityList(0);
-			playerEntityTeam.SetList(playerTeam);
-
-			var enemyEntityTeam = new EntityList(1);
-			enemyEntityTeam.SetList(enemyTeam);
-
-			teams.Add(new EntityList(0));
-			teams.Add(new EntityList(1));
-
-			SetTeams(teams);
 			Spawn();
+			AssignCharacterToPlayer();
+
+			GlobalEntities.OneRemainingTeam += OnOneRemainingTeam;
 		}
+
+		private void OnOneRemainingTeam(EntityList obj)
+		{
+			var resultType = obj.IsPlayerTeam() ? BattleResult.BattleResultType.Win : BattleResult.BattleResultType.Lose;
+			BattleEnded?.Invoke(new BattleResult { ResultType = resultType, Winner = obj });
+		}
+
 		public void GetSpawnPointsOnScene()
 		{
 			var all = Object.FindObjectsOfType<SpawnPoint>();
-			_spawnPoints = new Dictionary<EntityList, List<SpawnPoint>>();
+			_spawnPoints = new Dictionary<uint, List<SpawnPoint>>();
 			foreach(var spawnPoint in all)
 			{
-				if(!_spawnPoints.ContainsKey(_teams[spawnPoint.TeamId]))
+				var teamId = (uint)spawnPoint.TeamId;
+				if(!_spawnPoints.ContainsKey(teamId))
 				{
-					_spawnPoints.Add(_teams[spawnPoint.TeamId], new List<SpawnPoint>());
+					_spawnPoints.Add(teamId, new List<SpawnPoint>());
 				}
-				_spawnPoints[_teams[spawnPoint.TeamId]].Add(spawnPoint);
+				_spawnPoints[teamId].Add(spawnPoint);
 			}
 		}
-		public void SetTeams(List<EntityList> teams)
-		{
-			if(_teams != null)
-			{
-				foreach(var team in _teams)
-				{
-					team.OnTeamWiped -= OnTeamWiped;
-				}
-			}
-			_teams = teams;
-			_teamsLength = (uint)teams.Count;
-			_teamsAlive = _teamsLength;
-			foreach(var team in teams)
-			{
-				team.OnTeamWiped += OnTeamWiped;
-			}
-		}
-
-		private void OnTeamWiped(EntityList list)
-		{
-			_teamsAlive--;
-
-			if(_teamsAlive > 1) return;
-			EndBattle();
-		}
-		private void EndBattle()
-		{
-			BattleResult.BattleResultType resultType;
-			var winner = _teams.FirstOrDefault(t => t.Any());
-			if(winner == null)
-			{
-				resultType = BattleResult.BattleResultType.Draw;
-			}
-			else
-			{
-				resultType = winner.IsPlayerTeam() ? BattleResult.BattleResultType.Win : BattleResult.BattleResultType.Lose;
-			}
-
-			BattleEnded?.Invoke(new BattleResult { ResultType = resultType, Winner = winner });
-		}
-
 		public void Spawn()
 		{
 			GetSpawnPointsOnScene();
-			foreach(var team in _teams)
+			var count = Mathf.Min(_spawnPoints.Count, _toSpawn.Count);
+			var pointers = new int[_spawnPoints.Keys.Count];
+			for(var i = 0; i < count; i++)
 			{
-				var spawnPoints = _spawnPoints[team];
-				var entities = team.ToList();
-				
-				for(var i = 0; i < Mathf.Min(entities.Count, spawnPoints.Count); i++)
-				{
-					var entity = entities[i];
-					var spawnPoint = spawnPoints[i];
-					entity.transform.position = spawnPoint.transform.position;
-				}
+				var character = _toSpawn[i];
+				var team = character.Team;
+				var spawnPoint = _spawnPoints[team][pointers[team]];
+				pointers[team]++;
+
+				character.transform.position = spawnPoint.transform.position;
 			}
+		}
+		private void AssignCharacterToPlayer()
+		{
+			InputHandler.Instance.AssignRandomCharacter(0);
 		}
 
 

@@ -19,10 +19,11 @@ public class CameraTarget : MonoBehaviour
 	void Update()
 	{
 		var (success, position) = GetMousePosition();
-		if (success)
+		if(success)
 			_mousePos = position;
-
-		Vector3 playerPos = InputHandler.Instance.GetControlledCharacter().transform.position;
+		var character = InputHandler.Instance.GetControlledCharacter();
+		if(character == null) return;
+		Vector3 playerPos = character.transform.position;
 		Vector3 targetPos = (playerPos + _mousePos) / 2;
 
 		targetPos.x = Mathf.Clamp(targetPos.x, -_threshold + playerPos.x, _threshold + playerPos.x);

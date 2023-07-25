@@ -71,7 +71,6 @@ namespace DefaultNamespace
 			GlobalEntities.RemoveEntityFromTeam(this);
 			_team = team;
 			GlobalEntities.AddToTeam(_team, this);
-			Debug.Log(MaxHealth + " " + gameObject.name);
 		}
 
 

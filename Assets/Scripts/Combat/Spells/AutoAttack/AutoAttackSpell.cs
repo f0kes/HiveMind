@@ -18,5 +18,6 @@ namespace Combat.Spells.AutoAttack
 			var damage = new Damage(Owner, target, this, damageValue);
 			BattleProcessor.ProcessHit(Owner, target, damage);
 		}
+		
 	}
 }

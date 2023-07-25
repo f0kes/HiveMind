@@ -17,7 +17,7 @@ MonoBehaviour:
   Behaviour: 2
   Tags: 
   _healVal:
-    _min: 40
+    _min: 120
     _max: 8000
   _healInterval:
     _min: 1

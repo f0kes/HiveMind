@@ -9,20 +9,20 @@ namespace Characters
 	public class CharacterControlsProvider : MonoBehaviour
 	{
 		private bool _swapped;
-		private Characters.Character _swapTarget;
+		private Character _swapTarget;
 
-		public event Action<Characters.Character> OnNewCharacter;
-		public event Action<Characters.Character> OldCharacterReplaced;
+		public event Action<Character> OnNewCharacter;
+		public event Action<Character> OldCharacterReplaced;
 
-		protected Characters.Character ControlledCharacter;
+		protected Character ControlledCharacter;
 		protected CharacterMover CharacterMover;
 
 		protected virtual void Awake()
 		{
-			Characters.Character character = GetComponentInParent<Characters.Character>();
+			var character = GetComponentInParent<Character>();
 			if(character == null)
 			{
-				throw new Exception("CharacterControlsProvider must be attached to a character");
+				return;
 			}
 
 			ControlledCharacter = character;
@@ -72,8 +72,9 @@ namespace Characters
 			SetCharacter(other);
 		}
 
-		public void SetCharacter(Characters.Character newCharacter)
+		public void SetCharacter(Character newCharacter)
 		{
+			if(newCharacter == null) return;
 			if(ControlledCharacter != null)
 			{
 				ControlledCharacter.Events.Death -= OnCharacterDeath;

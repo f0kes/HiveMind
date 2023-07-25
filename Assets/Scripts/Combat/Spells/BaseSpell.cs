@@ -33,7 +33,7 @@ namespace Combat.Spells
 		public IEnumerable<CS> DependantStats => Params.Keys;
 
 
-		public SpellBehaviour Behaviour = SpellBehaviour.Default;
+		public SpellBehaviour Behaviour;
 		public List<SpellTag> Tags = new();
 
 		public virtual void OnCreated()
@@ -100,6 +100,7 @@ namespace Combat.Spells
 			{
 				return new CastResult(CastResultType.Fail, "Swap to cast");
 			}
+			Debug.Log(Behaviour);
 			switch(Behaviour)
 			{
 				case SpellBehaviour.PointTarget:
@@ -121,6 +122,7 @@ namespace Combat.Spells
 					if(result)
 					{
 						Target = target;
+						Debug.Log("Casting on " + target.name);
 						OnSpellStart();
 					}
 					break;

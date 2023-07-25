@@ -12,7 +12,9 @@ public class AmmoText : MonoBehaviour
 
 	void Update()
 	{
-		var playerTeam = InputHandler.Instance.GetControlledCharacter().GetTeam();
+		var character = InputHandler.Instance.GetControlledCharacter();
+		if(character == null) return;
+		var playerTeam = character.GetTeam();
 		if (playerTeam == null) return;
 		if(playerTeam.CanSwap())
 		{

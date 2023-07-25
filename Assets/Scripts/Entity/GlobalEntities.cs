@@ -9,6 +9,7 @@ namespace DefaultNamespace
 {
 	public static class GlobalEntities
 	{
+		public static event Action<EntityList> OneRemainingTeam;
 		public static event Action<ushort, Entity> OnEntityAdded;
 
 
@@ -45,6 +46,10 @@ namespace DefaultNamespace
 			{
 				_graveyards[entity.Team].Remove(entity);
 			}
+		}
+		public static int GetAliveTeamsCount()
+		{
+			return _teams.Values.Count(x => x.Count > 0);
 		}
 
 		public static EntityList GetTeam(ushort team)
@@ -138,7 +143,11 @@ namespace DefaultNamespace
 			{
 				_graveyards.Add(entity.Team, new EntityList(entity.Team) { entity });
 			}
-
+			//todo: remove this
+			if(GetAliveTeamsCount() == 1)
+			{
+				OneRemainingTeam?.Invoke(_teams.Values.FirstOrDefault(x => x.Count > 0));
+			}
 			entity.Events.Death -= OnEntityDeath;
 			entity.Events.Ressurect += OnEntityRessurect;
 		}
@@ -170,5 +179,7 @@ namespace DefaultNamespace
 				Object.Destroy(entity.gameObject);
 			}
 		}
+
+
 	}
 }
