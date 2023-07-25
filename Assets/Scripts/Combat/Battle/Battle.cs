@@ -33,6 +33,7 @@ namespace Combat.Battle
 
 		private void OnOneRemainingTeam(EntityList obj)
 		{
+			GlobalEntities.OneRemainingTeam -= OnOneRemainingTeam;
 			var resultType = obj.IsPlayerTeam() ? BattleResult.BattleResultType.Win : BattleResult.BattleResultType.Lose;
 			BattleEnded?.Invoke(new BattleResult { ResultType = resultType, Winner = obj });
 		}
@@ -54,7 +55,7 @@ namespace Combat.Battle
 		public void Spawn()
 		{
 			GetSpawnPointsOnScene();
-			var count = Mathf.Min(_spawnPoints.Count, _toSpawn.Count);
+			var count = _toSpawn.Count;
 			var pointers = new int[_spawnPoints.Keys.Count];
 			for(var i = 0; i < count; i++)
 			{
@@ -64,13 +65,12 @@ namespace Combat.Battle
 				pointers[team]++;
 
 				character.transform.position = spawnPoint.transform.position;
+				character.gameObject.SetActive(true);
 			}
 		}
 		private void AssignCharacterToPlayer()
 		{
 			InputHandler.Instance.AssignRandomCharacter(0);
 		}
-
-
 	}
 }

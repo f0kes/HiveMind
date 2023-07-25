@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Characters;
 using DefaultNamespace;
 
@@ -6,6 +7,7 @@ namespace Player
 {
 	public class PlayerData
 	{
+		public Action<int> OnGoldChanged;
 		private int _gold;
 		private List<CharacterData> _party = new List<CharacterData>();
 		private List<CharacterData> _inventory = new List<CharacterData>();
@@ -13,11 +15,17 @@ namespace Player
 		public int Gold
 		{
 			get => _gold;
-			set => _gold = value;
+			set
+			{
+				OnGoldChanged?.Invoke(value);
+				_gold = value;
+			}
 		}
 
 		public List<CharacterData> Party => _party;
 		public List<CharacterData> Inventory => _inventory;
+		public uint BattleLevel{get; set;}
+
 		public void SetParty(List<CharacterData> data)
 		{
 			_party = data;

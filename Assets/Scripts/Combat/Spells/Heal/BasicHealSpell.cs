@@ -24,9 +24,8 @@ namespace Combat.Spells.Heal
 		protected override void OnSpellStart()
 		{
 			base.OnSpellStart();
-			Debug.Log("Spell started");
 			var target = Target as Characters.Character;
-			Debug.Log("Target is " + target);
+			Debug.Log(name + " Target is " + target);
 			if(target == null) return;
 			var effect = CreateInstance<BasicHealEffect>();
 

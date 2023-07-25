@@ -22,6 +22,7 @@ namespace GameState
 			var character = Character.FromData(data);
 			_characters.Add(data, character);
 			character.SetTeam(teamId);
+			character.gameObject.SetActive(false);
 			return character;
 		}
 		public List<CharacterData> GetAliveOriginals()

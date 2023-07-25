@@ -120,12 +120,12 @@ namespace DefaultNamespace
 			if(_teams.ContainsKey(team))
 			{
 				_teams[team].Add(entity);
-				entity.Events.Death += OnEntityDeath;
 			}
 			else
 			{
 				_teams.Add(team, new EntityList(team) { entity });
 			}
+			entity.Events.Death += OnEntityDeath;
 		}
 
 		private static void OnEntityDeath(Entity entity)
@@ -144,6 +144,7 @@ namespace DefaultNamespace
 				_graveyards.Add(entity.Team, new EntityList(entity.Team) { entity });
 			}
 			//todo: remove this
+			Debug.Log("Death");
 			if(GetAliveTeamsCount() == 1)
 			{
 				OneRemainingTeam?.Invoke(_teams.Values.FirstOrDefault(x => x.Count > 0));

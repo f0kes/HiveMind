@@ -86,6 +86,7 @@ namespace GameState
 				var playerParty = _characterFactory.GetAliveOriginals(0);
 				_playerData.SetParty(playerParty);
 				_playerData.Gold += (int)_goldPerBattle;
+				_playerData.BattleLevel += 1; //TODO: load from config
 			}
 			else
 			{

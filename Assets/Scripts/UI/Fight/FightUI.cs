@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Characters;
 using FightGeneration;
 using GameState;
+using TMPro;
 using UI.Inventory;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,8 +15,8 @@ namespace UI.Fight
 		[SerializeField] private Button _startButton;
 		[SerializeField] private List<InventorySlotUI> _enemySlots;
 		[SerializeField] private List<InventorySlotUI> _partySlots;
+		[SerializeField] private TextMeshProUGUI _levelText;
 
-		[SerializeField] private uint _enemyLevel = 10; //todo: load from config
 
 		private FightGenerator _fightGenerator;
 
@@ -56,11 +57,12 @@ namespace UI.Fight
 		private void InitFightGenerator()
 		{
 			var pool = GameStateController.ContentDatabase.Characters;
-			_fightGenerator = new FightGenerator(pool, _enemySlots.Count, _enemyLevel);
+			_fightGenerator = new FightGenerator(pool, _enemySlots.Count, GameStateController.PlayerData.BattleLevel);
 			_enemies = _fightGenerator.Generate();
 		}
 		private void RenderContent()
 		{
+			_levelText.text = $"Level: {GameStateController.PlayerData.BattleLevel}";
 			InventoryRendererUI.FillSlotList(_partySlots, _party);
 			InventoryRendererUI.FillSlotList(_enemySlots, _enemies);
 		}

@@ -76,9 +76,9 @@ namespace DefaultNamespace
 
 		public void TakeDamage(float damage)
 		{
-			float newHealth = CurrentHealth - damage;
-			_currentHealthPercent = Mathf.Clamp01(newHealth / MaxHealth);
-			Events.HealthChanged?.Invoke(_currentHealthPercent);
+			var newHealth = CurrentHealth - damage;
+			_currentHealthPercent = newHealth / MaxHealth;
+			Events.HealthChanged?.Invoke(Mathf.Min(_currentHealthPercent, 0));
 			if(_currentHealthPercent <= 0)
 			{
 				_isDead = true;

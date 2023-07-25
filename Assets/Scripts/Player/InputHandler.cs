@@ -60,33 +60,34 @@ namespace Player
 
 		private void OnOldCharacterReplaced(Characters.Character obj)
 		{
-			//obj.AIDesirability = _savedDesirability;
 			obj.Events.Death -= OnCharacterDeath;
 		}
 
 		private void NewCharacter(Characters.Character obj)
 		{
-			//_savedDesirability = obj.AIDesirability;
-			//obj.AIDesirability = _desirability;
 			obj.Events.Death += OnCharacterDeath;
 		}
 		public void AssignRandomCharacter(uint teamId)
 		{
 			var team = GlobalEntities.GetTeam((ushort)teamId);
-			var possibleTargets = team
-				.GetCharacters();
+			var possibleTargets = team.GetCharacters();
 			var random = Random.Range(0, possibleTargets.Count);
 			var newCharacter = possibleTargets[random];
+			if(newCharacter.ControlsProvider != null)
+			{
+				newCharacter.ControlsProvider.enabled = false;
+			}
 			SetCharacter(newCharacter);
 		}
 
 		private void OnCharacterDeath(Entity character)
 		{
-			//reload scene
-			//SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 			var possibleTargets = character
 				.GetTeam()
-				.GetCharacters();
+				.GetCharacters()
+				.Where(x => x != character && !x.IsDead)
+				.ToList();
+
 
 			if(possibleTargets.Count == 0) return;
 

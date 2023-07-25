@@ -40,6 +40,7 @@ public class UnitSelection : MonoBehaviour
 	}
 	private void OnDestroy()
 	{
+		if(InputHandler.Instance == null) return;
 		InputHandler.Instance.OnNewCharacter -= OnNewCharacter;
 		InputHandler.Instance.OnMouseOverCharacter -= OnMouseOverCharacter;
 		InputHandler.Instance.OnMouseOverCharacterEnd -= OnMouseOverCharacterEnd;
