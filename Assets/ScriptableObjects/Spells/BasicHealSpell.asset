@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Level: 10
   _icon: {fileID: 21300000, guid: 5f113af3b7e0cc3468225a5be7aa7863, type: 3}
+  _name: Heal Buff
+  _description: 'Buff: Heal target once in X seconds'
   Behaviour: 2
   Tags: 
   _healVal:

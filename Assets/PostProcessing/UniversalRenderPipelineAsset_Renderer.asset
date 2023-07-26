@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugShaders:
     debugReplacementPS: {fileID: 4800000, guid: cf852408f2e174538bcd9b7fda1c5ae7, type: 3}
-  m_RendererFeatures:
-  - {fileID: 2561935456023935891}
-  m_RendererFeatureMap: 93fbc839b9d28d23
+  m_RendererFeatures: []
+  m_RendererFeatureMap: 
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -69,13 +68,15 @@ MonoBehaviour:
   m_Active: 0
   renderPassEvent: 300
   outlinesLayerMask:
-    serializedVersion: 2
     m_Bits: 4294967295
   outlinesOccluderLayerMask:
-    serializedVersion: 2
     m_Bits: 0
   outlineSettings:
-    outlineColor: {r: 0, g: 0, b: 0, a: 1}
+    outlineColor:
+      r: 0
+      g: 0
+      b: 0
+      a: 1
     outlineScale: 1
     depthThreshold: 8.9
     robertsCrossMultiplier: 500
@@ -86,7 +87,11 @@ MonoBehaviour:
     colorFormat: 0
     depthBufferBits: 16
     filterMode: 2
-    backgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    backgroundColor:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     perObjectData: -1
     enableDynamicBatching: 0
     enableInstancing: 0

@@ -114,7 +114,6 @@ namespace Characters
 		public void InitSpell(BaseSpell spell)
 		{
 			spell = Instantiate(spell);
-			Debug.Log(spell.Behaviour);
 			spell.SetOwner(this);
 			spell.OnCreated();
 			_spells.Add(spell);

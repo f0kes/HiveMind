@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Characters;
 using Combat.Battle;
 using Cysharp.Threading.Tasks;
@@ -14,9 +15,15 @@ namespace GameState
 {
 	public class GameStateController : MonoBehaviour
 	{
+		[SerializeField] private GameData _gameData;
+		public struct StartBattleResult
+		{
+			public bool Success;
+			public string ErrorMessage;
+		}
 		public static GameStateController Instance{get; private set;}
 
-		[SerializeField] private uint _goldPerBattle = 10; //TODO: load from config
+		private uint _goldPerBattle;
 
 		[SerializeField] private SceneField _battleScene;
 		[SerializeField] private SceneField _shopScene;
@@ -28,6 +35,7 @@ namespace GameState
 
 		private PlayerData _playerData;
 		public static PlayerData PlayerData => Instance._playerData;
+		public static GameData GameData => Instance._gameData;
 
 
 		private Battle _battle;
@@ -36,6 +44,8 @@ namespace GameState
 
 		private void Awake()
 		{
+			_gameData = Instantiate(_gameData);
+			_goldPerBattle = _gameData.GoldPerBattle;
 			if(Instance == null)
 			{
 				Instance = this;
@@ -56,14 +66,43 @@ namespace GameState
 		}
 		private void ResetPlayerData()
 		{
-			_playerData = new PlayerData { Gold = 100 }; //TODO: load from config
+			_playerData = new PlayerData
+			{
+				Gold = (int)GameData.StartingGold,
+				ShopLevelPrecise = GameData.StartingShopLevel,
+				BattleLevelPrecise = GameData.StartingBattleLevel,
+			};
 		}
-		public async void StartBattle(IEnumerable<CharacterData> party, IEnumerable<CharacterData> enemies)
+		public StartBattleResult TryStartBattle(List<CharacterData> party, List<CharacterData> enemies)
+		{
+			if(party.Count == 0)
+			{
+				return new StartBattleResult
+				{
+					Success = false,
+					ErrorMessage = "Party is empty"
+				};
+			}
+			if(enemies.Count == 0)
+			{
+				return new StartBattleResult
+				{
+					Success = false,
+					ErrorMessage = "Enemies are empty"
+				};
+			}
+			StartBattle(party, enemies);
+			return new StartBattleResult
+			{
+				Success = true
+			};
+		}
+		private async void StartBattle(List<CharacterData> party, List<CharacterData> enemies)
 		{
 			await SceneManager.LoadSceneAsync(_battleScene);
-			
+
 			Instantiate(_singletonsPrefab);
-			
+
 			_characterFactory = new CharacterFactory();
 			_battle = new Battle();
 
@@ -86,11 +125,13 @@ namespace GameState
 				var playerParty = _characterFactory.GetAliveOriginals(0);
 				_playerData.SetParty(playerParty);
 				_playerData.Gold += (int)_goldPerBattle;
-				_playerData.BattleLevel += 1; //TODO: load from config
+				_playerData.BattleLevelPrecise += GameData.EnemyToPlayerLevelScaling.Value; 
+				_playerData.ShopLevelPrecise += 1;
 			}
 			else
 			{
 				ResetPlayerData();
+				
 			}
 		}
 	}

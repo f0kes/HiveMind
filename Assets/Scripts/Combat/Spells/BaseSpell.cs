@@ -27,6 +27,8 @@ namespace Combat.Spells
 		public Entity Owner{get; private set;}
 		[HideInInspector] protected Entity Target;
 		[SerializeField] private Sprite _icon;
+		[SerializeField] private string _name;
+		[SerializeField] private string _description;
 
 		protected Dictionary<CS, MinMaxStatRange> Params = new();
 		protected StatDict<CS> Stats;
@@ -36,6 +38,9 @@ namespace Combat.Spells
 		public SpellBehaviour Behaviour;
 		public List<SpellTag> Tags = new();
 
+		public Sprite Icon => _icon;
+		public string Name => _name;
+		public string Description => _description;
 		public virtual void OnCreated()
 		{
 			Tags ??= new List<SpellTag>();
@@ -229,7 +234,6 @@ namespace Combat.Spells
 		public virtual void OnAfterDamageDealt(Entity target, Damage damage)
 		{
 		}
-		//invoked when spell is casted TODO
 		protected virtual void OnSpellStart()
 		{
 		}

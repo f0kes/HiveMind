@@ -2,6 +2,7 @@
 using Combat;
 using DefaultNamespace;
 using Enums;
+using Events.Implementations;
 using UnityEngine;
 
 namespace Characters
@@ -44,6 +45,7 @@ namespace Characters
 			var team = ControlledCharacter.GetTeam();
 			if(!team.CanSwap() && !forceSwap) return new CastResult(CastResultType.Fail, "Swap on cooldown");
 			ControlledCharacter.Events.SwappedWithCharacter?.Invoke(other);
+			CharacterSwappedEvent.Invoke(new CharacterSwappedData(ControlledCharacter, other));
 			if(_swapped)
 			{
 				SwapBack();

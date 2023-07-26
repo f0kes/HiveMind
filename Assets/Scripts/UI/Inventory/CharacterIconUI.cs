@@ -1,5 +1,6 @@
 ﻿using System;
 using Characters;
+using Misc;
 using Shop;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,14 +9,17 @@ using UnityEngine.UI;
 namespace UI.Inventory
 {
 	[RequireComponent(typeof(CanvasGroup))]
-	public class CharacterIconUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+	public class CharacterIconUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 	{
 		public event Action<PointerEventData> OnBeginDragEvent;
 		public event Action<PointerEventData> OnDragEvent;
 		public event Action<PointerEventData> OnDropEvent;
+		public event Action<PointerEventData> OnPointerEnterEvent;
+		public event Action<PointerEventData> OnPointerExitEvent;
+
 
 		[SerializeField] private Image _icon;
-		private Func<bool> _canDrag = () => true;
+		private Func<TaskResult> _canDrag = () => true;
 		private bool _isDragging;
 		private CanvasGroup _canvasGroup;
 
@@ -29,13 +33,18 @@ namespace UI.Inventory
 			_icon.sprite = sprite;
 		}
 
-		public void SetDragCondition(Func<bool> canDrag)
+		public void SetDragCondition(Func<TaskResult> canDrag)
 		{
 			_canDrag = canDrag;
 		}
 		public void OnBeginDrag(PointerEventData eventData)
 		{
-			if(!_canDrag()) return;
+			var canDrag = _canDrag();
+			if(!canDrag)
+			{
+				TextMessageRenderer.Instance.ShowMessage(canDrag.Message);
+				return;
+			}
 			OnBeginDragEvent?.Invoke(eventData);
 			_isDragging = true;
 			_canvasGroup.blocksRaycasts = false;
@@ -54,6 +63,16 @@ namespace UI.Inventory
 			_isDragging = false;
 			_canvasGroup.blocksRaycasts = false;
 			OnDropEvent?.Invoke(eventData);
+		}
+
+		public void OnPointerEnter(PointerEventData eventData)
+		{
+			OnPointerEnterEvent?.Invoke(eventData);
+		}
+
+		public void OnPointerExit(PointerEventData eventData)
+		{
+			OnPointerExitEvent?.Invoke(eventData);
 		}
 	}
 }

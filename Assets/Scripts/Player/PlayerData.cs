@@ -24,7 +24,22 @@ namespace Player
 
 		public List<CharacterData> Party => _party;
 		public List<CharacterData> Inventory => _inventory;
-		public uint BattleLevel{get; set;}
+		private float _battleLevelPrecise;
+		private float _shopLevelPrecise;
+
+		public uint BattleLevel => (uint)Math.Round(_battleLevelPrecise);
+		public uint ShopLevel => (uint)Math.Round(_shopLevelPrecise);
+
+		public float BattleLevelPrecise
+		{
+			get => _battleLevelPrecise;
+			set => _battleLevelPrecise = value;
+		}
+		public float ShopLevelPrecise
+		{
+			get => _shopLevelPrecise;
+			set => _shopLevelPrecise = value;
+		}
 
 		public void SetParty(List<CharacterData> data)
 		{

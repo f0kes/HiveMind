@@ -1730,13 +1730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9c91670beaabf34e845480ff08737ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tags: 0
-  _maxHealth: 100
-  _team: 0
-  AIDesirability: 1
-  AIThreat: 1
-  WeaponParts: []
-  _stats: {fileID: 11400000, guid: 4d44390da360a73449104a3beb72d5c8, type: 2}
+  _gizmoPrefab: {fileID: 8257112268444063073, guid: d9837bca60a6d3b48b1a5f6689d4e9fb, type: 3}
   ControlsProvider: {fileID: 0}
 --- !u!114 &5859680968761145472
 MonoBehaviour:

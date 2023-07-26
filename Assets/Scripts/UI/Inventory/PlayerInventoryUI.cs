@@ -50,7 +50,7 @@ namespace UI.Inventory
 		}
 		private void OnPartyLostIcon(InventorySlotUI slot)
 		{
-			GameStateController.PlayerData.RemoveFromParty(slot.GetContent());
+			GameStateController.PlayerData.RemoveFromParty(slot.GetContent()); //removing null
 		}
 		private void OnInventoryGotIcon(InventorySlotUI slot)
 		{

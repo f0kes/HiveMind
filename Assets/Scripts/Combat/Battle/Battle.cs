@@ -62,6 +62,7 @@ namespace Combat.Battle
 				var character = _toSpawn[i];
 				var team = character.Team;
 				var spawnPoint = _spawnPoints[team][pointers[team]];
+				//todo: something with add to character team
 				pointers[team]++;
 
 				character.transform.position = spawnPoint.transform.position;

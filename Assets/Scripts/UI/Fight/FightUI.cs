@@ -52,7 +52,12 @@ namespace UI.Fight
 		}
 		private void StartBattle()
 		{
-			GameStateController.Instance.StartBattle(_party, _enemies);
+			var result = GameStateController.Instance.TryStartBattle(_party, _enemies);
+			if(!result.Success)
+			{
+				TextMessageRenderer.Instance.ShowMessage(result.ErrorMessage);
+				return;
+			}
 		}
 		private void InitFightGenerator()
 		{

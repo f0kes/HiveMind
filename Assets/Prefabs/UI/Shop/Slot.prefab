@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _iconPrefab: {fileID: 567444350360227541, guid: d4b6ef1a315cf4e468224d3503a0aa2a, type: 3}
+  _tooltipPrefab: {fileID: 5231963410297863803, guid: 685b174be394db3449a3338da1018099, type: 3}
 --- !u!1 &9026053574043808729
 GameObject:
   m_ObjectHideFlags: 0

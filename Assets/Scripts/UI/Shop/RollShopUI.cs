@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Characters;
 using GameState;
+using Misc;
 using Player;
 using Shop;
 using UI.Inventory;
@@ -14,8 +15,6 @@ namespace UI.Shop
 	public class RollShopUI : MonoBehaviour
 	{
 		[SerializeField] private Button _rollButton;
-		[SerializeField] private int _rollCost; //TODO: move to game settings
-		[SerializeField] private int _charCost;
 		[SerializeField] private int _entryCount = 5;
 		private List<InventorySlotUI> _slots;
 		private RollShop _shop;
@@ -30,15 +29,20 @@ namespace UI.Shop
 		{
 			var contentDatabase = GameStateController.ContentDatabase;
 			var entries = new List<ShopEntry>();
+
+			var rollCost = GameStateController.GameData.RollCost;
+			var charCost = GameStateController.GameData.BuyCost;
+
 			foreach(var characterData in contentDatabase.Characters)
 			{
 				for(var i = 0; i < _entryCount; i++)
 				{
-					var entry = new ShopEntry { CharacterData = CharacterData.Copy(characterData), Cost = _charCost };
+					var entry = new ShopEntry { CharacterData = CharacterData.Copy(characterData), Cost = charCost };
 					entries.Add(entry);
 				}
-			}
-			_shop = new RollShop(entries, _rollCost, _slots.Count);
+			} //TODO: move pool generation to RollShop
+
+			_shop = new RollShop(entries, rollCost, _slots.Count, GameStateController.PlayerData.ShopLevel);
 			Display();
 		}
 		private void Display()
@@ -54,9 +58,13 @@ namespace UI.Shop
 				_slots[i].SetContent(shopEntry.CharacterData);
 			}
 		}
-		private bool CanDrag(ShopEntry entry)
+		private TaskResult CanDrag(ShopEntry entry)
 		{
-			return _shop.CanBuy(GameStateController.PlayerData, entry).Success;
+			var result = new TaskResult();
+			var buyResult = _shop.CanBuy(GameStateController.PlayerData, entry);
+			result.Success = buyResult.Success;
+			result.Message = buyResult.Message;
+			return result;
 		}
 		private void OnBuy(PlayerData playerData, ShopEntry shopEntry)
 		{

@@ -21,6 +21,7 @@ namespace DefaultNamespace
 
 		private SerializableCharacterStats _stats;
 		public StatDict<CS> Stats;
+		[SerializeField] private ObjectGizmo _gizmoPrefab;
 		public ObjectGizmo Gizmo{get; private set;}
 
 		private bool _isDead;
@@ -49,7 +50,7 @@ namespace DefaultNamespace
 		}
 		private void InitGizmo()
 		{
-			Gizmo = Instantiate(ObjectGizmo.Default);
+			Gizmo = Instantiate(_gizmoPrefab);
 			var transform1 = Gizmo.transform;
 			transform1.position = transform.position + Vector3.up * 4f;
 

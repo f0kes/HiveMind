@@ -24,19 +24,29 @@ namespace Shop
 
 		private readonly int _rollCost;
 		private readonly int _shopSize;
+		private readonly uint _shopLevel;
 
 
-		public RollShop(List<ShopEntry> pool, int rollCost = 2, int shopSize = 6)
+		public RollShop(List<ShopEntry> pool, int rollCost = 2, int shopSize = 6, uint shopLevel = 1)
 		{
 			_pool = pool;
 			_rollCost = rollCost;
 			_shopSize = shopSize;
+			_shopLevel = shopLevel;
 			_shop = new List<ShopEntry>();
+			SetLevels(_pool);
 			RollUnconditional();
 		}
 		public List<ShopEntry> GetShop()
 		{
 			return _shop;
+		}
+		private void SetLevels(List<ShopEntry> entries)
+		{
+			foreach(var entry in entries)
+			{
+				entry.CharacterData.EntityData.Level = _shopLevel;
+			}
 		}
 		public BuyResult CanBuy(PlayerData player, ShopEntry entry)
 		{

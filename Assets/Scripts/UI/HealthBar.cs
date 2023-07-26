@@ -1,4 +1,7 @@
 ﻿using System;
+using Characters;
+using Events.Implementations;
+using Player;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +17,7 @@ namespace DefaultNamespace.UI
 		[SerializeField] private TextMeshProUGUI _levelText;
 		[SerializeField] private Color _playerColor = Color.green;
 		[SerializeField] private Color _enemyColor = Color.red;
+		[SerializeField] private Color _controlledColor = Color.yellow;
 
 
 		private float _previousHealthPercent = 1f;
@@ -32,11 +36,28 @@ namespace DefaultNamespace.UI
 			_icon.sprite = entity.DataCopy.Icon;
 			entity.Events.HealthChanged += OnHealthChanged;
 			entity.Events.Death += OnDeath;
-			if(entity.Team == 0)
+			CharacterSwappedEvent.Subscribe(OnCharacterSwapped);
+			if(entity is Character character && character.ControlsProvider == InputHandler.Instance)
+				SetColor(_controlledColor);
+			else if(entity.Team == 0)
 				SetColor(_playerColor);
 			else
 				SetColor(_enemyColor);
 		}
+
+		private void OnCharacterSwapped(CharacterSwappedData data)
+		{
+			if(data.NewCharacter == _entity)
+				SetColor(_controlledColor);
+			else if(data.OldCharacter == _entity)
+			{
+				if(_entity.Team == 0)
+					SetColor(_playerColor);
+				else
+					SetColor(_enemyColor);
+			}
+		}
+
 		private void Update()
 		{
 			if(_entity != null)
@@ -80,6 +101,15 @@ namespace DefaultNamespace.UI
 			}
 			_healthBarFill.fillAmount = healthPercent;
 			_previousHealthPercent = healthPercent;
+		}
+		private void OnDestroy()
+		{
+			if(_entity != null)
+			{
+				_entity.Events.HealthChanged -= OnHealthChanged;
+				_entity.Events.Death -= OnDeath;
+			}
+			CharacterSwappedEvent.Unsubscribe(OnCharacterSwapped);
 		}
 	}
 }

@@ -27,6 +27,10 @@ namespace DefaultNamespace
 			Stats = Object.Instantiate(original.Stats);
 			Level = original.Level;
 		}
+		public StatDict<CS> GetStats()
+		{
+			return Stats.GetStats(Level);
+		}
 
 	}
 }

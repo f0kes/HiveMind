@@ -4,6 +4,7 @@ using System.Linq;
 using Characters;
 using DefaultNamespace;
 using DefaultNamespace.UI;
+using Events.Implementations;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -78,6 +79,7 @@ namespace Player
 				newCharacter.ControlsProvider.enabled = false;
 			}
 			SetCharacter(newCharacter);
+			CharacterSwappedEvent.Invoke(new CharacterSwappedData(null, newCharacter)); //todo: change, no swap is happening
 		}
 
 		private void OnCharacterDeath(Entity character)
@@ -155,7 +157,7 @@ namespace Player
 				}
 			}
 
-			bool shouldCast = Input.GetMouseButtonDown(1);
+			bool shouldCast = Input.GetMouseButtonUp(1);
 			if(shouldCast)
 			{
 				var result = ControlledCharacter.Spell.Cast();

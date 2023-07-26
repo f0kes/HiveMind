@@ -59,13 +59,11 @@ namespace Stats
 
 			public float GetValue(bool forceUpdate)
 			{
-				if(!forceUpdate && _lastUpdateTick >= Ticker.I.CurrentTick) return _lastValue;
 				var result = _baseValue;
 				foreach(var mod in _modifiers)
 				{
 					mod.ApplyMod(ref result, _baseValue);
 				}
-				_lastUpdateTick = Ticker.I.CurrentTick;
 				_lastValue = result;
 				return _lastValue;
 			}
