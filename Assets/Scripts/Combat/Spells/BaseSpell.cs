@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Characters;
 using Combat.Spells.AutoAttack;
 using DefaultNamespace;
 using DefaultNamespace.Settings;
@@ -28,7 +29,8 @@ namespace Combat.Spells
 		[HideInInspector] protected Entity Target;
 		[SerializeField] private Sprite _icon;
 		[SerializeField] private string _name;
-		[SerializeField] private string _description;
+		[TextArea(4, 10)] [SerializeField] private string _description;
+		[SerializeField] private int _manaCost;
 
 		protected Dictionary<CS, MinMaxStatRange> Params = new();
 		protected StatDict<CS> Stats;
@@ -41,30 +43,7 @@ namespace Combat.Spells
 		public Sprite Icon => _icon;
 		public string Name => _name;
 		public string Description => _description;
-		public virtual void OnCreated()
-		{
-			Tags ??= new List<SpellTag>();
-			Tags.Add(SpellTag.All);
-			PopulateParams();
-			Stats = Owner.Stats;
-			Ticker.OnTick += OnTick;
-		}
-		public virtual void OnDestroyed()
-		{
-			Ticker.OnTick -= OnTick;
-			Destroy(this);
-			UnsubscribeFromEvents();
-		}
-		public virtual void SetLevel(uint level)
-		{
-		}
-
-		protected abstract void PopulateParams();
-
-		protected void AddParam(CS paramName, MinMaxStatRange param)
-		{
-			Params[paramName] = param;
-		}
+		public int ManaCost => _manaCost;
 		public void SetOwner(Entity owner)
 		{
 			if(Owner != null)
@@ -77,7 +56,48 @@ namespace Combat.Spells
 			SubscribeToEvents();
 			OnAttachedToCharacter();
 		}
-		public Characters.Character GetCursorTarget()
+		public virtual void OnCreated() //todo: check if owner death unsubscribes, ressurection resubscribes
+		{
+			Tags ??= new List<SpellTag>();
+			Tags.Add(SpellTag.All);
+			PopulateParams();
+			Stats = Owner.Stats;
+			
+			Owner.Events.Death += OnDeath;
+			Owner.Events.Ressurect += OnResurrection; //todo: test
+			
+			Ticker.OnTick += OnTick;
+		}
+		private void OnDestroy()
+		{
+			OnDestroyed();
+		}
+		
+		public virtual void OnDestroyed()
+		{
+			Ticker.OnTick -= OnTick;
+			UnsubscribeFromEvents();
+		}
+		protected virtual void OnDeath(Entity entity)
+		{
+			UnsubscribeFromEvents();
+		}
+		protected virtual void OnResurrection(Entity entity)
+		{
+			SubscribeToEvents();
+		}
+		public virtual void SetLevel(uint level)
+		{
+		}
+
+		protected abstract void PopulateParams();
+
+		protected void AddParam(CS paramName, MinMaxStatRange param)
+		{
+			Params[paramName] = param;
+		}
+
+		public Character GetCursorTarget()
 		{
 			var character = Owner as Characters.Character;
 			if(character == null)
@@ -101,9 +121,15 @@ namespace Combat.Spells
 		public CastResult Cast()
 		{
 			var result = CastResult.Success;
-			if(!Owner.ReadyToCast())
+			var character = Owner as Characters.Character; //TODO: make it work for other entities
+			if(character == null)
 			{
-				return new CastResult(CastResultType.Fail, "Swap to cast");
+				return new CastResult(CastResultType.Fail, "Owner is not a character");
+			}
+			var characterResult = character.ReadyToCast();
+			if(!characterResult)
+			{
+				return new CastResult(CastResultType.Fail, characterResult.Message);
 			}
 			Debug.Log(Behaviour);
 			switch(Behaviour)
@@ -145,12 +171,17 @@ namespace Combat.Spells
 			{
 				Owner.Events.SpellCasted?.Invoke(this);
 				VFXSystem.I.SpawnSpellIcon(_icon, Owner.transform);
+				character.SpendMana(ManaCost);
 			}
 			return result;
 		}
 		public virtual CastResult CanCastTarget(Entity target)
 		{
 			return CastResult.Success;
+		}
+		public virtual Entity ChooseBestTarget(List<Entity> targets)
+		{
+			return targets[UnityEngine.Random.Range(0, targets.Count)];
 		}
 		public virtual CastResult CanCastPoint(Vector3 point)
 		{
@@ -176,10 +207,10 @@ namespace Combat.Spells
 			}
 			var stat = Mathf.Min(Stats[statName], GameSettings.MaxStatValue);
 			var minMaxStat = Params[statName];
-
-			return stat / GameSettings.MaxStatValue * (minMaxStat.Max - minMaxStat.Min) + minMaxStat.Min;
+			var val = stat / GameSettings.MaxStatValue * (minMaxStat.Max - minMaxStat.Min) + minMaxStat.Min;
+			return Mathf.Clamp(val, minMaxStat.Min, minMaxStat.Max);
 		}
-		private void SubscribeToEvents()
+		protected virtual void SubscribeToEvents()
 		{
 			Owner.Events.BeforeDamageReceived += OnBeforeDamageReceived;
 			Owner.Events.AfterDamageReceived += OnAfterDamageReceived;
@@ -192,7 +223,7 @@ namespace Combat.Spells
 		protected virtual void OnAttachedToCharacter()
 		{
 		}
-		private void UnsubscribeFromEvents()
+		protected virtual void UnsubscribeFromEvents()
 		{
 			Owner.Events.BeforeDamageReceived -= OnBeforeDamageReceived;
 			Owner.Events.AfterDamageReceived -= OnAfterDamageReceived;

@@ -2,18 +2,15 @@
 
 namespace Events
 {
-	public class EventResetter
+	public static class EventResetter
 	{
-		private List<IResettable> _resettables;
-		public EventResetter()
-		{
-			_resettables = new List<IResettable>();
-		}
-		public void Add(IResettable resettable)
+		private static List<IResettable> _resettables = new List<IResettable>();
+		
+		public static  void Add(IResettable resettable)
 		{
 			_resettables.Add(resettable);
 		}
-		public void Reset()
+		public static  void Reset()
 		{
 			foreach(var resettable in _resettables)
 			{

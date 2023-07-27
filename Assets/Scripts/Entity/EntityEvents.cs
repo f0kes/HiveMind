@@ -7,9 +7,10 @@ using Combat.Spells;
 namespace DefaultNamespace
 {
 	public class EntityEvents
-	{
+	{	//TODO: remove this class, use GameEvent instead
 		public Action<Entity, Damage> BeforeDamageReceived;
 		public Action<float> HealthChanged;
+		public Action<int> ManaChanged;
 		public Action<Entity> Death;
 		public Action<Entity> Ressurect;
 

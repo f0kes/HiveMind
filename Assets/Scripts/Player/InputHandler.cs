@@ -160,7 +160,11 @@ namespace Player
 			bool shouldCast = Input.GetMouseButtonUp(1);
 			if(shouldCast)
 			{
-				var result = ControlledCharacter.Spell.Cast();
+				if(ControlledCharacter.ActiveSpell == null)
+				{
+					return;
+				}
+				var result = ControlledCharacter.ActiveSpell.Cast();
 				if(!result)
 				{
 					TextMessageRenderer.Instance.ShowMessage(result.Message);
@@ -206,45 +210,10 @@ namespace Player
 		private void HandleCheats()
 		{
 			bool shouldGoToNextLevel = Input.GetKeyDown(KeyCode.F1);
-			bool shouldDie = Input.GetKeyDown(KeyCode.F2);
-			bool shouldGodMode = Input.GetKeyDown(KeyCode.F3);
-			bool shouldKillTeam = Input.GetKeyDown(KeyCode.F4);
-			bool shouldKillRandom = Input.GetKeyDown(KeyCode.F5);
 
 			if(shouldGoToNextLevel)
 			{
 				MeshBulilder.I.NextLevel();
-			}
-
-			if(shouldDie)
-			{
-				ControlledCharacter.TakeDamage(10000);
-			}
-
-			if(shouldGodMode)
-			{
-				ControlledCharacter.SetMaxHealth(10000);
-			}
-
-			if(shouldKillTeam)
-			{
-				var entities = GlobalEntities.GetEntitiesOnTeam(ControlledCharacter.Team);
-				foreach(var entity in entities)
-				{
-					if(entity != ControlledCharacter)
-					{
-						entity.TakeDamage(10000);
-					}
-				}
-			}
-
-			if(shouldKillRandom)
-			{
-				var entities = GlobalEntities.GetEntitiesOnTeam(ControlledCharacter.Team)
-					.Where(e => e != ControlledCharacter).ToList();
-				//choose random entity
-				var randomEntity = entities[Random.Range(0, entities.Count)];
-				randomEntity.TakeDamage(10000);
 			}
 		}
 

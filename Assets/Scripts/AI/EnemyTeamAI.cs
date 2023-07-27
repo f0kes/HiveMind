@@ -35,15 +35,17 @@ namespace AI
 			{
 				var list = _list.GetCharacters();
 				var randomIndex = UnityEngine.Random.Range(0, list.Count);
+				if(randomIndex >= list.Count) return;
 				var randomCaster = list[randomIndex];
+				randomCaster.SetMana(randomCaster.CurrentMana + 1); //todo: pull from settings 
 				if(!randomCaster.ReadyToCast()) return;
 				var entitiesInRange = GlobalEntities.GetEntitiesInRange(randomCaster.transform.position, 100f); //todo: get range from spell
-				var spell = randomCaster.Spell;
-				var filteredEntities = EntityFilterer.FilterEntitiesWithSpell(randomCaster, entitiesInRange, spell); //todo: euristic
+				var spell = randomCaster.ActiveSpell;
+				var filteredEntities = EntityFilterer.FilterEntitiesWithSpell(randomCaster, entitiesInRange, spell);
 				if(filteredEntities.Count > 0)
 				{
-					var randomTarget = filteredEntities[UnityEngine.Random.Range(0, filteredEntities.Count)];
-					randomCaster.CharacterMover.SetCursorTarget(randomTarget);
+					var chosen = spell.ChooseBestTarget(filteredEntities);
+					randomCaster.CharacterMover.SetCursorTarget(chosen);
 					spell.Cast();
 				}
 			}

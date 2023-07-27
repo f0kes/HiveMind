@@ -9,11 +9,7 @@ namespace Events
 		public GameEvent()
 		{
 			OnEvent = null;
-		}
-		public GameEvent(EventResetter resetter)
-		{
-			OnEvent = null;
-			resetter.Add(this);
+			EventResetter.Add(this);
 		}
 		public static void Subscribe(Action<T> action)
 		{

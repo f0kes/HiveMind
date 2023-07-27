@@ -3,6 +3,7 @@ using Characters;
 using Events.Implementations;
 using Player;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ namespace DefaultNamespace.UI
 {
 	public class HealthBar : MonoBehaviour
 	{
+		[SerializeField] private ManaBar _manaBar;
 		[SerializeField] private Image _healthBarFill;
 		[SerializeField] private Image _icon;
 		[SerializeField] private RectTransform _damageBarTemplate;
@@ -37,13 +39,25 @@ namespace DefaultNamespace.UI
 			entity.Events.HealthChanged += OnHealthChanged;
 			entity.Events.Death += OnDeath;
 			CharacterSwappedEvent.Subscribe(OnCharacterSwapped);
-			if(entity is Character character && character.ControlsProvider == InputHandler.Instance)
+			var character = entity as Character;
+			InitManaBar(character);
+			
+			if(character != null && character.ControlsProvider == InputHandler.Instance)
 				SetColor(_controlledColor);
 			else if(entity.Team == 0)
 				SetColor(_playerColor);
 			else
 				SetColor(_enemyColor);
+			
 		}
+
+		private void InitManaBar(Character character)
+		{
+			if(character == null) return;
+			_manaBar.SetCharacter(character);
+		}
+
+
 
 		private void OnCharacterSwapped(CharacterSwappedData data)
 		{
@@ -81,11 +95,9 @@ namespace DefaultNamespace.UI
 		}
 		private void OnDeath(Entity obj)
 		{
-			_entity.Events.HealthChanged += OnHealthChanged;
-			_entity.Events.Death += OnDeath;
-			Destroy(gameObject);
+			gameObject.SetActive(false);
 		}
-
+		
 		private void OnHealthChanged(float healthPercent)
 		{
 			if(_healthBarFill == null)
@@ -102,6 +114,7 @@ namespace DefaultNamespace.UI
 			_healthBarFill.fillAmount = healthPercent;
 			_previousHealthPercent = healthPercent;
 		}
+
 		private void OnDestroy()
 		{
 			if(_entity != null)

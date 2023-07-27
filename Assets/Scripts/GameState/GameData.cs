@@ -13,15 +13,29 @@ namespace GameState
 			public int Denominator;
 			public float Value => (float)Numerator / Denominator;
 		}
+		[Header("Scaling")]
 		public Ratio EnemyToPlayerLevelScaling = new() { Numerator = 4, Denominator = 3 };
 		public uint MaxLevel = 1000;
-		public uint GoldPerBattle = 10;
-		public uint StartingGold = 10;
 		public uint StartingBattleLevel = 1;
 		public uint StartingShopLevel = 1;
-		public float MaxStatValue = 1000f;
-		public float SwapCooldown = 3f;
+
+		[Header("Shop")]
+		public uint GoldPerBattle = 10;
+		public uint StartingGold = 10;
 		public int RollCost = 1;
 		public int BuyCost = 3;
+
+		[Header("Battle")]
+		public float MaxStatValue = 1000f;
+		public float SwapCooldown = 3f;
+		public int ManaPerSwap = 1;
+
+		[Header("Fatigue")]
+		public float TimeToStartFatigue = 30f;
+		public float FatigueTickTime = 3f;
+		public int FatigueIncrement = 1;
+		public int FatigueStartValue = 1;
+
+
 	}
 }

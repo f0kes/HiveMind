@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Characters;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
@@ -14,6 +15,7 @@ namespace DefaultNamespace
 
 
 		private static List<Entity> _allEntities = new();
+		private static List<Character> _allCharacters = new();
 		private static List<Entity> _aliveEntities = new();
 		private static Dictionary<ushort, EntityList> _teams = new();
 		private static Dictionary<ushort, EntityList> _graveyards = new();
@@ -33,6 +35,7 @@ namespace DefaultNamespace
 			_graveyards.Clear();
 			_teams.Clear();
 			_allEntities.Clear();
+			_allCharacters.Clear();
 		}
 		public static void RemoveEntityFromTeam(Entity entity)
 		{
@@ -64,13 +67,17 @@ namespace DefaultNamespace
 				return _teams[team];
 			}
 		}
-		public static List<Entity> GetAllEntities()
+		public static List<Character> GetAllCharacters()
+		{
+			return _allCharacters;
+		}
+		public static List<Entity> GetAllEntitiesCopy()
 		{
 			return new List<Entity>(_allEntities);
 		}
 		public static List<Entity> GetEntitiesInRange(Vector3 position, float range)
 		{
-			return GetAllEntities().Where(x => Vector3.Distance(x.transform.position, position) <= range).ToList();
+			return GetAllEntitiesCopy().Where(x => Vector3.Distance(x.transform.position, position) <= range).ToList();
 		}
 		public static void SetTeam(ushort team, EntityList list)
 		{
@@ -112,10 +119,14 @@ namespace DefaultNamespace
 
 		public static void AddToTeam(ushort team, Entity entity)
 		{
-			if(!GetAllEntities().Contains(entity))
+			if(!GetAllEntitiesCopy().Contains(entity))
 			{
 				OnEntityAdded?.Invoke(team, entity);
 				_allEntities.Add(entity);
+				if(entity is Character character)
+				{
+					_allCharacters.Add(character);
+				}
 			}
 			if(_teams.ContainsKey(team))
 			{

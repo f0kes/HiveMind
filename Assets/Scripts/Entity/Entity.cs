@@ -4,6 +4,7 @@ using Combat.Spells;
 using Combat.Spells.PoisonGrenade;
 using DefaultNamespace.UI;
 using Enums;
+using GameState;
 using Stats;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace DefaultNamespace
 
 		private float _currentHealthPercent = 1f;
 		private ushort _team;
+		private uint _level;
 
 		private SerializableCharacterStats _stats;
 		public StatDict<CS> Stats;
@@ -26,7 +28,7 @@ namespace DefaultNamespace
 
 		private bool _isDead;
 		public bool IsDead => _isDead;
-		public uint Level => _data.Level;
+		public uint Level => _level;
 		public ushort Team => _team;
 		public float MaxHealth => Stats[CS.Health];
 		public EntityData DataCopy => new(_data);
@@ -40,6 +42,7 @@ namespace DefaultNamespace
 		public void SetData(EntityData data)
 		{
 			_data = data;
+			_level = data.Level;
 			_stats = Instantiate(data.Stats);
 			Stats = _stats.GetStats(Level);
 		}
@@ -48,6 +51,7 @@ namespace DefaultNamespace
 			InitGizmo();
 			ChildStart();
 		}
+
 		private void InitGizmo()
 		{
 			Gizmo = Instantiate(_gizmoPrefab);
@@ -73,31 +77,44 @@ namespace DefaultNamespace
 			_team = team;
 			GlobalEntities.AddToTeam(_team, this);
 		}
+		public void SetLevel(int level)
+		{
+			if(level <= 0)
+			{
+				Die();
+			}
+			level = Mathf.Clamp(level, 1, (int)GameStateController.GameData.MaxLevel);
+			_level = (uint)level;
+			Stats.SetLevel(_level);
+		}
 
 
-		public void TakeDamage(float damage)
+		protected void TakeDamage(float damage)
 		{
 			var newHealth = CurrentHealth - damage;
 			_currentHealthPercent = newHealth / MaxHealth;
-			Events.HealthChanged?.Invoke(Mathf.Min(_currentHealthPercent, 0));
+			Events.HealthChanged?.Invoke(Mathf.Max(_currentHealthPercent, 0));
 			if(_currentHealthPercent <= 0)
 			{
-				_isDead = true;
-				Events.Death?.Invoke(this);
-				gameObject.SetActive(false);
+				Die();
 			}
 		}
 		public void TakeDamage(Damage damage)
 		{
-			float newHealth = CurrentHealth - damage.Value;
-			_currentHealthPercent = Mathf.Clamp01(newHealth / MaxHealth);
-			Events.HealthChanged?.Invoke(_currentHealthPercent);
-			if(_currentHealthPercent <= 0)
+			float value = damage.Value;
+			float armor = Stats[CS.Armor];
+			if(armor < 1f)
 			{
-				_isDead = true;
-				Events.Death?.Invoke(this);
-				gameObject.SetActive(false);
+				armor = 1f;
 			}
+			value /= armor;
+			TakeDamage(value);
+		}
+		public void Die()
+		{
+			_isDead = true;
+			Events.Death?.Invoke(this);
+			gameObject.SetActive(false);
 		}
 
 		public void TakeFullRestore()
@@ -134,10 +151,10 @@ namespace DefaultNamespace
 			Events.HealthChanged?.Invoke(_currentHealthPercent);
 		}
 
-		public bool ReadyToCast()
+
+		public void LevelUp(int levelIncreaseAmount)
 		{
-			if(IsDead) return false;
-			return GetTeam().CanCast();
+			SetLevel((int)Level + levelIncreaseAmount);
 		}
 	}
 }

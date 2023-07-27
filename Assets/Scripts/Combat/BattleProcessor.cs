@@ -1,4 +1,5 @@
 ﻿using DefaultNamespace;
+using Events;
 
 namespace Combat
 {
@@ -25,6 +26,7 @@ namespace Combat
 			heal.Target = target;
 			heal.Source = healer;
 			target.TakeHeal(heal);
+			GameEvent<Heal>.Invoke(heal);
 		}
 	}
 }

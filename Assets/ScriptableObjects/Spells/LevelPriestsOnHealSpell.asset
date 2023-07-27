@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b50a607e07343a09ce765f44ebda80b, type: 3}
+  m_Name: LevelPriestsOnHealSpell
+  m_EditorClassIdentifier: 
+  Level: 10
+  _icon: {fileID: 21300000, guid: 5355d280be503a843a6354068a35d0fd, type: 3}
+  _name: LevelOnHeal
+  _description: Whenever a character is healed, give +1 lvl to all priests
+  _manaCost: 0
+  Behaviour: 1
+  Tags: 00000000
+  _minHealAmount:
+    _min: 40
+    _max: 400
+  _levelIncreaseAmount:
+    _min: 1
+    _max: 10

@@ -7,6 +7,7 @@
 		Spread,
 		Damage,
 		Health,
+		Armor,
 
 		DOT,
 		Duration,
@@ -18,5 +19,7 @@
 		AttackSpeedPenalty,
 		DamageBonus,
 		Interval,
+		MinHealAmount,
+		LevelIncreaseAmount
 	}
 }

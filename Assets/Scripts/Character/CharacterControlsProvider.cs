@@ -21,6 +21,7 @@ namespace Characters
 		protected virtual void Awake()
 		{
 			var character = GetComponentInParent<Character>();
+			transform.parent = null;
 			if(character == null)
 			{
 				return;
@@ -28,8 +29,6 @@ namespace Characters
 
 			ControlledCharacter = character;
 			character.ControlsProvider = this;
-
-			transform.parent = null;
 		}
 
 		protected virtual void Start()
@@ -95,7 +94,12 @@ namespace Characters
 			}
 			OnNewCharacter?.Invoke(ControlledCharacter);
 		}
-
+		private void OnDestroy()
+		{
+			if(ControlledCharacter == null) return;
+			ControlledCharacter.Events.Death -= OnCharacterDeath;
+			ControlledCharacter.Events.Ressurect -= OnCharacterRessurect;
+		}
 		private void OnCharacterDeath(Entity obj)
 		{
 			gameObject.SetActive(false);

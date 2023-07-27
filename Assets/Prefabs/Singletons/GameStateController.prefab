@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4770062952071686278
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4770062952071686276}
+  - component: {fileID: 4770062952071686277}
+  m_Layer: 0
+  m_Name: GameStateController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4770062952071686276
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4770062952071686278}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 595.46954, y: 342.22498, z: 5.196859}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4770062952071686277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4770062952071686278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd96c6e038c5401d85a64307103ce8e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameData: {fileID: 11400000, guid: 275b7ed13d0a9224ca5f4ac6c2417544, type: 2}
+  _battleScene:
+    m_SceneAsset: {fileID: 102900000, guid: 5008e56c3c94ec74995a9d786330e984, type: 3}
+    m_SceneName: Tutorial
+  _shopScene:
+    m_SceneAsset: {fileID: 102900000, guid: f7a9335e30ad0a14bb9b02739b8d984e, type: 3}
+    m_SceneName: Rest
+  _contentDatabase: {fileID: 11400000, guid: eb8e27e5d7b834a46a51825b906f0af9, type: 2}
+  _singletonsPrefab: {fileID: 3958228411152845740, guid: 7ed088fa86d0b7a42855e1b22e4208bc, type: 3}

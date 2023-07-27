@@ -22,7 +22,6 @@ namespace Stats
 			public float BaseValue => _baseValue;
 
 			private float _lastValue;
-			private int _lastUpdateTick = -1;
 			private List<StatModifier> _modifiers;
 
 			public List<StatModifier> Modifiers => _modifiers;

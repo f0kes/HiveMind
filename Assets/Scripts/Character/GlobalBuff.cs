@@ -14,7 +14,7 @@ namespace Characters
 
 		private void Start()
 		{
-			var entities = GlobalEntities.GetAllEntities();
+			var entities = GlobalEntities.GetAllEntitiesCopy();
 			foreach (var entity in entities)
 			{
 				BuffEntity(entity);

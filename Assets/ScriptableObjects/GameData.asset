@@ -16,11 +16,16 @@ MonoBehaviour:
     Numerator: 4
     Denominator: 3
   MaxLevel: 1000
+  StartingBattleLevel: 1
+  StartingShopLevel: 2
   GoldPerBattle: 10
   StartingGold: 18
-  StartingBattleLevel: 1
-  StartingShopLevel: 5
-  MaxStatValue: 1000
-  SwapCooldown: 3
   RollCost: 1
   BuyCost: 3
+  MaxStatValue: 1000
+  SwapCooldown: 3
+  ManaPerSwap: 1
+  TimeToStartFatigue: 30
+  FatigueTickTime: 3
+  FatigueIncrement: 2
+  FatigueStartValue: 1

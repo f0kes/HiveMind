@@ -44,6 +44,10 @@ namespace Combat.Spells.Heal
 			{
 				return new CastResult(CastResultType.Fail, "Cannot cast on self");
 			}
+			if(targetCharacter.IsDead)
+			{
+				return new CastResult(CastResultType.Fail, "Target is dead");
+			}
 
 			return EntityFilterer.FilterEntity(Owner, targetCharacter, TeamFilter.Friendly);
 		}

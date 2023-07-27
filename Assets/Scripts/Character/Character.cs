@@ -10,8 +10,10 @@ using Combat.Spells.Heal;
 using DefaultNamespace;
 using DefaultNamespace.Settings;
 using Enums;
+using Events.Implementations;
 using GameState;
 using MapGeneration.Rooms;
+using Misc;
 using Stats;
 using UnityEditor;
 using UnityEngine;
@@ -24,32 +26,35 @@ namespace Characters
 	public class Character : Entity
 	{
 		private CharacterData _characterData;
-		private bool _swapped;
-		public bool Swapped => _swapped;
 		private Character _swapTarget;
-
+		private int _currentMana;
 
 		public CharacterControlsProvider ControlsProvider;
 		public CharacterMover CharacterMover{get; private set;}
 		public CharacterShooter CharacterShooter{get; private set;}
 		public CharacterInteractor CharacterInteractor{get; private set;}
 
-		private List<BaseSpell> _spells = new List<BaseSpell>();
+		private List<BaseSpell> _spells = new List<BaseSpell>(); //TODO: move to entity
+		private BaseSpell _activeSpell;
 
-		public BaseSpell Spell => _spells.Count != 0 ? _spells[0] : null;
+		public BaseSpell ActiveSpell => _activeSpell;
 		public float AIDesirability => _characterData.AIDesirability;
 		public float AIThreat => _characterData.AIThreat;
+		public int MaxMana => _activeSpell != null ? _activeSpell.ManaCost : 0;
+		public int CurrentMana => _currentMana;
+		public CharacterClass Class => _characterData.Class;
 
 		public static Character FromData(CharacterData data)
 		{
 			var result = Instantiate(data.Prefab);
-			result.SetData(data);
+			result.Init(data);
 			return result;
 		}
-		public void SetData(CharacterData data)
+		public void Init(CharacterData data)
 		{
 			_characterData = CharacterData.Copy(data);
 			SetData(_characterData.EntityData);
+			_currentMana = 0;
 			InitSpells();
 		}
 		protected override void ChildAwake()
@@ -81,9 +86,14 @@ namespace Characters
 		{
 			Ticker.OnTick += OnTick;
 		}
+
 		private void UnSubscribeFromEvents()
 		{
 			Ticker.OnTick -= OnTick;
+		}
+		public void OnFatigue(FatigueEventData obj)
+		{
+			SetLevel((int)(Level - obj.FatigueValue));
 		}
 		private void OnTick(Ticker.OnTickEventArgs obj)
 		{
@@ -109,6 +119,32 @@ namespace Characters
 
 			var attack = AutoAttackSpell.CreateDefault();
 			InitSpell(attack);
+
+			foreach(var spell in _spells)
+			{
+				var activeSpellSet = false;
+				switch(spell.Behaviour)
+				{
+					case SpellBehaviour.Default:
+						break;
+					case SpellBehaviour.Passive:
+						break;
+					case SpellBehaviour.UnitTarget:
+						_activeSpell = spell;
+						activeSpellSet = true;
+						break;
+					case SpellBehaviour.PointTarget:
+						_activeSpell = spell;
+						activeSpellSet = true;
+						break;
+					default:
+						break;
+				}
+				if(activeSpellSet)
+				{
+					break;
+				}
+			}
 		}
 
 		public void InitSpell(BaseSpell spell)
@@ -119,35 +155,6 @@ namespace Characters
 			_spells.Add(spell);
 		}
 
-		public void CastSpell(int index = 0)
-		{
-			if(index < _spells.Count)
-			{
-				_spells[index].Cast();
-			}
-		}
-		public void SwapWithNew(Character other)
-		{
-			_swapped = true;
-			_swapTarget = other;
-
-			Swap(other);
-		}
-
-		public void SwapBack()
-		{
-			_swapped = false;
-			Swap(_swapTarget);
-			_swapTarget = null;
-		}
-
-		private void Swap(Character other)
-		{
-			other.ControlsProvider.SetCharacter(this);
-			ControlsProvider.SetCharacter(other);
-
-			(other.ControlsProvider, ControlsProvider) = (ControlsProvider, other.ControlsProvider);
-		}
 
 		public void TeleportTeam(RoomTrigger roomTrigger, float radius = 1.8f, float rayHeight = 10f)
 		{
@@ -198,6 +205,40 @@ namespace Characters
 		{
 			return CharacterMover.GetCursorTarget();
 		}
+		public void SpendMana(int manaCost)
+		{
+			SetMana(CurrentMana - manaCost);
+		}
+		public void SetMana(int characterCurrentMana)
+		{
+			characterCurrentMana = Mathf.Clamp(characterCurrentMana, 0, MaxMana);
+			_currentMana = characterCurrentMana;
+			Events.ManaChanged?.Invoke(characterCurrentMana);
+		}
+		public TaskResult ReadyToCast()
+		{
+			var result = new TaskResult { Success = true };
+			if(IsDead)
+			{
+				result.Success = false;
+				result.Message = "Character is dead";
+				return result;
+			}
+			if(ActiveSpell == null)
+			{
+				result.Success = false;
+				result.Message = "No spell selected";
+				return result;
+			}
+			if(ActiveSpell.ManaCost > CurrentMana)
+			{
+				result.Success = false;
+				result.Message = "Not enough mana";
+				return result;
+			}
+			return result;
+		}
+
 
 	}
 }
