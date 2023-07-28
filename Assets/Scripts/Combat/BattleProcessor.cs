@@ -14,6 +14,7 @@ namespace Combat
 			target.Events.BeforeDamageReceived?.Invoke(attacker, damage);
 
 			target.TakeDamage(damage);
+			GameEvent<Damage>.Invoke(damage);
 
 			attacker.Events.AfterDamageDealt?.Invoke(target, damage);
 			target.Events.AfterDamageReceived?.Invoke(attacker, damage);

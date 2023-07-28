@@ -15,10 +15,13 @@ MonoBehaviour:
   Characters:
   - {fileID: 11400000, guid: ecf674db83c4dca42b61924b4ade9b66, type: 2}
   - {fileID: 11400000, guid: 969fe2c4726c74e41ad7f93cb53d11d0, type: 2}
+  - {fileID: 11400000, guid: ae12337086fed3142b3d1f11e0b31a45, type: 2}
+  - {fileID: 11400000, guid: ecf674db83c4dca42b61924b4ade9b66, type: 2}
   Spells:
   - {fileID: 11400000, guid: 8757ab62f5e1fb74190b9fc7f01a7e82, type: 2}
   - {fileID: 11400000, guid: 3e2e81ea00a305e4e87540df05fe1b63, type: 2}
   - {fileID: 11400000, guid: 2dd184bf1efabc84cb2f32927c14cd9c, type: 2}
   - {fileID: 11400000, guid: f5f9095ef83efdc419c490859eef358f, type: 2}
+  - {fileID: 11400000, guid: fa3740c3273ae4b47bf49873bf0ab8eb, type: 2}
   - {fileID: 11400000, guid: c304ba9ab92408f488b53e092fab4b8b, type: 2}
   - {fileID: 11400000, guid: 5b6cc9d6aefc97748b57b2dad9940ac2, type: 2}

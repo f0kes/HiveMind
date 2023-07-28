@@ -20,6 +20,8 @@
 		DamageBonus,
 		Interval,
 		MinHealAmount,
-		LevelIncreaseAmount
+		BlessingLevelIncreaseAmount,
+		EnrageMinDamage,
+		EnrageLevelUpAmount
 	}
 }

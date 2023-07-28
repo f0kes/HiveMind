@@ -7,6 +7,7 @@ using Enums;
 using GameState;
 using Stats;
 using UnityEngine;
+using VFX;
 
 namespace DefaultNamespace
 {
@@ -155,6 +156,7 @@ namespace DefaultNamespace
 		public void LevelUp(int levelIncreaseAmount)
 		{
 			SetLevel((int)Level + levelIncreaseAmount);
+			VFXSystem.I.PlayEffectFollow(VFXSystem.Data.LevelUpEffect, transform);
 		}
 	}
 }

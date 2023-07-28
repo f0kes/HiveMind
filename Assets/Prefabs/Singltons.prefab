@@ -167,5 +167,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6ac488f31234473b5b02af6f5b66b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _data: {fileID: 11400000, guid: 056816317d6b0fe4cae00c42312d54c4, type: 2}
   _spellIconPrefab: {fileID: 1938918538312350133, guid: 4f756b32bb4bc984083d36be9f56a64f, type: 3}
   _spellIconDuration: 1.5

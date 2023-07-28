@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Events
 {
@@ -8,6 +10,7 @@ namespace Events
 		//todo: subscribe to events, make virtual methods for each event
 		public GameEvent()
 		{
+			
 			OnEvent = null;
 			EventResetter.Add(this);
 		}
@@ -25,6 +28,7 @@ namespace Events
 		}
 		public void Reset()
 		{
+			Debug.Log("Reset");
 			OnEvent = null;
 		}
 	}

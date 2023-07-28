@@ -150,6 +150,7 @@ namespace GameState
 			GlobalEntities.DestroyDeadEntities();
 			GlobalEntities.Clear();
 			EventResetter.Reset();
+			Ticker.ResetEvents();
 
 			if(battleResult.ResultType == BattleResult.BattleResultType.Win)
 			{

@@ -62,19 +62,16 @@ namespace Combat.Spells
 			Tags.Add(SpellTag.All);
 			PopulateParams();
 			Stats = Owner.Stats;
-			
+
 			Owner.Events.Death += OnDeath;
 			Owner.Events.Ressurect += OnResurrection; //todo: test
-			
+
 			Ticker.OnTick += OnTick;
 		}
-		private void OnDestroy()
-		{
-			OnDestroyed();
-		}
-		
+
 		public virtual void OnDestroyed()
 		{
+			Debug.Log(name + " destroyed");
 			Ticker.OnTick -= OnTick;
 			UnsubscribeFromEvents();
 		}

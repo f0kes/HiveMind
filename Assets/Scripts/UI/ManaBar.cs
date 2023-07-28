@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Characters;
 using Cysharp.Threading.Tasks;
 using Misc;
@@ -23,6 +24,12 @@ namespace UI
 		private int _previousMana;
 		private int _maxMana;
 
+		private bool _isAnimating = true;
+
+		private void OnDestroy()
+		{
+			_isAnimating = false;
+		}
 		public void SetCharacter(Character character)
 		{
 			_character = character;
@@ -42,6 +49,7 @@ namespace UI
 			_previousMana = character.CurrentMana;
 			OnManaChanged(_character.CurrentMana);
 		}
+
 
 		private async void OnManaChanged(int newMana)
 		{
@@ -106,7 +114,7 @@ namespace UI
 			segment.transform.localScale = new Vector3(_maxScale, _maxScale, _maxScale);
 			var time = 0f;
 			var initalColor = segment.GetInitialColor();
-			while (time < _animationTime)
+			while (time < _animationTime && _isAnimating)
 			{
 				time += Time.deltaTime;
 				var blend = Tween.EaseInSine(time / _animationTime);
@@ -121,7 +129,7 @@ namespace UI
 		{
 			var time = 0f;
 			var initalColor = segment.GetInitialColor();
-			while (time < _animationTime)
+			while (time < _animationTime && _isAnimating)
 			{
 				time += Time.deltaTime;
 				var blend = Tween.EaseOutSine(time / _animationTime);

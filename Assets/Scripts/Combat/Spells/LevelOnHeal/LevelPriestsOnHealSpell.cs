@@ -14,7 +14,7 @@ namespace Combat.Spells.LevelOnHeal
 		protected override void PopulateParams()
 		{
 			AddParam(CS.MinHealAmount, _minHealAmount);
-			AddParam(CS.LevelIncreaseAmount, _levelIncreaseAmount);
+			AddParam(CS.BlessingLevelIncreaseAmount, _levelIncreaseAmount);
 		}
 		protected override void SubscribeToEvents()
 		{
@@ -31,7 +31,7 @@ namespace Combat.Spells.LevelOnHeal
 		private void OnHeal(Combat.Heal obj)
 		{
 			if(obj.Value < GetParam(CS.MinHealAmount)) return;
-			var levelIncreaseAmount = GetParam(CS.LevelIncreaseAmount);
+			var levelIncreaseAmount = GetParam(CS.BlessingLevelIncreaseAmount);
 			var team = GetOwnerCharacter().GetTeam();
 			foreach(var entity in team)
 			{

@@ -81,6 +81,7 @@ namespace Characters
 		private void OnDestroy()
 		{
 			UnSubscribeFromEvents();
+			DestroySpells();
 		}
 		private void SubscribeToEvents()
 		{
@@ -153,6 +154,19 @@ namespace Characters
 			spell.SetOwner(this);
 			spell.OnCreated();
 			_spells.Add(spell);
+		}
+		public void DestroySpells()
+		{
+			foreach(var spell in _spells)
+			{
+				DestroySpell(spell);
+			}
+			_spells.Clear();
+		}
+		public void DestroySpell(BaseSpell spell)
+		{
+			spell.OnDestroyed();
+			Destroy(spell);
 		}
 
 

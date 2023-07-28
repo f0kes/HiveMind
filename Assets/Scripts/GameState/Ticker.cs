@@ -40,6 +40,13 @@ namespace GameState
 		public static event Action<OnTickEventArgs> OnTickEnd;
 		public static event EventHandler<OnUpdateEventArgs> OnUpdate;
 
+		public static void ResetEvents()
+		{
+			OnTickStart = null;
+			OnTick = null;
+			OnTickEnd = null;
+			OnUpdate = null;
+		}
 		public async void InvokeInTime(Action toInvoke, float time)
 		{
 			float timePassed = 0;
