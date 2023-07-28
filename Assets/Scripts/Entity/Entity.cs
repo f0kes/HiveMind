@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Combat;
 using Combat.Spells;
 using Combat.Spells.PoisonGrenade;
@@ -21,6 +23,7 @@ namespace DefaultNamespace
 		private float _currentHealthPercent = 1f;
 		private ushort _team;
 		private uint _level;
+		private List<BaseEffect> _effects = new List<BaseEffect>();
 
 		private SerializableCharacterStats _stats;
 		public StatDict<CS> Stats;
@@ -142,6 +145,13 @@ namespace DefaultNamespace
 		public void ApplyNewEffect(Entity owner, BaseSpell source, BaseEffect effect, float duration)
 		{
 			effect.ApplyEffect(owner, this, source, duration);
+			_effects.Add(effect);
+			effect.Destroyed += OnEffectDestroyed;
+		}
+
+		private void OnEffectDestroyed(BaseEffect obj)
+		{
+			_effects.Remove(obj);
 		}
 
 
@@ -157,6 +167,15 @@ namespace DefaultNamespace
 		{
 			SetLevel((int)Level + levelIncreaseAmount);
 			VFXSystem.I.PlayEffectFollow(VFXSystem.Data.LevelUpEffect, transform);
+		}
+
+		public BaseEffect GetEffectOfType(BaseEffect effect)
+		{
+			return _effects.FirstOrDefault(baseEffect => baseEffect.GetType() == effect.GetType());
+		}
+		public BaseEffect GetEffectOfType<T>() where T : BaseEffect
+		{
+			return _effects.OfType<T>().FirstOrDefault();
 		}
 	}
 }

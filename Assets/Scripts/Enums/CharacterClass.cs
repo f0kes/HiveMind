@@ -7,5 +7,7 @@
 		Warlock,
 		Paladin,
 		Rogue,
+		Peasant,
+		
 	}
 }

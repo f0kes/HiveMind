@@ -22,6 +22,13 @@ namespace Combat
 			attacker.Events.HitLanded?.Invoke(target);
 			target.Events.HitReceived?.Invoke(attacker);
 		}
+
+		public static void ProcessHit(Damage damage)
+		{
+			var attacker = damage.Source;
+			var target = damage.Target;
+			ProcessHit(attacker, target, damage);
+		}
 		public static void ProcessHeal(Entity healer, Entity target, Heal heal)
 		{
 			heal.Target = target;

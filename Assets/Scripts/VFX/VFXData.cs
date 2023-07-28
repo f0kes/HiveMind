@@ -6,5 +6,7 @@ namespace VFX
 	public class VFXData : ScriptableObject
 	{
 		public VFXEffect LevelUpEffect;
+		public VFXEffect ExecuteEffect;
+		public VFXEffect DivingShieldEffect;
 	}
 }

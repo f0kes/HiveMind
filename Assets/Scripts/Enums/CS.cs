@@ -22,6 +22,9 @@
 		MinHealAmount,
 		BlessingLevelIncreaseAmount,
 		EnrageMinDamage,
-		EnrageLevelUpAmount
+		EnrageLevelUpAmount,
+		ExecuteDamagePerMissingHP,
+		DivineShieldHP,
+		DivineShieldDuration
 	}
 }

@@ -21,7 +21,6 @@ namespace VFX
 			_instance = this;
 		}
 
-
 		public void SpawnSpellIcon(Sprite icon, Transform target)
 		{
 			var spellIcon = Instantiate(_spellIconPrefab);
@@ -29,11 +28,13 @@ namespace VFX
 			spellIcon.Follow(target);
 			Destroy(spellIcon.gameObject, _spellIconDuration);
 		}
-		public void PlayEffectFollow(VFXEffect effect, Transform target)
+		public VFXEffect PlayEffectFollow(VFXEffect effect, Transform target)
 		{
 			var instance = Instantiate(effect);
 			instance.Follow(target);
-			Destroy(instance.gameObject, effect.Duration);
+			if(effect.Duration > 0)
+				Destroy(instance.gameObject, effect.Duration);
+			return instance;
 		}
 	}
 }
