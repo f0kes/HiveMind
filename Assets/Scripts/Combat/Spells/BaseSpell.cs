@@ -22,7 +22,7 @@ namespace Combat.Spells
 	}
 
 
-	public abstract class BaseSpell : ScriptableObject
+	public abstract class BaseSpell : ScriptableObject,IParamProvider<CS>
 	{
 		public int Level = 10;
 		public Entity Owner{get; private set;}
@@ -44,7 +44,7 @@ namespace Combat.Spells
 		public string Name => _name;
 		public string Description => _description;
 		public int ManaCost => _manaCost;
-		public void SetOwner(Entity owner)
+		public virtual void SetOwner(Entity owner)
 		{
 			if(Owner != null)
 			{

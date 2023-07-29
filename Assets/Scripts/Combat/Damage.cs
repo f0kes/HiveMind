@@ -11,12 +11,14 @@ namespace Combat
 			Target = target;
 			Spell = spell;
 			Value = value;
+			Redirecrable = true;
 		}
 
 		public Entity Source;
 		public Entity Target;
 		public BaseSpell Spell;
 		public float Value;
+		public bool Redirecrable;
 	}
 	public struct Heal
 	{

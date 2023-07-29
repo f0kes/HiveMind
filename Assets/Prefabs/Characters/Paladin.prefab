@@ -65,7 +65,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742078971301774809, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: m_Name
-      value: Player Variant
+      value: Paladin
       objectReference: {fileID: 0}
     - target: {fileID: 7784035763747362988, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: _weapon
@@ -78,7 +78,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4964365411268349456, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
   m_PrefabInstance: {fileID: 6394705761840887288}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5859680969565472347
+--- !u!114 &3587770471033348279
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,7 +87,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2043076259495918568}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5034de9056e4e3f9d3aa6d9a8c78ba0, type: 3}
+  m_Script: {fileID: 11500000, guid: ec42b94b65b84b8aa32ed9c620c703cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cheatsEnabled: 1
+  _viewDistance: 50
+  _circleDivisions: 16
+  _chaseBehaivourWeight: 0.8
+  _fleeBehaivourWeight: 1
+  _avoidWallBehaivourWeight: 1
+  _alignBehaivourWeight: 0
+  _debugDraw: 0

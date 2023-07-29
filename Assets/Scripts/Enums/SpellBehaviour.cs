@@ -6,6 +6,7 @@
 		Passive,
 		UnitTarget,
 		PointTarget,
-		
+
+		Active
 	}
 }

@@ -7,7 +7,7 @@ namespace Combat.Spells
 {
 	public abstract class BaseAura : BaseSpell
 	{
-		private HashSet<Entity> _targets;
+		private HashSet<Entity> _targets = new HashSet<Entity>();
 		protected override void PopulateParams()
 		{
 		}
@@ -17,13 +17,23 @@ namespace Combat.Spells
 			base.OnTick(obj);
 			var oldTargets = _targets;
 			var newTargets = GetTargets();
-			foreach(var oldTarget in oldTargets.Where(oldTarget => !newTargets.Contains(oldTarget)))
+			foreach(var oldTarget in oldTargets.Where(oldTarget => !newTargets.Contains(oldTarget))) 
 			{
 				RemoveAura(oldTarget);
 			}
 			foreach(var newTarget in newTargets.Where(newTarget => !oldTargets.Contains(newTarget)))
 			{
 				ApplyAura(newTarget);
+			}
+			_targets = newTargets;
+		}
+
+		public override void OnDestroyed()
+		{
+			base.OnDestroyed();
+			foreach(var target in _targets)
+			{
+				RemoveAura(target);
 			}
 		}
 

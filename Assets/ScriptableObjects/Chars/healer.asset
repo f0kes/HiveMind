@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8da376ccfd974cca8495975e86784afb, type: 3}
-  m_Name: am
+  m_Name: healer
   m_EditorClassIdentifier: 
   Prefab: {fileID: 4092394766512764877, guid: cdb2d818283cfbd479766077c4dfc509, type: 3}
   EntityData:
-    Icon: {fileID: 119140370, guid: 2d6651ecd32891d4eb98b6ed77cf702d, type: 3}
-    Name: Anti Mage
+    Icon: {fileID: 1466170240, guid: 2d6651ecd32891d4eb98b6ed77cf702d, type: 3}
+    Name: Healer
     Tags: 2
     Stats: {fileID: 11400000, guid: 4d44390da360a73449104a3beb72d5c8, type: 2}
     Level: 1000
@@ -23,3 +23,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2dd184bf1efabc84cb2f32927c14cd9c, type: 2}
   AIDesirability: 1
   AIThreat: 1
+  MaxMana: 10
+  Class: 0

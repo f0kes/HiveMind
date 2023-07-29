@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff5135f17b294008bf2ba3db0280e281, type: 3}
+  m_Name: LessHPMoreDamage
+  m_EditorClassIdentifier: 
+  Level: 10
+  _icon: {fileID: 21300000, guid: c2a029a5975cd6146ba380b7de356c6e, type: 3}
+  _name: Bedlam Suka
+  _description: Less hp this has, more damage
+  _manaCost: 1
+  Behaviour: 2
+  Tags: 
+  _damagePerMissingHealth:
+    _min: 0.1
+    _max: 2

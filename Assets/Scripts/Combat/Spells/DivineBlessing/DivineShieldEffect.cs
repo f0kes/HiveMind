@@ -20,13 +20,26 @@ namespace Combat.Spells.DivineBlessing
 			_vfxEffect = VFXSystem.I.PlayEffectFollow(VFXSystem.Data.DivingShieldEffect, Target.transform);
 		}
 
+
 		public override void OnDestroyed()
 		{
 			base.OnDestroyed();
 			_vfxEffect.Stop();
 		}
 
-		public override void OnBeforeDamageReceived(Entity attacker, Damage damage)
+		protected override void SubscribeToEvents()
+		{
+			base.SubscribeToEvents();
+			Target.Events.BeforeDamageReceived += TargetOnBeforeDamageReceived;
+		}
+
+		protected override void UnsubscribeFromEvents()
+		{
+			base.UnsubscribeFromEvents();
+			Target.Events.BeforeDamageReceived -= TargetOnBeforeDamageReceived;
+		}
+		
+		private void TargetOnBeforeDamageReceived(Entity attacker, Damage damage)
 		{
 			base.OnBeforeDamageReceived(attacker, damage);
 			if(damage.Value >= _health)

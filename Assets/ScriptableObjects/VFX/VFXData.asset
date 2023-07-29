@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: VFXData
   m_EditorClassIdentifier: 
   LevelUpEffect: {fileID: 6552808562782457674, guid: 34b361a2016a90d4f970d40492d26298, type: 3}
+  ExecuteEffect: {fileID: 6552808562782457674, guid: 34b361a2016a90d4f970d40492d26298, type: 3}
+  DivingShieldEffect: {fileID: 6552808562782457674, guid: 34b361a2016a90d4f970d40492d26298, type: 3}

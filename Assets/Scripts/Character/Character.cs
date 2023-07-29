@@ -138,6 +138,10 @@ namespace Characters
 						_activeSpell = spell;
 						activeSpellSet = true;
 						break;
+					case SpellBehaviour.Active:
+						_activeSpell = spell;
+						activeSpellSet = true;
+						break;
 					default:
 						break;
 				}

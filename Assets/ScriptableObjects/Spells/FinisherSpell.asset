@@ -12,12 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e769291c9584a81ad2db4bb23094472, type: 3}
   m_Name: FinisherSpell
   m_EditorClassIdentifier: 
-  Target: {fileID: 0}
-  Behaviour: 0
+  Level: 10
+  _icon: {fileID: 0}
+  _name: Finisher
+  _description: Less hp target has, more damage this deals
+  _manaCost: 1
+  Behaviour: 2
   Tags: 
   _damageBonus:
-    Min: 0
-    Max: 0
+    _min: 0
+    _max: 0
   _attackSpeedPenalty:
-    Min: 0
-    Max: 0
+    _min: 0
+    _max: 0

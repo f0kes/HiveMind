@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb03a723810a4992a2a65dcde7a2a24a, type: 3}
+  m_Name: BloodlustSpell
+  m_EditorClassIdentifier: 
+  Level: 10
+  _icon: {fileID: 21300000, guid: 9d854caeb9ea38e409534cce648e9ae0, type: 3}
+  _name: Bloodlust
+  _description: 'Whenever someone crits, give rogues +1
+
+    Aura: crits'
+  _manaCost: 0
+  Behaviour: 1
+  Tags: 
+  _levelsOnCrit:
+    _min: 1
+    _max: 10
+  _critChance:
+    _min: 0.05
+    _max: 1
+  _critDamageMultiplier:
+    _min: 1.5
+    _max: 10

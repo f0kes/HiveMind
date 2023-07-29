@@ -19,12 +19,23 @@
 		AttackSpeedPenalty,
 		DamageBonus,
 		Interval,
-		MinHealAmount,
+		BlessingMinHealAmount,
 		BlessingLevelIncreaseAmount,
 		EnrageMinDamage,
 		EnrageLevelUpAmount,
 		ExecuteDamagePerMissingHP,
 		DivineShieldHP,
-		DivineShieldDuration
+		DivineShieldDuration,
+		RedirectionDamageMultiplier,
+		HellfireDamage,
+		BloodlustCritDamageMultiplier,
+		BloodlustCritChance,
+		BloodlustLevelsOnCrit,
+		CritChance,
+		CritDamage,
+		RagePotionAtkSpeedBonus,
+		RagePotionDamagePenalty,
+		RagePotionBonusDuration,
+		RagePotionPenaltyDuration
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DefaultNamespace;
 using UnityEngine;
 
@@ -9,15 +10,7 @@ namespace Combat
 		public static List<Entity> FindEntitiesInRadius(Vector3 point, float radius)
 		{
 			var all = GlobalEntities.GetAllEntitiesCopy();
-			var result = new List<Entity>();
-			foreach (var entity in all)
-			{
-				if (Vector3.Distance(entity.transform.position, point) <= radius)
-				{
-					result.Add(entity);
-				}
-			}
-			return result;
+			return all.Where(entity => Vector3.Distance(entity.transform.position, point) <= radius).ToList();
 		}
 	}
 }

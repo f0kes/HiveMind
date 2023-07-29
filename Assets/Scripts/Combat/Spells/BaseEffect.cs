@@ -16,7 +16,7 @@ namespace Combat.Spells
 
 		protected BaseSpell SourceSpell;
 		public bool Stackable = true;
-		
+
 		public float TimeLeft{get; protected set;}
 
 		public virtual void ApplyEffect(Entity owner, Entity target, BaseSpell source, float duration)
@@ -31,10 +31,11 @@ namespace Combat.Spells
 					Remove();
 				}
 			}
-			SetOwner(owner);
+
 			Target = target;
 			SourceSpell = source;
 			SetTimeLeft(duration);
+			SetOwner(owner);
 			OnCreated();
 			Applied?.Invoke(this);
 		}
