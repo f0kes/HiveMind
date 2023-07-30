@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Characters;
 using Enums;
 using Stats;
@@ -22,7 +23,7 @@ namespace Combat.Spells.DivineBlessing
 			base.OnSpellStart();
 			var owner = GetOwnerCharacter();
 			if(owner == null) return;
-			var targets = owner.GetTeam().GetListCopy();
+			var targets = owner.GetTeam().GetListCopy().Where(c => !c.IsDead).ToList();
 			foreach(var target in targets)
 			{
 				var effect = CreateInstance<DivineShieldEffect>();

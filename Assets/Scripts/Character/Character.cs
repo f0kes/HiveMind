@@ -233,8 +233,12 @@ namespace Characters
 			_currentMana = characterCurrentMana;
 			Events.ManaChanged?.Invoke(characterCurrentMana);
 		}
-		public TaskResult ReadyToCast()
+		public TaskResult ReadyToCast(BaseSpell spell = null)
 		{
+			if(spell == null)
+			{
+				spell = ActiveSpell;
+			}
 			var result = new TaskResult { Success = true };
 			if(IsDead)
 			{
@@ -242,13 +246,13 @@ namespace Characters
 				result.Message = "Character is dead";
 				return result;
 			}
-			if(ActiveSpell == null)
+			if(spell == null)
 			{
 				result.Success = false;
 				result.Message = "No spell selected";
 				return result;
 			}
-			if(ActiveSpell.ManaCost > CurrentMana)
+			if(spell.ManaCost > CurrentMana)
 			{
 				result.Success = false;
 				result.Message = "Not enough mana";

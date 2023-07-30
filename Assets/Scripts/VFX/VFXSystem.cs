@@ -28,12 +28,34 @@ namespace VFX
 			spellIcon.Follow(target);
 			Destroy(spellIcon.gameObject, _spellIconDuration);
 		}
-		public VFXEffect PlayEffectFollow(VFXEffect effect, Transform target)
+		private T PlayEffect<T>(T effect) where T : VFXEffect
 		{
+			if(effect == null)
+			{
+				Debug.LogError("Effect is null");
+				return null;
+			}
 			var instance = Instantiate(effect);
-			instance.Follow(target);
 			if(effect.Duration > 0)
 				Destroy(instance.gameObject, effect.Duration);
+			return instance;
+		}
+		public VFXEffect PlayEffectFollow(VFXEffect effect, Transform target)
+		{
+			var instance = PlayEffect(effect);
+			instance.Follow(target);
+			return instance;
+		}
+
+		public VFXEffect PlayEffectPoint(VFXEffect effect, Vector3 point)
+		{
+			var instance = PlayEffect(effect);
+			instance.transform.position = point;
+			return instance;
+		}
+		public VFXMultiplePointEffect PlayMultiplePointEffect(VFXMultiplePointEffect effect)
+		{
+			var instance = PlayEffect(effect);
 			return instance;
 		}
 	}

@@ -8,5 +8,7 @@ namespace VFX
 		public VFXEffect LevelUpEffect;
 		public VFXEffect ExecuteEffect;
 		public VFXEffect DivingShieldEffect;
+		public VFXEffect HellfireEffect;
+		public VFXMultiplePointEffect RedirectionEffect;
 	}
 }

@@ -19,6 +19,7 @@ namespace Combat.Spells.DivineBlessing
 			_health = GetParam(CS.DivineShieldHP);
 			_vfxEffect = VFXSystem.I.PlayEffectFollow(VFXSystem.Data.DivingShieldEffect, Target.transform);
 		}
+		
 
 
 		public override void OnDestroyed()

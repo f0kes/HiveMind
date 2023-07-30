@@ -20,5 +20,5 @@ MonoBehaviour:
   Behaviour: 4
   Tags: 
   _damage:
-    _min: 240
-    _max: 2400
+    _min: 120
+    _max: 1200

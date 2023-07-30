@@ -234,15 +234,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerCharacters:
   - {fileID: 11400000, guid: cad5b25bb8f50e64781f4548ba7913a8, type: 2}
-  - {fileID: 11400000, guid: cad5b25bb8f50e64781f4548ba7913a8, type: 2}
-  - {fileID: 11400000, guid: cad5b25bb8f50e64781f4548ba7913a8, type: 2}
+  - {fileID: 11400000, guid: 255678e716b2d254c9800edf466dc59e, type: 2}
+  - {fileID: 11400000, guid: 255678e716b2d254c9800edf466dc59e, type: 2}
   - {fileID: 11400000, guid: 255678e716b2d254c9800edf466dc59e, type: 2}
   - {fileID: 11400000, guid: 255678e716b2d254c9800edf466dc59e, type: 2}
   - {fileID: 11400000, guid: 255678e716b2d254c9800edf466dc59e, type: 2}
   _enemyCharacters:
-  - {fileID: 11400000, guid: 3d3746d7f4c19644a911753bc3194df5, type: 2}
-  - {fileID: 11400000, guid: 3d3746d7f4c19644a911753bc3194df5, type: 2}
-  - {fileID: 11400000, guid: 3d3746d7f4c19644a911753bc3194df5, type: 2}
+  - {fileID: 11400000, guid: 259b6d512e6076745b3388e0668f2462, type: 2}
+  - {fileID: 11400000, guid: 259b6d512e6076745b3388e0668f2462, type: 2}
+  - {fileID: 11400000, guid: 259b6d512e6076745b3388e0668f2462, type: 2}
+  - {fileID: 11400000, guid: 259b6d512e6076745b3388e0668f2462, type: 2}
+  - {fileID: 11400000, guid: 259b6d512e6076745b3388e0668f2462, type: 2}
+  - {fileID: 11400000, guid: 259b6d512e6076745b3388e0668f2462, type: 2}
   _level: 1
 --- !u!1 &317596126
 GameObject:

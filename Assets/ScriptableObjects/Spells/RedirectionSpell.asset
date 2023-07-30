@@ -20,5 +20,5 @@ MonoBehaviour:
   Behaviour: 1
   Tags: 
   _damageMultiplier:
-    _min: 0.8
+    _min: 1
     _max: 2

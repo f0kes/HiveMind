@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelUpEffect: {fileID: 6552808562782457674, guid: 34b361a2016a90d4f970d40492d26298, type: 3}
   ExecuteEffect: {fileID: 6552808562782457674, guid: 34b361a2016a90d4f970d40492d26298, type: 3}
-  DivingShieldEffect: {fileID: 6552808562782457674, guid: 34b361a2016a90d4f970d40492d26298, type: 3}
+  DivingShieldEffect: {fileID: 1658529159525656230, guid: 7a77dcfde90a8c54ea9afa72035585cf, type: 3}
+  HellfireEffect: {fileID: 1261517207242911396, guid: d48906d08f947564fb8fa0d6108a9b7f, type: 3}
+  RedirectionEffect: {fileID: 0}

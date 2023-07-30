@@ -3,16 +3,8 @@ using DefaultNamespace;
 
 namespace Combat
 {
-	public struct Damage
+	public class Damage
 	{
-		public Damage(Entity source, Entity target, BaseSpell spell, float value)
-		{
-			Source = source;
-			Target = target;
-			Spell = spell;
-			Value = value;
-			Redirecrable = true;
-		}
 
 		public Entity Source;
 		public Entity Target;

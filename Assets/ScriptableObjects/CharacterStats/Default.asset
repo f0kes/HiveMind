@@ -17,8 +17,8 @@ MonoBehaviour:
     Value:
       _baseValue: 1
       _scalingRange:
-        _min: 1
-        _max: 20
+        _min: 0.5
+        _max: 3
   - Name: 1
     Value:
       _baseValue: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
     Value:
       _baseValue: 25
       _scalingRange:
-        _min: 40
+        _min: 80
         _max: 400
   - Name: 5
     Value:

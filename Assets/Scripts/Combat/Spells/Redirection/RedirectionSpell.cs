@@ -4,6 +4,8 @@ using Enums;
 using Misc;
 using Stats;
 using UnityEngine;
+using VFX;
+using VFX.VFXBehaviours;
 
 namespace Combat.Spells.Redirection
 {
@@ -26,7 +28,11 @@ namespace Combat.Spells.Redirection
 			var damageMultiplier = GetParam(CS.RedirectionDamageMultiplier);
 			var damageVal = damage.Value * damageMultiplier;
 			var randomEnemy = GlobalEntities.GetAllCharacters().Where(c => c.GetTeam() != owner.GetTeam()).Random();
-			if(randomEnemy == null) return;
+			if(randomEnemy == null)
+			{
+				Debug.LogError("No enemy found");
+				return;
+			}
 			damage.Value = 0;
 			var newDamage = new Damage
 			{
@@ -37,6 +43,10 @@ namespace Combat.Spells.Redirection
 				Redirecrable = false
 			};
 			BattleProcessor.ProcessHit(newDamage);
+			
+			//var effect = VFXSystem.I.PlayMultiplePointEffect(VFXSystem.Data.RedirectionEffect);
+			//effect.SetEffectBehaviour(new VFXFollow(effect, owner.transform), 0);
+			//effect.SetEffectBehaviour(new VFXFollow(effect, randomEnemy.transform), 1);
 		}
 	}
 }

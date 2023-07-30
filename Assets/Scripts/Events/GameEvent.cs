@@ -4,13 +4,12 @@ using UnityEngine;
 
 namespace Events
 {
-	public abstract class GameEvent<T> : IResettable where T : struct
+	public abstract class GameEvent<T> : IResettable 
 	{
 		private static event Action<T> OnEvent;
 		//todo: subscribe to events, make virtual methods for each event
 		public GameEvent()
 		{
-			
 			OnEvent = null;
 			EventResetter.Add(this);
 		}

@@ -22,7 +22,7 @@ namespace Combat.Spells
 	}
 
 
-	public abstract class BaseSpell : ScriptableObject,IParamProvider<CS>
+	public abstract class BaseSpell : ScriptableObject, IParamProvider<CS>
 	{
 		public int Level = 10;
 		public Entity Owner{get; private set;}
@@ -123,12 +123,11 @@ namespace Combat.Spells
 			{
 				return new CastResult(CastResultType.Fail, "Owner is not a character");
 			}
-			var characterResult = character.ReadyToCast();
+			var characterResult = character.ReadyToCast(this);
 			if(!characterResult)
 			{
 				return new CastResult(CastResultType.Fail, characterResult.Message);
 			}
-			Debug.Log(Behaviour);
 			switch(Behaviour)
 			{
 				case SpellBehaviour.PointTarget:

@@ -25,7 +25,7 @@ MonoBehaviour:
   MaxStatValue: 1000
   SwapCooldown: 3
   ManaPerSwap: 1
-  TimeToStartFatigue: 30
+  TimeToStartFatigue: 60
   FatigueTickTime: 3
-  FatigueIncrement: 2
+  FatigueIncrement: 1
   FatigueStartValue: 1

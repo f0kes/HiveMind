@@ -8,16 +8,22 @@ namespace Combat.Spells.AutoAttack
 
 		protected override void PopulateParams()
 		{
-			
 		}
 
 		public override void OnBulletHit(Entity target)
 		{
 			base.OnBulletHit(target);
 			var damageValue = GetOwnerCharacter().Stats[CS.Damage];
-			var damage = new Damage(Owner, target, this, damageValue);
+			var damage = new Damage
+			{
+				Redirecrable = true,
+				Source = GetOwnerCharacter(),
+				Target = target,
+				Spell = this,
+				Value = damageValue
+			};
 			BattleProcessor.ProcessHit(Owner, target, damage);
 		}
-		
+
 	}
 }

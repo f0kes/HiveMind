@@ -16,12 +16,12 @@ MonoBehaviour:
   _icon: {fileID: 0}
   _name: Divine Blessing
   _description: Give your characters  Divine Shield
-  _manaCost: 2
+  _manaCost: 1
   Behaviour: 4
   Tags: 
   _divineShieldHP:
-    _min: 1000
+    _min: 250
     _max: 1000
   _divineShieldDuration:
-    _min: 100
+    _min: 3
     _max: 100
