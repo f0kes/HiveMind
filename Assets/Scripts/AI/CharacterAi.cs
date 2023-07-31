@@ -5,6 +5,7 @@ using AI.SteeringBehaviours;
 using Characters;
 using DefaultNamespace;
 using DefaultNamespace.AI;
+using GameState;
 using UnityEngine;
 
 namespace AI
@@ -33,6 +34,17 @@ namespace AI
 			PopulateBehaviours();
 		}
 
+		protected override void Start()
+		{
+			base.Start();
+			Ticker.OnTick += Tick;
+		}
+		private void OnDestroy()
+		{
+			Ticker.OnTick -= Tick;
+		}
+
+
 		protected virtual void PopulateBehaviours()
 		{
 			Behaviours.Add(new ComplexBehaviour
@@ -46,19 +58,19 @@ namespace AI
 				new RepellBehaviour(), _fleeBehaivourWeight));
 			Behaviours.Add(new ComplexBehaviour
 			(new FriendCenterPointGetter(),
-				new AttractBehaviour(), _alignBehaivourWeight*0.5f));
+				new AttractBehaviour(), _alignBehaivourWeight * 0.5f));
 		}
 
 
-		private void Update()
+		private void Tick(Ticker.OnTickEventArgs obj)
 		{
 			var entities = GetEntitiesInRange(_viewDistance).OfType<Character>().ToList();
-			if(_currentEnemy == null ||_currentEnemy.IsDead)
+			if(_currentEnemy == null || _currentEnemy.IsDead)
 				_currentEnemy = GetClosestEnemy(entities);
 
 			var desirabiltityMap = new DesirabilityMap(_circleDivisions);
 
-			foreach (var behaviour in Behaviours)
+			foreach(var behaviour in Behaviours)
 			{
 				desirabiltityMap +=
 					behaviour.GetDesirabilities(ControlledCharacter, entities, desirabiltityMap.Divisions, _debugDraw);
@@ -69,14 +81,14 @@ namespace AI
 			var maxValue = desirabiltityMap.DirectionMap.Values.Max();
 			var maxDirection = desirabiltityMap.DirectionMap.First(x => x.Value == maxValue).Key;
 
-			if (maxValue <= 0.3f)
+			if(maxValue <= 0.3f)
 			{
 				maxDirection = Vector2.zero;
 			}
 
 
 			//draw lines
-			foreach (var kv in desirabiltityMap.DirectionMap)
+			foreach(var kv in desirabiltityMap.DirectionMap)
 			{
 				var position = ControlledCharacter.transform.position;
 				var direction = new Vector3(kv.Key.x, 0, kv.Key.y);
@@ -86,7 +98,7 @@ namespace AI
 
 
 			Vector3 lookAt = Vector3.zero;
-			if (_currentEnemy != null)
+			if(_currentEnemy != null)
 			{
 				lookAt = _currentEnemy.transform.position;
 				ControlledCharacter.CharacterShooter.Shoot();

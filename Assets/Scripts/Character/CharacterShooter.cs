@@ -2,6 +2,7 @@
 using System.Collections;
 using DefaultNamespace;
 using Enums;
+using GameState;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -20,12 +21,19 @@ namespace Characters
 
 		private bool _reloading;
 		private float _reloadTime;
-
-		private void Update()
+		private void OnEnable()
 		{
-			_timeSinceShot += Time.deltaTime;
+			Ticker.OnTick += Tick;
+		}
+		private void OnDisable()
+		{
+			Ticker.OnTick -= Tick;
 		}
 
+		private void Tick(Ticker.OnTickEventArgs obj)
+		{
+			_timeSinceShot += Ticker.TickInterval;
+		}
 		public void Init(Characters.Character character)
 		{
 			_character = character;

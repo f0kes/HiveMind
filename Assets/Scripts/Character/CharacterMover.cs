@@ -1,5 +1,6 @@
 using System;
 using DefaultNamespace;
+using GameState;
 using UnityEngine;
 
 namespace Characters
@@ -19,16 +20,28 @@ namespace Characters
 		private Rigidbody _rigidbody;
 
 		public Vector2 Movement => _moveDirection;
-		public Entity CursorTarget { get; private set; }
+		public Entity CursorTarget{get; private set;}
 
 		private void Awake()
 		{
 			_rigidbody = GetComponent<Rigidbody>();
 		}
+		private void OnEnable()
+		{
+			Ticker.OnTick += Tick;
+		}
+		private void OnDisable()
+		{
+			Ticker.OnTick -= Tick;
+		}
+
+		private void Tick(Ticker.OnTickEventArgs obj)
+		{
+			Move();
+		}
 
 		private void Update()
 		{
-			Move();
 		}
 
 		public void SetInput(Vector2 moveDirection, Vector3 lookAt)
@@ -48,21 +61,21 @@ namespace Characters
 		{
 			return _lookAt;
 		}
-		
+
 
 		private void Move()
 		{
 			_moveDirection.Normalize();
 			Vector3 dir = new Vector3(_moveDirection.x, 0, _moveDirection.y) * _acceleration;
-			if (dir == Vector3.zero)
+			if(dir == Vector3.zero)
 			{
 				AccelerateTowards(-_rigidbody.velocity.normalized, _deceleration);
 			}
 			else
 			{
-				AccelerateTowards(dir, _acceleration);	
+				AccelerateTowards(dir, _acceleration);
 			}
-			
+
 
 			var transform1 = transform;
 			var direction = _lookAt - transform1.position;
@@ -81,6 +94,6 @@ namespace Characters
 			_rigidbody.velocity = newVel.magnitude <= _moveSpeed ? newVel : rbVelocity;
 		}
 
-	
+
 	}
 }

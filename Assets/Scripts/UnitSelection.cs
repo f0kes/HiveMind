@@ -15,6 +15,7 @@ public class UnitSelection : MonoBehaviour
 	[SerializeField] private Characters.Character _character;
 	[SerializeField] private List<ColorCode> _colorCodes;
 	[SerializeField] private MeshRenderer _meshRenderer;
+	[SerializeField] private Color _selectedColor;
 	private Material _material;
 	private Dictionary<int, Color> _colors = new Dictionary<int, Color>();
 	private bool _isPlayer;
@@ -32,11 +33,19 @@ public class UnitSelection : MonoBehaviour
 	}
 	void Start()
 	{
-		_material.color = _colors[_character.Team];
-
 		InputHandler.Instance.OnNewCharacter += OnNewCharacter;
 		InputHandler.Instance.OnMouseOverCharacter += OnMouseOverCharacter;
 		InputHandler.Instance.OnMouseOverCharacterEnd += OnMouseOverCharacterEnd;
+		if(_character == InputHandler.Instance.GetControlledCharacter())
+		{
+			_isPlayer = true;
+			_material.color = Color.white;
+		}
+		else
+		{
+			_isPlayer = false;
+			_material.color = _colors[_character.Team];
+		}
 	}
 	private void OnDestroy()
 	{
@@ -56,7 +65,7 @@ public class UnitSelection : MonoBehaviour
 	{
 		if(character == _character && !_isPlayer)
 		{
-			_material.color = Color.white;
+			_material.color = _selectedColor;
 		}
 	}
 

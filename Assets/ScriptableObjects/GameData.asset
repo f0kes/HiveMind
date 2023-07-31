@@ -19,7 +19,7 @@ MonoBehaviour:
   StartingBattleLevel: 1
   StartingShopLevel: 2
   GoldPerBattle: 10
-  StartingGold: 18
+  StartingGold: 20
   RollCost: 1
   BuyCost: 3
   MaxStatValue: 1000

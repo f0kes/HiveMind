@@ -157,8 +157,8 @@ namespace GameState
 				var playerParty = _characterFactory.GetAliveOriginals(0);
 				_playerData.SetParty(playerParty);
 				_playerData.Gold += (int)_goldPerBattle;
-				_playerData.BattleLevelPrecise += GameData.EnemyToPlayerLevelScaling.Value;
-				_playerData.ShopLevelPrecise += 1;
+				_playerData.BattleLevelPrecise += 1;
+				_playerData.ShopLevelPrecise += GameData.EnemyToPlayerLevelScaling.ReverseValue;
 			}
 			else
 			{

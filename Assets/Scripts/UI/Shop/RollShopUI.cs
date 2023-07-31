@@ -6,6 +6,7 @@ using GameState;
 using Misc;
 using Player;
 using Shop;
+using TMPro;
 using UI.Inventory;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,8 @@ namespace UI.Shop
 	{
 		[SerializeField] private Button _rollButton;
 		[SerializeField] private int _entryCount = 5;
+		[SerializeField] private TextMeshProUGUI _levelText;
+
 		private List<InventorySlotUI> _slots;
 		private RollShop _shop;
 
@@ -41,7 +44,7 @@ namespace UI.Shop
 					entries.Add(entry);
 				}
 			} //TODO: move pool generation to RollShop
-
+			_levelText.text = $"Shop level: {GameStateController.PlayerData.ShopLevel}";
 			_shop = new RollShop(entries, rollCost, _slots.Count, GameStateController.PlayerData.ShopLevel);
 			Display();
 		}

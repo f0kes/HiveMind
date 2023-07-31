@@ -101,5 +101,10 @@ namespace UI
 				HideBlackScreen();
 			}
 		}
+
+		public void HideMessage()
+		{
+			_messageTimer = 0;
+		}
 	}
 }

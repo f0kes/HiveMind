@@ -12,6 +12,7 @@ namespace GameState
 			public int Numerator;
 			public int Denominator;
 			public float Value => (float)Numerator / Denominator;
+			public float ReverseValue => (float)Denominator / Numerator;
 		}
 		[Header("Scaling")]
 		public Ratio EnemyToPlayerLevelScaling = new() { Numerator = 4, Denominator = 3 };

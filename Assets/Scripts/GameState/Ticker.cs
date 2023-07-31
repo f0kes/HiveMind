@@ -27,7 +27,7 @@ namespace GameState
 
 		private int _currentTick;
 
-		private bool _isPaused = false;
+		[SerializeField] private bool _isPaused = false;
 
 		public int CurrentTick
 		{
@@ -122,15 +122,9 @@ namespace GameState
 
 		public void Tick(bool simulating = false)
 		{
+			if(_isPaused) return;
 			_currentTick++;
 
-			//TODO remove
-			if(_currentTick % 100 == 0)
-			{
-				//Debug.Log($"Tick {_currentTick} (simulating: {simulating})");
-			}
-
-			if(_isPaused) return;
 			OnTickStart?.Invoke(new OnTickEventArgs { Tick = _currentTick, Simulating = simulating });
 			OnTick?.Invoke(new OnTickEventArgs { Tick = _currentTick, Simulating = simulating });
 

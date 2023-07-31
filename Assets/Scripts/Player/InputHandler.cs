@@ -5,6 +5,7 @@ using Characters;
 using DefaultNamespace;
 using DefaultNamespace.UI;
 using Events.Implementations;
+using GameState;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,6 +18,9 @@ namespace Player
 		public event Action<Character> OnMouseOverCharacter;
 		public event Action<Character> OnMouseOverCharacterEnd;
 		public static InputHandler Instance;
+
+		private Inputs _inputs;
+
 		private Camera _mainCamera;
 		private bool _inputEnabled = true;
 
@@ -32,6 +36,7 @@ namespace Player
 		//[SerializeField] private float _desirability = 10;
 
 		[SerializeField] private bool _cheatsEnabled;
+
 
 		protected override void Awake()
 		{
@@ -49,6 +54,13 @@ namespace Player
 			OnNewCharacter += NewCharacter;
 			_mainCamera = Camera.main;
 		}
+
+		protected override void Start()
+		{
+			base.Start();
+			Ticker.OnTick += Tick;
+		}
+
 		private void OnDestroy()
 		{
 			if(Instance == this)
@@ -57,6 +69,7 @@ namespace Player
 			}
 			OldCharacterReplaced -= OnOldCharacterReplaced;
 			OnNewCharacter -= NewCharacter;
+			Ticker.OnTick -= Tick;
 		}
 
 		private void OnOldCharacterReplaced(Characters.Character obj)
@@ -115,21 +128,99 @@ namespace Player
 		{
 			return ControlledCharacter;
 		}
-
 		private void Update()
+		{
+			CollectInput();
+		}
+
+		private void CollectInput()
+		{
+			_inputs.Mouse = CollectMouseData();
+			_inputs.MouseOverCharacter = CollectMouseOverCharacterData();
+			_inputs.Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+			_inputs.Shoot = Input.GetMouseButton(0);
+
+			_inputs.Cast |= Input.GetMouseButtonUp(1);
+			_inputs.Swap |= Input.GetKeyUp(KeyCode.Space);
+			_inputs.Cheats |= Input.GetKeyUp(KeyCode.F1);
+		}
+
+		private Inputs.MouseOverCharacterData CollectMouseOverCharacterData()
+		{
+			var (found, character) = GetMouseOverCharacter();
+			var mouseOverCharacterData = new Inputs.MouseOverCharacterData { Found = found, Character = character };
+			return mouseOverCharacterData;
+		}
+
+		private Inputs.MouseData CollectMouseData()
+		{
+			var (found, position) = GetMousePosition();
+			var mouseData = new Inputs.MouseData { Found = found, Position = position };
+			return mouseData;
+		}
+
+		private void Tick(Ticker.OnTickEventArgs obj)
 		{
 			if(!_inputEnabled || ControlledCharacter == null)
 				return;
 
-			Vector2 moveDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+			HandleMouse();
+			HandleMove();
+			HandleCast();
+			HandleShoot();
+			HandleSwap();
 
-			var (success, position) = GetMousePosition();
+			if(_cheatsEnabled)
+			{
+				HandleCheats();
+			}
+			
+			_inputs.Flush();
+		}
+		private void HandleSwap()
+		{
+			var shouldSwap = _inputs.Swap;
+			if(shouldSwap)
+			{
+				if(_mouseOverCharacter != null && _mouseOverCharacter.Team == ControlledCharacter.Team)
+				{
+					var result = SwapWithNew(_mouseOverCharacter);
+					if(!result) TextMessageRenderer.Instance.ShowMessage(result.Message);
+				}
+			}
+		}
+		private void HandleShoot()
+		{
+			bool shouldShoot = _inputs.Shoot;
+
+			if(shouldShoot)
+			{
+				ControlledCharacter.CharacterShooter.Shoot();
+			}
+		}
+		private void HandleCast()
+		{
+			bool shouldCast = _inputs.Cast;
+			if(ControlledCharacter.ActiveSpell != null && shouldCast)
+			{
+				var result = ControlledCharacter.ActiveSpell.Cast();
+				if(!result)
+				{
+					TextMessageRenderer.Instance.ShowMessage(result.Message);
+				}
+				Debug.Log((bool)result + ": " + result.Message);
+			}
+		}
+		private void HandleMouse()
+		{
+			var (success, position) = (_inputs.Mouse.Found, _inputs.Mouse.Position);
 			if(success)
 			{
 				_lookAt = position;
 			}
 
-			var (success2, character) = GetMouseOverCharacter();
+
+			var (success2, character) = (_inputs.MouseOverCharacter.Found, _inputs.MouseOverCharacter.Character);
 			if(success2)
 			{
 				CharacterMover.SetCursorTarget(character);
@@ -156,56 +247,11 @@ namespace Player
 					_mouseOverObjectGizmo.gameObject.SetActive(false);
 				}
 			}
-
-			bool shouldCast = Input.GetMouseButtonUp(1);
-			if(shouldCast)
-			{
-				if(ControlledCharacter.ActiveSpell == null)
-				{
-					return;
-				}
-				var result = ControlledCharacter.ActiveSpell.Cast();
-				if(!result)
-				{
-					TextMessageRenderer.Instance.ShowMessage(result.Message);
-				}
-				Debug.Log((bool)result + ": " + result.Message);
-			}
-
-			bool shouldShoot = Input.GetMouseButton(0);
+		}
+		private void HandleMove()
+		{
+			var moveDirection = _inputs.Move;
 			CharacterMover.SetInput(moveDirection, _lookAt);
-			if(shouldShoot)
-			{
-				ControlledCharacter.CharacterShooter.Shoot();
-			}
-
-			bool shouldInteract = Input.GetKeyDown(KeyCode.E);
-			if(shouldInteract)
-			{
-				ControlledCharacter.CharacterInteractor.Interact();
-			}
-
-			bool shouldSwap = Input.GetKeyDown(KeyCode.Space);
-			if(shouldSwap)
-			{
-				if(_mouseOverCharacter != null && _mouseOverCharacter.Team == ControlledCharacter.Team)
-				{
-					var result = SwapWithNew(_mouseOverCharacter);
-					if(!result) TextMessageRenderer.Instance.ShowMessage(result.Message);
-				}
-			}
-
-
-			bool shouldToggleMap = Input.GetKeyDown(KeyCode.Tab);
-			if(shouldToggleMap)
-			{
-				Map.Instance.ToggleMap();
-			}
-
-			if(_cheatsEnabled)
-			{
-				HandleCheats();
-			}
 		}
 		private void HandleCheats()
 		{
@@ -226,7 +272,7 @@ namespace Player
 				: (success: false, position: Vector3.zero);
 		}
 
-		public (bool success, Characters.Character character) GetMouseOverCharacter()
+		public (bool success, Character character) GetMouseOverCharacter()
 		{
 			var ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hitInfo;

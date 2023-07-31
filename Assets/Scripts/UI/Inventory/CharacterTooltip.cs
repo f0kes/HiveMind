@@ -15,6 +15,7 @@ namespace UI.Inventory
 		[SerializeField] private TextMeshProUGUI _dps;
 		[SerializeField] private TextMeshProUGUI _spellName;
 		[SerializeField] private TextMeshProUGUI _spellDescription;
+		[SerializeField] private TextMeshProUGUI _type;
 
 		public Tooltip Tooltip{get; private set;}
 		private CharacterData _characterData;
@@ -28,6 +29,7 @@ namespace UI.Inventory
 			_icon.sprite = characterData.EntityData.Icon;
 			_name.text = characterData.EntityData.Name;
 			_lvl.text = $"Lvl: {characterData.EntityData.Level}";
+			_type.text = characterData.Class.ToString();
 
 			var health = (int)characterData.EntityData.GetStats()[CS.Health];
 			var damage = characterData.EntityData.GetStats()[CS.Damage];
