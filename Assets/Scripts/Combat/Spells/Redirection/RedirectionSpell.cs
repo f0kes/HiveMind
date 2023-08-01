@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using DefaultNamespace;
 using Enums;
+using GameState;
 using Misc;
 using Stats;
 using UnityEngine;
@@ -27,7 +28,7 @@ namespace Combat.Spells.Redirection
 			if(attacker.GetTeam() != owner.GetTeam()) return;
 			var damageMultiplier = GetParam(CS.RedirectionDamageMultiplier);
 			var damageVal = damage.Value * damageMultiplier;
-			var randomEnemy = GlobalEntities.GetAllCharacters().Where(c => c.GetTeam() != owner.GetTeam()).Random();
+			var randomEnemy = GameStateController.Battle.EntityRegistry.GetAllCharacters().Where(c => c.GetTeam() != owner.GetTeam()).Random();
 			if(randomEnemy == null)
 			{
 				Debug.LogError("No enemy found");
@@ -43,7 +44,7 @@ namespace Combat.Spells.Redirection
 				Redirecrable = false
 			};
 			BattleProcessor.ProcessHit(newDamage);
-			
+
 			//var effect = VFXSystem.I.PlayMultiplePointEffect(VFXSystem.Data.RedirectionEffect);
 			//effect.SetEffectBehaviour(new VFXFollow(effect, owner.transform), 0);
 			//effect.SetEffectBehaviour(new VFXFollow(effect, randomEnemy.transform), 1);

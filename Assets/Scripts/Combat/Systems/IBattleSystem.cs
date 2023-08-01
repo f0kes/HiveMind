@@ -1,6 +1,6 @@
 ﻿namespace Combat
 {
-	public interface ICombatSystem
+	public interface IBattleSystem
 	{
 		void Start();
 

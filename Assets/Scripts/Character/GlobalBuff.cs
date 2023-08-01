@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DefaultNamespace;
+using GameState;
 using UnityEngine;
 
 namespace Characters
@@ -14,13 +15,13 @@ namespace Characters
 
 		private void Start()
 		{
-			var entities = GlobalEntities.GetAllEntitiesCopy();
+			var entities = GameStateController.Battle.EntityRegistry.GetAllEntitiesCopy();
 			foreach (var entity in entities)
 			{
 				BuffEntity(entity);
 			}
 
-			GlobalEntities.OnEntityAdded += OnEntityAdded;
+			GameStateController.Battle.EntityRegistry.OnEntityAdded += OnEntityAdded;
 		}
 
 		private void OnEntityAdded(ushort team, Entity entity)

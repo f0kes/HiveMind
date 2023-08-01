@@ -11,6 +11,6 @@ namespace Combat.Battle
 			Draw
 		}
 		public BattleResultType ResultType;
-		public EntityList Winner;
+		public EntityTeam Winner;
 	}
 }

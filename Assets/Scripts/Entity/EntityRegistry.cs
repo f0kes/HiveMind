@@ -8,36 +8,36 @@ using Object = UnityEngine.Object;
 
 namespace DefaultNamespace
 {
-	public static class GlobalEntities
+	public class EntityRegistry : IEntityRegistry, ITeamRegistry
 	{
-		public static event Action<EntityList> OneRemainingTeam;
-		public static event Action<ushort, Entity> OnEntityAdded;
+		public event Action<EntityTeam> OneRemainingTeam;
+		public event Action<ushort, Entity> OnEntityAdded;
 
 
-		private static List<Entity> _allEntities = new();
-		private static List<Character> _allCharacters = new();
-		private static List<Entity> _aliveEntities = new();
-		private static Dictionary<ushort, EntityList> _teams = new();
-		private static Dictionary<ushort, EntityList> _graveyards = new();
+		private List<Entity> _allEntities = new();
+		private List<Character> _allCharacters = new();
+		private List<Entity> _aliveEntities = new();
+		private Dictionary<ushort, EntityTeam> _teams = new();
+		private Dictionary<ushort, EntityTeam> _graveyards = new();
 
-		static GlobalEntities()
+		public EntityRegistry()
 		{
 			//on scene loaded clear the list
 			SceneManager.sceneUnloaded += OnSceneUnloaded;
 		}
 
-		private static void OnSceneUnloaded(Scene x)
+		private void OnSceneUnloaded(Scene x)
 		{
 			Clear();
 		}
-		public static void Clear()
+		public void Clear()
 		{
 			_graveyards.Clear();
 			_teams.Clear();
 			_allEntities.Clear();
 			_allCharacters.Clear();
 		}
-		public static void RemoveEntityFromTeam(Entity entity)
+		public void RemoveEntityFromTeam(Entity entity)
 		{
 			if(_teams.ContainsKey(entity.Team) && _teams[entity.Team].Contains(entity))
 			{
@@ -50,12 +50,12 @@ namespace DefaultNamespace
 				_graveyards[entity.Team].Remove(entity);
 			}
 		}
-		public static int GetAliveTeamsCount()
+		public int GetAliveTeamsCount()
 		{
 			return _teams.Values.Count(x => x.Count > 0);
 		}
 
-		public static EntityList GetTeam(ushort team)
+		public EntityTeam GetTeam(ushort team)
 		{
 			if(_teams.ContainsKey(team))
 			{
@@ -63,35 +63,35 @@ namespace DefaultNamespace
 			}
 			else
 			{
-				_teams.Add(team, new EntityList(team));
+				_teams.Add(team, new EntityTeam(team));
 				return _teams[team];
 			}
 		}
-		public static List<Character> GetAllCharacters()
+		public List<Character> GetAllCharacters()
 		{
 			return _allCharacters;
 		}
-		public static List<Entity> GetAllEntitiesCopy()
+		public List<Entity> GetAllEntitiesCopy()
 		{
 			return new List<Entity>(_allEntities);
 		}
-		public static List<Entity> GetEntitiesInRange(Vector3 position, float range)
+		public List<Entity> GetEntitiesInRange(Vector3 position, float range)
 		{
 			return GetAllEntitiesCopy().Where(x => Vector3.Distance(x.transform.position, position) <= range).ToList();
 		}
-		public static void SetTeam(ushort team, EntityList list)
+		public void SetTeam(ushort teamID, EntityTeam team)
 		{
-			if(_teams.ContainsKey(team))
+			if(_teams.ContainsKey(teamID))
 			{
-				_teams[team] = list;
+				_teams[teamID] = team;
 			}
 			else
 			{
-				_teams.Add(team, list);
+				_teams.Add(teamID, team);
 			}
 		}
 
-		public static List<Entity> GetEntitiesOnTeam(ushort team)
+		public List<Entity> GetEntitiesOnTeam(ushort team)
 		{
 			if(_teams.ContainsKey(team))
 			{
@@ -99,12 +99,12 @@ namespace DefaultNamespace
 			}
 			else
 			{
-				_teams.Add(team, new EntityList(team));
+				_teams.Add(team, new EntityTeam(team));
 				return new List<Entity>(_teams[team]);
 			}
 		}
 
-		public static List<Entity> GetGraveyard(ushort team)
+		public List<Entity> GetGraveyard(ushort team)
 		{
 			if(_graveyards.ContainsKey(team))
 			{
@@ -112,12 +112,12 @@ namespace DefaultNamespace
 			}
 			else
 			{
-				_graveyards.Add(team, new EntityList(team));
+				_graveyards.Add(team, new EntityTeam(team));
 				return new List<Entity>(_graveyards[team]);
 			}
 		}
 
-		public static void AddToTeam(ushort team, Entity entity)
+		public void AddToTeam(ushort team, Entity entity)
 		{
 			if(!GetAllEntitiesCopy().Contains(entity))
 			{
@@ -134,12 +134,12 @@ namespace DefaultNamespace
 			}
 			else
 			{
-				_teams.Add(team, new EntityList(team) { entity });
+				_teams.Add(team, new EntityTeam(team) { entity });
 			}
 			entity.Events.Death += OnEntityDeath;
 		}
 
-		private static void OnEntityDeath(Entity entity)
+		private void OnEntityDeath(Entity entity)
 		{
 			if(_teams.ContainsKey(entity.Team))
 			{
@@ -152,7 +152,7 @@ namespace DefaultNamespace
 			}
 			else
 			{
-				_graveyards.Add(entity.Team, new EntityList(entity.Team) { entity });
+				_graveyards.Add(entity.Team, new EntityTeam(entity.Team) { entity });
 			}
 			//todo: remove this
 			Debug.Log("Death");
@@ -164,7 +164,7 @@ namespace DefaultNamespace
 			entity.Events.Ressurect += OnEntityRessurect;
 		}
 
-		private static void OnEntityRessurect(Entity entity)
+		private void OnEntityRessurect(Entity entity)
 		{
 			if(_graveyards.ContainsKey(entity.Team))
 			{
@@ -177,21 +177,19 @@ namespace DefaultNamespace
 			}
 			else
 			{
-				_teams.Add(entity.Team, new EntityList(entity.Team) { entity });
+				_teams.Add(entity.Team, new EntityTeam(entity.Team) { entity });
 			}
 
 			entity.Events.Death += OnEntityDeath;
 			entity.Events.Ressurect -= OnEntityRessurect;
 		}
 
-		public static void DestroyDeadEntities()
+		public void DestroyDeadEntities()
 		{
 			foreach(var entity in _graveyards.SelectMany(team => team.Value))
 			{
 				Object.Destroy(entity.gameObject);
 			}
 		}
-
-
 	}
 }

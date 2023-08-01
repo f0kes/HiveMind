@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using DefaultNamespace;
 using Enums;
+using GameState;
 using Stats;
 using UnityEngine;
 using VFX;
@@ -20,7 +21,7 @@ namespace Combat.Spells.Hellfire
 		{
 			base.OnSpellStart();
 			var damage = GetParam(CS.HellfireDamage);
-			var allCharacters = GlobalEntities.GetAllCharacters();
+			var allCharacters = GameStateController.Battle.EntityRegistry.GetAllCharacters();
 			VFXSystem.I.PlayEffectPoint(VFXSystem.Data.HellfireEffect, GetOwnerCharacter().transform.position);
 			foreach(var newDamage in from character in allCharacters
 			        where !character.IsDead

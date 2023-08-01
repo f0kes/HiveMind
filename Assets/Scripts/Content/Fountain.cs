@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GameState;
 using MapGeneration.Rooms;
 using UI;
 using UnityEngine;
@@ -27,8 +28,8 @@ namespace DefaultNamespace.Content
 		private void Interact(Characters.Character character)
 		{
 			if (_used) return;
-			var interactorTeammates = GlobalEntities.GetEntitiesOnTeam(character.Team);
-			var interactorGraveyard = GlobalEntities.GetGraveyard(character.Team);
+			var interactorTeammates = GameStateController.Battle.EntityRegistry.GetEntitiesOnTeam(character.Team);
+			var interactorGraveyard = GameStateController.Battle.EntityRegistry.GetGraveyard(character.Team);
 			_waterRenderer.enabled = false;
 			foreach (var entity in interactorTeammates)
 			{

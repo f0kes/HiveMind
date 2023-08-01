@@ -12,9 +12,9 @@ using Random = UnityEngine.Random;
 namespace DefaultNamespace
 {
 
-	public class EntityList : IEnumerable<Entity>
+	public class EntityTeam : IEnumerable<Entity>
 	{
-		public event Action<EntityList> OnTeamWiped;
+		public event Action<EntityTeam> OnTeamWiped;
 
 		private ushort _teamId;
 		private readonly List<Entity> _list = new();
@@ -24,7 +24,7 @@ namespace DefaultNamespace
 		private float _castCooldownTimer;
 		private bool _canCast;
 		public int Count => _list.Count;
-		public EntityList(ushort teamId)
+		public EntityTeam(ushort teamId)
 		{
 			_teamId = teamId;
 			SubscribeToEvents();
@@ -32,7 +32,7 @@ namespace DefaultNamespace
 		}
 
 
-		~EntityList()
+		~EntityTeam()
 		{
 			UnsubscribeFromEvents();
 		}

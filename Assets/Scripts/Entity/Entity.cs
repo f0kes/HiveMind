@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Combat;
 using Combat.Spells;
-using Combat.Spells.PoisonGrenade;
 using DefaultNamespace.UI;
 using Enums;
 using GameState;
@@ -71,15 +70,15 @@ namespace DefaultNamespace
 		{
 		}
 
-		public EntityList GetTeam()
+		public EntityTeam GetTeam()
 		{
-			return GlobalEntities.GetTeam(_team);
+			return GameStateController.Battle.EntityRegistry.GetTeam(_team);
 		}
 		public void SetTeam(ushort team)
 		{
-			GlobalEntities.RemoveEntityFromTeam(this);
+			GameStateController.Battle.EntityRegistry.RemoveEntityFromTeam(this);
 			_team = team;
-			GlobalEntities.AddToTeam(_team, this);
+			GameStateController.Battle.EntityRegistry.AddToTeam(_team, this);
 		}
 		public void SetLevel(int level)
 		{

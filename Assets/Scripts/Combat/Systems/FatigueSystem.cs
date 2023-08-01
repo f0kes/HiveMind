@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Characters;
+using Combat.Battle;
 using Events.Implementations;
 using GameState;
 using UI;
 
 namespace Combat
 {
-	public class FatigueSystem : ICombatSystem
+	public class FatigueSystem : BattleSystem
 	{
-		private List<Character> _characters;
-
 		private float _timeToStartFatigue;
 		private float _fatigueTickTime;
 		private int _startFatigueValue;
@@ -20,9 +20,9 @@ namespace Combat
 		private int _currentFatigueValue;
 
 		private bool _working;
-		public FatigueSystem(List<Character> characters, float timeToStartFatigue, float fatigueTickTime, int startFatigueValue, int fatigueIncrement)
+
+		public FatigueSystem(IBattle battle, float timeToStartFatigue, float fatigueTickTime, int startFatigueValue, int fatigueIncrement) : base(battle)
 		{
-			_characters = characters;
 			_timeToStartFatigue = timeToStartFatigue;
 			_fatigueTickTime = fatigueTickTime;
 			_startFatigueValue = startFatigueValue;
@@ -35,22 +35,22 @@ namespace Combat
 		{
 			UnsubscribeFromEvents();
 		}
-		public void Start()
+		public override void Start()
 		{
 			_working = true;
 			SubscribeToEvents();
 		}
-		public void Stop()
+		public override void Stop()
 		{
 			_working = false;
 			UnsubscribeFromEvents();
 		}
-		public void SubscribeToEvents()
+		public override void SubscribeToEvents()
 		{
 			Ticker.OnTick += OnTick;
 		}
 
-		public void UnsubscribeFromEvents()
+		public override void UnsubscribeFromEvents()
 		{
 			if(Ticker.I != null) Ticker.OnTick -= OnTick;
 		}
@@ -64,7 +64,7 @@ namespace Combat
 			_timeSinceLastFatigueTick = 0;
 			var fatigueData = new FatigueEventData(_currentFatigueValue);
 			FatigueEvent.Invoke(fatigueData);
-			foreach(var character in _characters)
+			foreach(var character in Battle.EntityRegistry.GetAllCharacters().Where(c => !c.IsDead))
 			{
 				character.OnFatigue(fatigueData);
 			}

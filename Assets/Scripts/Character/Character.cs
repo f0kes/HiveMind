@@ -176,7 +176,7 @@ namespace Characters
 
 		public void TeleportTeam(RoomTrigger roomTrigger, float radius = 1.8f, float rayHeight = 10f)
 		{
-			List<Entity> team = GlobalEntities.GetEntitiesOnTeam(Team);
+			List<Entity> team = GameStateController.Battle.EntityRegistry.GetEntitiesOnTeam(Team);
 			List<Character> characters = team.OfType<Character>().ToList();
 			foreach(var teammate in characters)
 			{

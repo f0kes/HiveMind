@@ -10,16 +10,28 @@ using Object = UnityEngine.Object;
 
 namespace Combat.Battle
 {
-	public class Battle
+	public class Battle : IBattle
 	{
 		public event Action<BattleResult> BattleEnded;
+
+		public IEntityRegistry EntityRegistry{get; private set;}
 
 		private Dictionary<uint, List<SpawnPoint>> _spawnPoints = new();
 		private List<Character> _toSpawn = new();
 
 		private uint _teamsLength;
 		private uint _teamsAlive;
+		public Battle(IEntityRegistry entityRegistry)
+		{
+			EntityRegistry = entityRegistry;
+			
+		}
+		public Battle()
+		{
+			var registry = new EntityRegistry();
 
+			EntityRegistry = registry;
+		}
 		public void StartBattle(IEnumerable<Character> playerTeam, IEnumerable<Character> enemyTeam)
 		{
 			_toSpawn.AddRange(playerTeam);
@@ -28,14 +40,15 @@ namespace Combat.Battle
 			Spawn();
 			AssignCharacterToPlayer();
 
-			GlobalEntities.OneRemainingTeam += OnOneRemainingTeam;
+			EntityRegistry.OneRemainingTeam += OnOneRemainingTeam;
 		}
 
-		private void OnOneRemainingTeam(EntityList obj)
+		private void OnOneRemainingTeam(EntityTeam obj)
 		{
-			GlobalEntities.OneRemainingTeam -= OnOneRemainingTeam;
+			EntityRegistry.OneRemainingTeam -= OnOneRemainingTeam;
 			var resultType = obj.IsPlayerTeam() ? BattleResult.BattleResultType.Win : BattleResult.BattleResultType.Lose;
 			BattleEnded?.Invoke(new BattleResult { ResultType = resultType, Winner = obj });
+			EntityRegistry.Clear();
 		}
 
 		public void GetSpawnPointsOnScene()

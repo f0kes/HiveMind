@@ -83,7 +83,7 @@ namespace Player
 		}
 		public void AssignRandomCharacter(uint teamId)
 		{
-			var team = GlobalEntities.GetTeam((ushort)teamId);
+			var team = GameStateController.Battle.EntityRegistry.GetTeam((ushort)teamId);
 			var possibleTargets = team.GetCharacters();
 			var random = Random.Range(0, possibleTargets.Count);
 			var newCharacter = possibleTargets[random];
@@ -174,7 +174,7 @@ namespace Player
 			{
 				HandleCheats();
 			}
-			
+
 			_inputs.Flush();
 		}
 		private void HandleSwap()

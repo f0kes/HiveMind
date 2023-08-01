@@ -110,7 +110,7 @@ namespace AI
 
 		private IEnumerable<Entity> GetEntitiesInRange(float viewDistance)
 		{
-			var entities = GlobalEntities.GetAllEntitiesCopy().Where(entity =>
+			var entities = GameStateController.Battle.EntityRegistry.GetAllEntitiesCopy().Where(entity =>
 				!entity.IsDead && Vector3.Distance(entity.transform.position, ControlledCharacter.transform.position) <=
 				viewDistance);
 			return entities;

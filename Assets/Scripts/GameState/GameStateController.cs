@@ -17,34 +17,34 @@ namespace GameState
 {
 	public class GameStateController : MonoBehaviour
 	{
-		[SerializeField] private GameData _gameData;
 		public struct StartBattleResult
 		{
 			public bool Success;
 			public string ErrorMessage;
 		}
-		public static GameStateController Instance{get; private set;}
-
-		private uint _goldPerBattle;
+		[SerializeField] private GameData _gameData;
 
 		[SerializeField] private SceneField _battleScene;
 		[SerializeField] private SceneField _shopScene;
 
 		[SerializeField] private ContentDatabase _contentDatabase;
 		[SerializeField] private GameObject _singletonsPrefab;
-		public static ContentDatabase ContentDatabase => Instance._contentDatabase;
 
 
+		private uint _goldPerBattle;
 		private PlayerData _playerData;
-		public static PlayerData PlayerData => Instance._playerData;
-		public static GameData GameData => Instance._gameData;
-
-
-		private List<ICombatSystem> _combatSystems = new List<ICombatSystem>();
+		private List<IBattleSystem> _combatSystems = new List<IBattleSystem>();
 		private Battle _battle;
 		private CharacterFactory _characterFactory;
 		private FatigueSystem _fatigueSystem;
 		private ManaSystem _manaSystem;
+
+		public static GameStateController Instance{get; private set;}
+		public static PlayerData PlayerData => Instance._playerData;
+		public static GameData GameData => Instance._gameData;
+		public static ContentDatabase ContentDatabase => Instance._contentDatabase;
+
+		public static Battle Battle => Instance._battle;
 
 
 		private void Awake()
@@ -111,7 +111,7 @@ namespace GameState
 			_characterFactory = new CharacterFactory();
 			_battle = new Battle();
 
-			InitCombatSystems();
+			InitBattleSystems(_battle);
 
 			var partyEntities = _characterFactory.Create(party, 0);
 			var enemyEntities = _characterFactory.Create(enemies, 1);
@@ -121,16 +121,16 @@ namespace GameState
 
 			_battle.BattleEnded += OnBattleEnded;
 		}
-		private void InitCombatSystems()
+		private void InitBattleSystems(IBattle battle)
 		{
 			_fatigueSystem = new FatigueSystem(
-				GlobalEntities.GetAllCharacters(), //TODO: create a pool class for this
+				battle, //TODO: create a pool class for this
 				_gameData.TimeToStartFatigue,
 				_gameData.FatigueTickTime,
 				_gameData.FatigueStartValue,
 				_gameData.FatigueIncrement);
 
-			_manaSystem = new ManaSystem(_gameData.ManaPerSwap);
+			_manaSystem = new ManaSystem(battle, _gameData.ManaPerSwap);
 
 			_combatSystems.Add(_fatigueSystem);
 			_combatSystems.Add(_manaSystem);
@@ -147,9 +147,6 @@ namespace GameState
 
 			_battle.BattleEnded -= OnBattleEnded;
 			StopCombatSystems();
-			GlobalEntities.DestroyDeadEntities();
-			GlobalEntities.Clear();
-			EventResetter.Reset();
 			Ticker.ResetEvents();
 
 			if(battleResult.ResultType == BattleResult.BattleResultType.Win)

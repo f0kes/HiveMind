@@ -1,33 +1,34 @@
 ﻿using Characters;
+using Combat.Battle;
 using Events;
 using Events.Implementations;
 using UnityEngine;
 
 namespace Combat
 {
-	public class ManaSystem : ICombatSystem
+	public class ManaSystem : BattleSystem
 	{
 		private int _manaOnSwap;
-		public ManaSystem(int manaOnSwap) //TODO: list of characters, give mana to all of them
+		public ManaSystem(IBattle battle, int manaOnSwap) : base(battle) //TODO: list of characters, give mana to all of them
 		{
 			_manaOnSwap = manaOnSwap;
 		}
 
-		public void Start()
+		public override void Start()
 		{
 			SubscribeToEvents();
 		}
 
-		public void Stop()
+		public override void Stop()
 		{
 			UnsubscribeFromEvents();
 		}
 
-		public void SubscribeToEvents()
+		public override void SubscribeToEvents()
 		{
 			CharacterSwappedEvent.Subscribe(OnCharacterSwapped);
 		}
-		public void UnsubscribeFromEvents()
+		public override void UnsubscribeFromEvents()
 		{
 			CharacterSwappedEvent.Unsubscribe(OnCharacterSwapped);
 		}

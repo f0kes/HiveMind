@@ -10,10 +10,10 @@ namespace AI
 	public class EnemyTeamAI : MonoBehaviour
 	{
 		[SerializeField] private ushort _teamId = 1;
-		private EntityList _list;
+		private EntityTeam _team;
 		private void Start()
 		{
-			_list = GlobalEntities.GetTeam(_teamId);
+			_team = GameStateController.Battle.EntityRegistry.GetTeam(_teamId);
 			SubscribeToEvents();
 		}
 
@@ -31,15 +31,15 @@ namespace AI
 		}
 		private void OnTick(Ticker.OnTickEventArgs obj)
 		{
-			if(_list.CanCast())
+			if(_team.CanCast())
 			{
-				var list = _list.GetCharacters();
+				var list = _team.GetCharacters();
 				var randomIndex = UnityEngine.Random.Range(0, list.Count);
 				if(randomIndex >= list.Count) return;
 				var randomCaster = list[randomIndex];
 				randomCaster.SetMana(randomCaster.CurrentMana + 1); //todo: pull from settings 
 				if(!randomCaster.ReadyToCast()) return;
-				var entitiesInRange = GlobalEntities.GetEntitiesInRange(randomCaster.transform.position, 100f); //todo: get range from spell
+				var entitiesInRange = GameStateController.Battle.EntityRegistry.GetEntitiesInRange(randomCaster.transform.position, 100f); //todo: get range from spell
 				var spell = randomCaster.ActiveSpell;
 				var filteredEntities = EntityFilterer.FilterEntitiesWithSpell(randomCaster, entitiesInRange, spell);
 				if(filteredEntities.Count > 0)
@@ -50,9 +50,9 @@ namespace AI
 				}
 			}
 		}
-		public void SetTeam(EntityList list)
+		public void SetTeam(EntityTeam team)
 		{
-			_list = list;
+			_team = team;
 		}
 	}
 }
