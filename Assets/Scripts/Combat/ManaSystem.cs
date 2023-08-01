@@ -1,4 +1,5 @@
 ﻿using Characters;
+using Events;
 using Events.Implementations;
 using UnityEngine;
 
@@ -34,8 +35,17 @@ namespace Combat
 		{
 			var character = obj.NewCharacter as Character;
 			if(character == null) return;
+			var characterTeam = character.GetTeam();
+			foreach(var t in characterTeam)
+			{
+				var c = t as Character;
+				if(c == null) continue;
+				AddMana(c);
+			}
+		}
+		private void AddMana(Character character)
+		{
 			character.SetMana(character.CurrentMana + _manaOnSwap);
-			Debug.Log("Mana on swap: " + _manaOnSwap);
 		}
 	}
 }

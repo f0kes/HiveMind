@@ -28,6 +28,7 @@ namespace DefaultNamespace
 		{
 			_teamId = teamId;
 			SubscribeToEvents();
+			Reset();
 		}
 
 
@@ -53,7 +54,7 @@ namespace DefaultNamespace
 			entity.Events.SpellCasted -= OnCast;
 			entity.Events.SwappedWithCharacter -= OnSwap;
 		}
-		
+
 
 		public void SetList<T>(List<T> list) where T : Entity
 		{
@@ -73,8 +74,8 @@ namespace DefaultNamespace
 		}
 		public void Reset()
 		{
-			_swapCooldownTimer = 0;
-			_castCooldownTimer = 0;
+			_swapCooldownTimer = SwapCooldown;
+			_castCooldownTimer = SwapCooldown;
 		}
 		private void OnTick(Ticker.OnTickEventArgs obj)
 		{

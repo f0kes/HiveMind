@@ -2,6 +2,7 @@
 using Enums;
 using Events;
 using Events.Implementations;
+using UI;
 using UnityEngine;
 
 namespace Combat
@@ -33,9 +34,12 @@ namespace Combat
 		{
 			var critChance = attacker.Stats[CS.CritChance];
 			var critDamage = attacker.Stats[CS.CritDamage];
-			if(critChance > Random.value)
+			var random = Random.value;
+			if(critChance > random)
 			{
 				damage.Value *= critDamage;
+				string msg = $"Crit, chance: {critChance}, roll: {random}, damage: {critDamage}!";
+				Debug.Log(msg);
 				GameEvent<CritData>.Invoke(new CritData { Damage = damage, CritChance = critChance, CritDamage = critDamage });
 			}
 		}

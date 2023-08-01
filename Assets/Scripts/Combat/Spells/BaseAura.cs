@@ -27,6 +27,7 @@ namespace Combat.Spells
 			}
 			_targets = newTargets;
 		}
+		
 
 		public override void OnDestroyed()
 		{
