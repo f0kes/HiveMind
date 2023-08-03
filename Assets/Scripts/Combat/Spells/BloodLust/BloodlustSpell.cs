@@ -20,6 +20,7 @@ namespace Combat.Spells.BloodLust
 
 		protected override void PopulateParams()
 		{
+			base.PopulateParams();
 			AddParam(CS.BloodlustLevelsOnCrit, _levelsOnCrit);
 			AddParam(CS.BloodlustCritChance, _critChance);
 			AddParam(CS.BloodlustCritDamageMultiplier, _critDamageMultiplier);

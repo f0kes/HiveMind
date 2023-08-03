@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace VFX
 {
 	public class VFXEffect : MonoBehaviour
 	{
+		public event Action<VFXEffect> OnDestroyEvent;
 
 		[SerializeField] private float _duration = 1f;
 		protected VFXBehaviour Behaviour;
@@ -30,6 +32,10 @@ namespace VFX
 		public void Stop()
 		{
 			Destroy(gameObject);
+		}
+		private void OnDestroy()
+		{
+			OnDestroyEvent?.Invoke(this);
 		}
 	}
 }

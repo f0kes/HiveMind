@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14b7e211102f4941bfce9e7211a711b2, type: 3}
   m_Name: BasicHealEffect
   m_EditorClassIdentifier: 
-  Target: {fileID: 0}
+  Level: 10
+  _icon: {fileID: 0}
+  _name: 
+  _description: 
+  _manaCost: 1
   Behaviour: 0
   Tags: 
-  SourceSpell: {fileID: 0}
+  Stackable: 1

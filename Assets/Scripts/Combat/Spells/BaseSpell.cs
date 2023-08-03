@@ -65,14 +65,11 @@ namespace Combat.Spells
 
 			Owner.Events.Death += OnDeath;
 			Owner.Events.Ressurect += OnResurrection; //todo: test
-
-			Ticker.OnTick += OnTick;
 		}
 
 		public virtual void OnDestroyed()
 		{
 			Debug.Log(name + " destroyed");
-			Ticker.OnTick -= OnTick;
 			UnsubscribeFromEvents();
 		}
 		protected virtual void OnDeath(Entity entity)
@@ -128,7 +125,7 @@ namespace Combat.Spells
 			{
 				return new CastResult(CastResultType.Fail, characterResult.Message);
 			}
-			switch(Behaviour)
+			switch(Behaviour) //todo: multiple behaviours
 			{
 				case SpellBehaviour.PointTarget:
 					var point = GetCursor() == Vector3.zero ? Owner.transform.position : GetCursor();
@@ -157,6 +154,9 @@ namespace Combat.Spells
 					OnSpellStart();
 					break;
 				case SpellBehaviour.Passive:
+					OnSpellStart();
+					break;
+				case SpellBehaviour.ActiveAura:
 					OnSpellStart();
 					break;
 				default:
@@ -208,6 +208,7 @@ namespace Combat.Spells
 		}
 		protected virtual void SubscribeToEvents()
 		{
+			Ticker.OnTick += OnTick;
 			Owner.Events.BeforeDamageReceived += OnBeforeDamageReceived;
 			Owner.Events.AfterDamageReceived += OnAfterDamageReceived;
 			Owner.Events.HitReceived += OnHitReceived;
@@ -221,6 +222,7 @@ namespace Combat.Spells
 		}
 		protected virtual void UnsubscribeFromEvents()
 		{
+			Ticker.OnTick -= OnTick;
 			Owner.Events.BeforeDamageReceived -= OnBeforeDamageReceived;
 			Owner.Events.AfterDamageReceived -= OnAfterDamageReceived;
 			Owner.Events.HitReceived -= OnHitReceived;

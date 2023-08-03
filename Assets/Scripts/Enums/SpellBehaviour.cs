@@ -7,6 +7,7 @@
 		UnitTarget,
 		PointTarget,
 
-		Active
+		Active,
+		ActiveAura,
 	}
 }

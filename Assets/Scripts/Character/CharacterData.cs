@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Combat.Spells;
 using DefaultNamespace;
 using Enums;
+using Misc;
 using UnityEngine;
 
 namespace Characters
@@ -18,6 +19,11 @@ namespace Characters
 		public int MaxMana = 10;
 		public CharacterClass Class;
 
+		private int _currentUseCooldown = 0;
+		private int _nextUseCooldown = 1;
+		[SerializeField] private int _maxUseCooldown = 10;
+		
+		public int CurrentUseCooldown => _currentUseCooldown;
 		public static CharacterData Copy(CharacterData original)
 		{
 			var result = CreateInstance<CharacterData>();
@@ -28,7 +34,33 @@ namespace Characters
 			result.AIThreat = original.AIThreat;
 			result.MaxMana = original.MaxMana;
 			result.Class = original.Class;
+			result._currentUseCooldown = original._currentUseCooldown;
+			result._nextUseCooldown = original._nextUseCooldown;
+			result._maxUseCooldown = original._maxUseCooldown;
 			return result;
+		}
+		public TaskResult LaunchCooldown()
+		{
+			if(!CanUse()) return TaskResult.Failure("Can't use yet");
+			_currentUseCooldown = _nextUseCooldown;
+			_nextUseCooldown++;
+			if(_nextUseCooldown > _maxUseCooldown)
+				_nextUseCooldown = _maxUseCooldown;
+			return TaskResult.Success;
+		}
+		public void DecrementCooldown()
+		{
+			_currentUseCooldown--;
+			if(_currentUseCooldown < 0)
+				_currentUseCooldown = 0;
+		}
+		public bool CanUse()
+		{
+			return _currentUseCooldown <= 0;
+		}
+		public void SetLevel(uint level)
+		{
+			EntityData.SetLevel(level);
 		}
 	}
 }

@@ -35,7 +35,7 @@ namespace GameState
 		private PlayerData _playerData;
 		private List<IBattleSystem> _combatSystems = new List<IBattleSystem>();
 		private Battle _battle;
-		private CharacterFactory _characterFactory;
+		private ICharacterFactory _characterFactory;
 		private FatigueSystem _fatigueSystem;
 		private ManaSystem _manaSystem;
 
@@ -59,8 +59,10 @@ namespace GameState
 			else
 			{
 				Destroy(gameObject);
+				return;
 			}
 			ResetPlayerData();
+			_contentDatabase.Init();
 		}
 		private void OnDestroy()
 		{
@@ -71,12 +73,11 @@ namespace GameState
 		}
 		private void ResetPlayerData()
 		{
-			_playerData = new PlayerData
-			{
-				Gold = (int)GameData.StartingGold,
-				ShopLevelPrecise = GameData.StartingShopLevel,
-				BattleLevelPrecise = GameData.StartingBattleLevel,
-			};
+			_playerData = new PlayerData(_gameData.MaxGold,
+				(int)_gameData.StartingGold,
+				_gameData.StartingBattleLevel,
+				_gameData.StartingShopLevel,
+				shopPool: _contentDatabase.GenerateCharacterPool(_gameData.ShopRepeats));
 		}
 		public StartBattleResult TryStartBattle(List<CharacterData> party, List<CharacterData> enemies)
 		{
@@ -86,6 +87,14 @@ namespace GameState
 				{
 					Success = false,
 					ErrorMessage = "Party is empty"
+				};
+			}
+			if(party.Any(d => !d.CanUse()))
+			{
+				return new StartBattleResult
+				{
+					Success = false,
+					ErrorMessage = "Party has invalid characters"
 				};
 			}
 			if(enemies.Count == 0)
@@ -143,19 +152,31 @@ namespace GameState
 
 		private async void OnBattleEnded(BattleResult battleResult)
 		{
+			HandleRoundEnd(battleResult);
+
 			await SceneManager.LoadSceneAsync(_shopScene);
 
 			_battle.BattleEnded -= OnBattleEnded;
 			StopCombatSystems();
 			Ticker.ResetEvents();
-
+		}
+		private void HandleRoundEnd(BattleResult battleResult)
+		{
 			if(battleResult.ResultType == BattleResult.BattleResultType.Win)
 			{
-				var playerParty = _characterFactory.GetAliveOriginals(0);
-				_playerData.SetParty(playerParty);
-				_playerData.Gold += (int)_goldPerBattle;
-				_playerData.BattleLevelPrecise += 1;
-				_playerData.ShopLevelPrecise += GameData.EnemyToPlayerLevelScaling.ReverseValue;
+				_playerData.DecrementCooldowns();
+				foreach(var data in _playerData.Party)
+				{
+					data.LaunchCooldown();
+				}
+				var playerDead = _characterFactory.QueryOriginals(x => x.Team == 0 && x.IsDead);
+				foreach(var dead in playerDead)
+				{
+					_playerData.MoveToShopPool(dead);
+				}
+				_playerData.SetGold(_playerData.Gold + (int)_goldPerBattle);
+				_playerData.BattleLevelPrecise += 1 * GameData.LevelsPerBattle;
+				_playerData.ShopLevelPrecise += GameData.EnemyToPlayerLevelScaling.ReverseValue * GameData.LevelsPerBattle;
 			}
 			else
 			{

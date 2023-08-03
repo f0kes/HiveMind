@@ -15,7 +15,7 @@ namespace DefaultNamespace
 		public EntityTag Tags;
 		public SerializableCharacterStats Stats;
 		public uint Level;
-		
+
 		public EntityData()
 		{
 		}
@@ -30,6 +30,10 @@ namespace DefaultNamespace
 		public StatDict<CS> GetStats()
 		{
 			return Stats.GetStats(Level);
+		}
+		public void SetLevel(uint level)
+		{
+			Level = level;
 		}
 
 	}

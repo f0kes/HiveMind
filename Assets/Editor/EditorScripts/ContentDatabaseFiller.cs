@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Characters;
 using Combat.Spells;
 using DefaultNamespace.Configs;
@@ -24,26 +25,19 @@ namespace Editor.EditorScripts
 			}
 		}
 
-		private void FillDatabase(ContentDatabase container)
+		private static void FillDatabase(ContentDatabase container)
 		{
 			container.Characters = GetAssetsOfType<CharacterData>("Assets/ScriptableObjects/Chars");
 			container.Spells = GetAssetsOfType<BaseSpell>("Assets/ScriptableObjects/Spells/");
-			
 		}
-		private List<T> GetAssetsOfType<T>(string path) where T : ScriptableObject
+		private static List<T> GetAssetsOfType<T>(string path) where T : ScriptableObject
 		{
-			List<T> assets = new List<T>();
-			string[] guids = AssetDatabase.FindAssets("t:ScriptableObject", new[] { path });
-			foreach(var guid in guids)
-			{
-				string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-				var asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
-				if(asset != null)
-				{
-					assets.Add(asset);
-				}
-			}
-			return assets;
+			var guids = AssetDatabase.FindAssets("t:ScriptableObject", new[] { path });
+			return guids
+				.Select(AssetDatabase.GUIDToAssetPath)
+				.Select(AssetDatabase.LoadAssetAtPath<T>)
+				.Where(asset => asset != null)
+				.ToList();
 		}
 
 	}

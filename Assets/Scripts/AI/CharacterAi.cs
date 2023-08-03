@@ -12,7 +12,7 @@ namespace AI
 {
 	public class CharacterAi : CharacterControlsProvider
 	{
-		[SerializeField] private float _viewDistance = 50f;
+		[SerializeField] private float _viewDistance = 10f;
 		[SerializeField] private int _circleDivisions = 16;
 
 		[SerializeField] private float _chaseBehaivourWeight = 0.8f;
@@ -58,7 +58,7 @@ namespace AI
 				new RepellBehaviour(), _fleeBehaivourWeight));
 			Behaviours.Add(new ComplexBehaviour
 			(new FriendCenterPointGetter(),
-				new AttractBehaviour(), _alignBehaivourWeight * 0.5f));
+				new AttractBehaviour(), _alignBehaivourWeight * 2f));
 		}
 
 
@@ -66,7 +66,11 @@ namespace AI
 		{
 			var entities = GetEntitiesInRange(_viewDistance).OfType<Character>().ToList();
 			if(_currentEnemy == null || _currentEnemy.IsDead)
-				_currentEnemy = GetClosestEnemy(entities);
+				_currentEnemy = GetClosestEnemy(GameStateController
+					.Battle
+					.EntityRegistry
+					.GetAllCharacters()
+					.Where(c => !c.IsDead));
 
 			var desirabiltityMap = new DesirabilityMap(_circleDivisions);
 

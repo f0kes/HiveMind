@@ -30,22 +30,16 @@ namespace UI.Shop
 		}
 		private void Start()
 		{
-			var contentDatabase = GameStateController.ContentDatabase;
-			var entries = new List<ShopEntry>();
-
 			var rollCost = GameStateController.GameData.RollCost;
 			var charCost = GameStateController.GameData.BuyCost;
 
-			foreach(var characterData in contentDatabase.Characters)
-			{
-				for(var i = 0; i < _entryCount; i++)
-				{
-					var entry = new ShopEntry { CharacterData = CharacterData.Copy(characterData), Cost = charCost };
-					entries.Add(entry);
-				}
-			} //TODO: move pool generation to RollShop
 			_levelText.text = $"Shop level: {GameStateController.PlayerData.ShopLevel}";
-			_shop = new RollShop(entries, rollCost, _slots.Count, GameStateController.PlayerData.ShopLevel);
+			_shop = new RollShop(
+				GameStateController.PlayerData.ShopPool,
+				rollCost,
+				_slots.Count,
+				GameStateController.PlayerData.ShopLevel,
+				charCost);
 			Display();
 		}
 		private void Display()
@@ -65,7 +59,7 @@ namespace UI.Shop
 		{
 			var result = new TaskResult();
 			var buyResult = _shop.CanBuy(GameStateController.PlayerData, entry);
-			result.Success = buyResult.Success;
+			result.IsResultSuccess = buyResult.Success;
 			result.Message = buyResult.Message;
 			return result;
 		}

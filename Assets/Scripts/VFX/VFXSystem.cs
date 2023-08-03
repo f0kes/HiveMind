@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace VFX
@@ -8,9 +10,12 @@ namespace VFX
 		[SerializeField] private VFXData _data;
 		[SerializeField] private SpellIcon _spellIconPrefab;
 		[SerializeField] private float _spellIconDuration;
+		[SerializeField] private int _poolSize = 35;
 		private static VFXSystem _instance;
 		public static VFXSystem I => _instance;
 		public static VFXData Data => _instance._data;
+		private List<VFXEffect> _pool = new List<VFXEffect>();
+
 		private void Awake()
 		{
 			if(_instance != null)
@@ -36,6 +41,15 @@ namespace VFX
 				return null;
 			}
 			var instance = Instantiate(effect);
+
+
+			_pool.Insert(0, instance);
+			var currentPoolSize = _pool.Count;
+			if(currentPoolSize > _poolSize)
+			{
+				Destroy(_pool[^1].gameObject);
+			}
+			instance.OnDestroyEvent += e => _pool.Remove(e);
 			if(effect.Duration > 0)
 				Destroy(instance.gameObject, effect.Duration);
 			return instance;

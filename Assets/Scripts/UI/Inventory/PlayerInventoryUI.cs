@@ -13,6 +13,7 @@ namespace UI.Inventory
 	{
 		[SerializeField] private List<InventorySlotUI> _partySlots;
 		[SerializeField] private List<InventorySlotUI> _inventorySlots;
+		[SerializeField] private InventorySlotUI _sellSlot;
 		[SerializeField] private TextMeshProUGUI _goldText;
 
 
@@ -29,6 +30,19 @@ namespace UI.Inventory
 			{
 				slot.SetActions(() => { OnInventoryGotIcon(slot); }, () => { OnInventoryLostIcon(slot); });
 			}
+			_sellSlot.SetActions(OnSellGotIcon);
+		}
+
+		private void OnSellGotIcon()
+		{
+			var content = _sellSlot.GetContent();
+			if(content == null)
+			{
+				return;
+			}
+			
+			GameStateController.PlayerData.AddToPool(content);
+			_sellSlot.SetContent(null);
 		}
 
 		private void OnGoldChanged(int obj)

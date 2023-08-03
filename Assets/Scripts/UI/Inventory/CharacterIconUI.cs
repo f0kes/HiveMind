@@ -2,6 +2,7 @@
 using Characters;
 using Misc;
 using Shop;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -19,6 +20,7 @@ namespace UI.Inventory
 
 
 		[SerializeField] private Image _icon;
+		[SerializeField] private TextMeshProUGUI _cooldownText;
 		private Func<TaskResult> _canDrag = () => true;
 		private bool _isDragging;
 		private CanvasGroup _canvasGroup;
@@ -31,6 +33,16 @@ namespace UI.Inventory
 		public void SetSprite(Sprite sprite)
 		{
 			_icon.sprite = sprite;
+		}
+		public void SetCooldown(int cooldown)
+		{
+			if(cooldown == 0)
+			{
+				_cooldownText.gameObject.SetActive(false);
+				return;
+			}
+			_cooldownText.gameObject.SetActive(true);
+			_cooldownText.text = cooldown.ToString();
 		}
 
 		public void SetDragCondition(Func<TaskResult> canDrag)

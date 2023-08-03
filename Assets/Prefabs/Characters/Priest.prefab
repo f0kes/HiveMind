@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 787551368771622183, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 787551368771622183, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1197915053325820394, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
       propertyPath: _weapon
       value: 
@@ -17,7 +25,7 @@ PrefabInstance:
       objectReference: {fileID: 4972568380546256716, guid: 9aea06426956b024cb86fd9a9a355fbe, type: 3}
     - target: {fileID: 2380441813088468127, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
       propertyPath: m_Name
-      value: Mark The MarksMan
+      value: Priest
       objectReference: {fileID: 0}
     - target: {fileID: 3045233359298995749, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
       propertyPath: m_RootOrder
@@ -75,6 +83,18 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ba6d6b8120ab7c4489a8e85fb06718ed, type: 2}
+    - target: {fileID: 4450377914757587518, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
+      propertyPath: m_Height
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4450377914757587518, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
+      propertyPath: m_Radius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4972352636162561853, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1287383567, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
     - {fileID: 6137154294883633777, guid: 8fc89ec678f9f194489f4935645962c3, type: 3}
@@ -96,7 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b263f0c6ccb46a0bcb7f4e558faaaf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viewDistance: 50
+  _viewDistance: 10
   _circleDivisions: 16
   _chaseBehaivourWeight: 0.19
   _fleeBehaivourWeight: 9.66

@@ -17,11 +17,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: daebcf6c732387449b26766a18db014a, type: 2}
     - target: {fileID: 5859680968761145484, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: _moveSpeed
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5859680968761145484, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: _acceleration
-      value: 6
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5859680968761145484, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: _deceleration
@@ -85,7 +85,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742078971301774809, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: m_Name
-      value: Billy Bonka
+      value: Rogue
       objectReference: {fileID: 0}
     - target: {fileID: 7784035763747362988, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: _weapon
@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec42b94b65b84b8aa32ed9c620c703cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viewDistance: 50
+  _viewDistance: 10
   _circleDivisions: 16
   _chaseBehaivourWeight: 0.1
   _fleeBehaivourWeight: 1

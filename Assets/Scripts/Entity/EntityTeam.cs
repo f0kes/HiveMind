@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Characters;
 using Combat.Spells;
 using DefaultNamespace.Settings;
+using Events.Implementations;
 using GameState;
 using Stats.Structures;
 using UnityEngine;
@@ -39,22 +40,20 @@ namespace DefaultNamespace
 		private void SubscribeToEvents()
 		{
 			Ticker.OnTick += OnTick;
+			CharacterSwappedEvent.Subscribe(OnSwap);
 		}
 		private void UnsubscribeFromEvents()
 		{
 			Ticker.OnTick -= OnTick;
-		}
-		private void SubscribeToEntityEvents(Entity entity)
-		{
-			entity.Events.SpellCasted += OnCast;
-			entity.Events.SwappedWithCharacter += OnSwap;
-		}
-		private void UnsubscribeFromEntityEvents(Entity entity)
-		{
-			entity.Events.SpellCasted -= OnCast;
-			entity.Events.SwappedWithCharacter -= OnSwap;
+			CharacterSwappedEvent.Unsubscribe(OnSwap);
 		}
 
+		private void OnSwap(CharacterSwappedData obj)
+		{
+			if(obj.NewCharacter.Team != _teamId) return;
+			_swapCooldownTimer = 0;
+			_canCast = true;
+		}
 
 		public void SetList<T>(List<T> list) where T : Entity
 		{
@@ -66,10 +65,6 @@ namespace DefaultNamespace
 		}
 		public void Clear()
 		{
-			foreach(var entity in _list)
-			{
-				UnsubscribeFromEntityEvents(entity);
-			}
 			_list.Clear();
 		}
 		public void Reset()
@@ -111,25 +106,15 @@ namespace DefaultNamespace
 		{
 			return _swapCooldownTimer >= SwapCooldown;
 		}
-		private void OnSwap(Character character)
-		{
-			_swapCooldownTimer = 0;
-			_canCast = true;
-		}
-		private void OnCast(BaseSpell spell)
-		{
-			_castCooldownTimer = 0;
-			_canCast = false;
-		}
+
 		public void Add(Entity entity)
 		{
 			_list.Add(entity);
-			SubscribeToEntityEvents(entity);
+		
 		}
 		public void Remove(Entity entity)
 		{
 			_list.Remove(entity);
-			UnsubscribeFromEntityEvents(entity);
 			if(_list.Count == 0)
 			{
 				OnTeamWiped?.Invoke(this);

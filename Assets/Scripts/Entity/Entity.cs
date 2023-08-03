@@ -21,6 +21,7 @@ namespace DefaultNamespace
 
 		private float _currentHealthPercent = 1f;
 		private ushort _team;
+		private uint _maxLevel;
 		private uint _level;
 		private List<BaseEffect> _effects = new List<BaseEffect>();
 
@@ -31,6 +32,7 @@ namespace DefaultNamespace
 
 		private bool _isDead;
 		public bool IsDead => _isDead;
+		public uint MaxLevel => _maxLevel;
 		public uint Level => _level;
 		public ushort Team => _team;
 		public float MaxHealth => Stats[CS.Health];
@@ -46,6 +48,7 @@ namespace DefaultNamespace
 		{
 			_data = data;
 			_level = data.Level;
+			_maxLevel = GameStateController.GameData.MaxLevel;
 			_stats = Instantiate(data.Stats);
 			Stats = _stats.GetStats(Level);
 		}
@@ -80,13 +83,21 @@ namespace DefaultNamespace
 			_team = team;
 			GameStateController.Battle.EntityRegistry.AddToTeam(_team, this);
 		}
+		public void SetMaxLevel(int maxLevel)
+		{
+			if(maxLevel <= 0)
+			{
+				maxLevel = 0;
+			}
+			_maxLevel = (uint)maxLevel;
+		}
 		public void SetLevel(int level)
 		{
 			if(level <= 0)
 			{
 				Die();
 			}
-			level = Mathf.Clamp(level, 1, (int)GameStateController.GameData.MaxLevel);
+			level = Mathf.Clamp(level, 1, (int)_maxLevel);
 			_level = (uint)level;
 			Stats.SetLevel(_level);
 		}

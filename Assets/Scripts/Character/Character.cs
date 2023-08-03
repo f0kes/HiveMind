@@ -92,8 +92,9 @@ namespace Characters
 		{
 			Ticker.OnTick -= OnTick;
 		}
-		public void OnFatigue(FatigueEventData obj)
+		public void TakeFatigue(FatigueEventData obj)
 		{
+			SetMaxLevel((int)(MaxLevel - obj.FatigueValue));
 			SetLevel((int)(Level - obj.FatigueValue));
 		}
 		private void OnTick(Ticker.OnTickEventArgs obj)
@@ -239,22 +240,22 @@ namespace Characters
 			{
 				spell = ActiveSpell;
 			}
-			var result = new TaskResult { Success = true };
+			var result = new TaskResult { IsResultSuccess = true };
 			if(IsDead)
 			{
-				result.Success = false;
+				result.IsResultSuccess = false;
 				result.Message = "Character is dead";
 				return result;
 			}
 			if(spell == null)
 			{
-				result.Success = false;
+				result.IsResultSuccess = false;
 				result.Message = "No spell selected";
 				return result;
 			}
 			if(spell.ManaCost > CurrentMana)
 			{
-				result.Success = false;
+				result.IsResultSuccess = false;
 				result.Message = "Not enough mana";
 				return result;
 			}

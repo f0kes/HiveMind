@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: c837ae996fb8e9f408db74d5b0c55760, type: 2}
     - target: {fileID: 5859680968761145484, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: _moveSpeed
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5859680968761145484, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: _acceleration
@@ -81,7 +81,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742078971301774809, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: m_Name
-      value: FatBoy
+      value: Warrior
       objectReference: {fileID: 0}
     - target: {fileID: 7784035763747362988, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: _weapon
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b59e113eb5b421181de19b6c6a50ee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viewDistance: 50
+  _viewDistance: 10
   _circleDivisions: 16
   _chaseBehaivourWeight: 2
   _fleeBehaivourWeight: 1

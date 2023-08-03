@@ -1,5 +1,6 @@
 ﻿using System;
 using Characters;
+using Cysharp.Threading.Tasks;
 using Misc;
 using Shop;
 using UnityEngine;
@@ -8,9 +9,11 @@ using UnityEngine.UI;
 
 namespace UI.Inventory
 {
-	
+
 	public class InventorySlotUI : MonoBehaviour
 	{
+		[SerializeField] private float _tooltipDelay = 0.5f;
+
 		[SerializeField] private CharacterIconUI _iconPrefab;
 		[SerializeField] private CharacterTooltip _tooltipPrefab;
 
@@ -23,12 +26,17 @@ namespace UI.Inventory
 
 		private Action _onGotIcon;
 		private Action _onLostIcon;
-		public void SetConditions(Func<TaskResult> dragCondition, Func<TaskResult> dropCondition)
+
+		private float _tooltipTimer = 0f;
+		private bool _breakTooltipTimer = false;
+		public void SetConditions(Func<TaskResult> dragCondition = null, Func<TaskResult> dropCondition = null)
 		{
+			dragCondition ??= () => true;
+			dropCondition ??= () => true;
 			_dragCondition = dragCondition;
 			_dropCondition = dropCondition;
 		}
-		public void SetActions(Action onGotIcon, Action onLostIcon)
+		public void SetActions(Action onGotIcon = null, Action onLostIcon = null)
 		{
 			_onGotIcon = onGotIcon;
 			_onLostIcon = onLostIcon;
@@ -50,7 +58,9 @@ namespace UI.Inventory
 			if(data == null) return;
 
 			var newIcon = Instantiate(_iconPrefab);
+
 			newIcon.SetSprite(data.EntityData.Icon);
+			newIcon.SetCooldown(data.CurrentUseCooldown);
 
 			newIcon.OnDragEvent += OnIconDrag;
 			newIcon.OnDropEvent += OnIconDrop;
@@ -60,23 +70,43 @@ namespace UI.Inventory
 			SetIcon(newIcon);
 		}
 
-		private void OnIconPointerExit(PointerEventData obj)
+		private async void OnIconPointerExit(PointerEventData obj)
 		{
+			_breakTooltipTimer = true;
 			if(_tooltipInstance == null) return;
 			Debug.Log("OnIconPointerExit");
 			_tooltipInstance.Tooltip.OnPointerExit(obj);
 		}
 
-		private void OnIconPointerEnter(PointerEventData obj)
+		private async void OnIconPointerEnter(PointerEventData obj)
 		{
 			if(_tooltipInstance != null)
 			{
 				_tooltipInstance.Tooltip.OnPointerEnter(obj);
 				return;
 			}
+			
+			var result = await WaitTooltipTimer();
+			if(!result) return;
+			
 			_tooltipInstance = Instantiate(_tooltipPrefab);
 			_tooltipInstance.SetData(_slot.GetContent());
 			_tooltipInstance.Tooltip.SetPosition(transform.position);
+		}
+		private async UniTask<bool> WaitTooltipTimer()
+		{
+			_tooltipTimer = 0f;
+			_breakTooltipTimer = false;
+			while (_tooltipTimer < _tooltipDelay)
+			{
+				if(_breakTooltipTimer)
+				{
+					return false;
+				}
+				_tooltipTimer += Time.deltaTime;
+				await UniTask.Yield();
+			}
+			return true;
 		}
 
 		private void OnIconDrop(PointerEventData eventData)
@@ -97,7 +127,7 @@ namespace UI.Inventory
 				_onLostIcon?.Invoke();
 				_slot.MoveContentTo(other._slot);
 				other._onGotIcon?.Invoke();
-				
+
 				other.UpdateIcon();
 			}
 			UpdateIcon();

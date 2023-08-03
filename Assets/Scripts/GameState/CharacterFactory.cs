@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Characters;
 
 namespace GameState
 {
-	public class CharacterFactory
+	public class CharacterFactory : ICharacterFactory
 	{
 		private Dictionary<CharacterData, Character> _characters = new Dictionary<CharacterData, Character>();
 
@@ -25,14 +26,9 @@ namespace GameState
 			character.gameObject.SetActive(false);
 			return character;
 		}
-		public List<CharacterData> GetAliveOriginals()
+		public List<CharacterData> QueryOriginals(Func<Character, bool> predicate)
 		{
-			return (from kvp in _characters where !kvp.Value.IsDead select kvp.Key).ToList();
+			return (from kvp in _characters where predicate(kvp.Value) select kvp.Key).ToList();
 		}
-		public List<CharacterData> GetAliveOriginals(ushort teamId)
-		{
-			return (from kvp in _characters where !kvp.Value.IsDead && kvp.Value.Team == teamId select kvp.Key).ToList();
-		}
-
 	}
 }

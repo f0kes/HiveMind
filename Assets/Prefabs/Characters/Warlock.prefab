@@ -65,7 +65,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742078971301774809, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: m_Name
-      value: Protector
+      value: Warlock
       objectReference: {fileID: 0}
     - target: {fileID: 7784035763747362988, guid: 62f23b0f03042c04db6e270770e58565, type: 3}
       propertyPath: _weapon
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60d1c00f25e149b199b7ba6111d46729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viewDistance: 50
+  _viewDistance: 10
   _circleDivisions: 16
   _chaseBehaivourWeight: 0.8
   _fleeBehaivourWeight: 1

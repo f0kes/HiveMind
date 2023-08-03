@@ -36,6 +36,7 @@
 		RagePotionAtkSpeedBonus,
 		RagePotionDamagePenalty,
 		RagePotionBonusDuration,
-		RagePotionPenaltyDuration
+		RagePotionPenaltyDuration,
+		AuraDuration
 	}
 }

@@ -64,9 +64,13 @@ namespace Combat
 			_timeSinceLastFatigueTick = 0;
 			var fatigueData = new FatigueEventData(_currentFatigueValue);
 			FatigueEvent.Invoke(fatigueData);
-			foreach(var character in Battle.EntityRegistry.GetAllCharacters().Where(c => !c.IsDead))
+			var targets = Battle.EntityRegistry
+				.GetAllCharacters()
+				.Where(c => !c.IsDead)
+				.OrderBy(x => x.Level);
+			foreach(var character in targets)
 			{
-				character.OnFatigue(fatigueData);
+				character.TakeFatigue(fatigueData);
 			}
 			_currentFatigueValue += _fatigueIncrement;
 		}

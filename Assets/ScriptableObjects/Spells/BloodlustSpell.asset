@@ -18,15 +18,15 @@ MonoBehaviour:
   _description: 'Whenever someone crits, give rogues +1
 
     Aura: crits'
-  _manaCost: 0
+  _manaCost: 1
   Behaviour: 1
   Tags: 
   _levelsOnCrit:
     _min: 1
     _max: 10
   _critChance:
-    _min: 0.05
+    _min: 0.1
     _max: 1
   _critDamageMultiplier:
-    _min: 1.5
+    _min: 2
     _max: 10

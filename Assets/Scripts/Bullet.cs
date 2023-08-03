@@ -48,7 +48,6 @@ namespace DefaultNamespace
 			var damaged = collision.gameObject.GetComponent<Entity>();
 			if (damaged != null && damaged.Team != _team)
 			{
-				Debug.Log("Bullet hit");
 				_owner.Events.BulletHit?.Invoke(damaged);
 			}
 

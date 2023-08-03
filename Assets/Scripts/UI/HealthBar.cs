@@ -41,14 +41,13 @@ namespace DefaultNamespace.UI
 			CharacterSwappedEvent.Subscribe(OnCharacterSwapped);
 			var character = entity as Character;
 			InitManaBar(character);
-			
+
 			if(character != null && character.ControlsProvider == InputHandler.Instance)
 				SetColor(_controlledColor);
 			else if(entity.Team == 0)
 				SetColor(_playerColor);
 			else
 				SetColor(_enemyColor);
-			
 		}
 
 		private void InitManaBar(Character character)
@@ -61,7 +60,7 @@ namespace DefaultNamespace.UI
 
 		private void OnCharacterSwapped(CharacterSwappedData data)
 		{
-			if(data.NewCharacter == _entity)
+			if(data.NewCharacter == _entity && _entity.Team == 0) //todo: check if team is local player
 				SetColor(_controlledColor);
 			else if(data.OldCharacter == _entity)
 			{
@@ -97,7 +96,7 @@ namespace DefaultNamespace.UI
 		{
 			gameObject.SetActive(false);
 		}
-		
+
 		private void OnHealthChanged(float healthPercent)
 		{
 			if(_healthBarFill == null)

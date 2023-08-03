@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec42b94b65b84b8aa32ed9c620c703cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viewDistance: 50
+  _viewDistance: 10
   _circleDivisions: 16
   _chaseBehaivourWeight: 0.8
   _fleeBehaivourWeight: 1

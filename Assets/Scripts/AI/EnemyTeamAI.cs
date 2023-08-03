@@ -2,6 +2,7 @@
 using Characters;
 using Combat;
 using DefaultNamespace;
+using Events.Implementations;
 using GameState;
 using UnityEngine;
 
@@ -31,13 +32,14 @@ namespace AI
 		}
 		private void OnTick(Ticker.OnTickEventArgs obj)
 		{
-			if(_team.CanCast())
+			if(_team.CanSwap())
 			{
 				var list = _team.GetCharacters();
 				var randomIndex = UnityEngine.Random.Range(0, list.Count);
 				if(randomIndex >= list.Count) return;
 				var randomCaster = list[randomIndex];
-				randomCaster.SetMana(randomCaster.CurrentMana + 1); //todo: pull from settings 
+				CharacterSwappedEvent.Invoke(new CharacterSwappedData(null, randomCaster));
+				
 				if(!randomCaster.ReadyToCast()) return;
 				var entitiesInRange = GameStateController.Battle.EntityRegistry.GetEntitiesInRange(randomCaster.transform.position, 100f); //todo: get range from spell
 				var spell = randomCaster.ActiveSpell;

@@ -46,50 +46,54 @@ namespace UI
 				_allSegments.Add(instance);
 				instance.Disable();
 			}
-			_previousMana = character.CurrentMana;
+			_previousMana = 0;
 			OnManaChanged(_character.CurrentMana);
 		}
 
 
-		private async void OnManaChanged(int newMana)
+		private void OnManaChanged(int newMana)
 		{
 			var diff = newMana - _previousMana;
 			if(diff > 0)
 			{
-				for(int i = 0; i < diff; i++)
-				{
-					while (_toActivate.Count == 0)
-					{
-						await UniTask.Yield();
-					}
-					var segment = _toActivate.First.Value;
-					_toActivate.RemoveFirst();
-					ActivateManaSegment(segment);
-					_toDeactivate.AddLast(segment);
-					await UniTask.WaitForSeconds(_animationDelay);
-				}
+				AddMultiple(diff);
 			}
 			else if(diff < 0)
 			{
-				for(int i = 0; i < -diff; i++)
-				{
-					while (_toDeactivate.Count == 0)
-					{
-						await UniTask.Yield();
-					}
-					var segment = _toDeactivate.Last.Value;
-					_toDeactivate.RemoveLast();
-					DeactivateManaSegment(segment);
-					_toActivate.AddFirst(segment);
-					await UniTask.WaitForSeconds(_animationDelay);
-				}
-			}
-			else
-			{
-				return;
+				RemoveMultiple(-diff);
 			}
 			_previousMana = newMana;
 			CheckGlow(newMana);
+		}
+		private async void AddMultiple(int count)
+		{
+			for(int i = 0; i < count; i++)
+			{
+				while (_toActivate.Count == 0)
+				{
+					await UniTask.Yield();
+				}
+				var segment = _toActivate.First.Value;
+				_toActivate.RemoveFirst();
+				ActivateManaSegment(segment);
+				_toDeactivate.AddLast(segment);
+				await UniTask.WaitForSeconds(_animationDelay);
+			}
+		}
+		private async void RemoveMultiple(int count)
+		{
+			for(int i = 0; i < count; i++)
+			{
+				while (_toDeactivate.Count == 0)
+				{
+					await UniTask.Yield();
+				}
+				var segment = _toDeactivate.Last.Value;
+				_toDeactivate.RemoveLast();
+				DeactivateManaSegment(segment);
+				_toActivate.AddFirst(segment);
+				await UniTask.WaitForSeconds(_animationDelay);
+			}
 		}
 		private void CheckGlow(int newMana)
 		{

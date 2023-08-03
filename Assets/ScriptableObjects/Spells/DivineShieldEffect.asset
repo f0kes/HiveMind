@@ -16,7 +16,7 @@ MonoBehaviour:
   _icon: {fileID: 0}
   _name: 
   _description: 
-  _manaCost: 0
+  _manaCost: 1
   Behaviour: 0
   Tags: 
   Stackable: 1
