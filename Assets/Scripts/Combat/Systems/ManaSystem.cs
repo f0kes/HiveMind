@@ -14,16 +14,6 @@ namespace Combat
 			_manaOnSwap = manaOnSwap;
 		}
 
-		public override void Start()
-		{
-			SubscribeToEvents();
-		}
-
-		public override void Stop()
-		{
-			UnsubscribeFromEvents();
-		}
-
 		public override void SubscribeToEvents()
 		{
 			CharacterSwappedEvent.Subscribe(OnCharacterSwapped);

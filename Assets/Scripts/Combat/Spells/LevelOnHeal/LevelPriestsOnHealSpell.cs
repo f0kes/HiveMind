@@ -10,22 +10,34 @@ namespace Combat.Spells.LevelOnHeal
 	{
 		[SerializeField] private MinMaxStatRange _minHealAmount;
 		[SerializeField] private MinMaxStatRange _levelIncreaseAmount;
+		[SerializeField] private MinMaxStatRange _duration;
 
 		protected override void PopulateParams()
 		{
 			AddParam(CS.BlessingMinHealAmount, _minHealAmount);
 			AddParam(CS.BlessingLevelIncreaseAmount, _levelIncreaseAmount);
+			AddParam(CS.BlessingDuration, _duration);
 		}
-		protected override void SubscribeToEvents()
+		protected override void OnActivated()
 		{
-			base.SubscribeToEvents();
+			base.OnActivated();
 			HealEvent.Subscribe(OnHeal);
 		}
 
-		protected override void UnsubscribeFromEvents()
+		protected override void OnDeactivated()
 		{
-			base.UnsubscribeFromEvents();
+			base.OnDeactivated();
 			HealEvent.Unsubscribe(OnHeal);
+		}
+
+		public override bool IsPermanent()
+		{
+			return false;
+		}
+
+		public override float GetLifetime()
+		{
+			return GetParam(CS.BlessingDuration);
 		}
 
 		private void OnHeal(Combat.Heal obj)

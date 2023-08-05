@@ -16,7 +16,7 @@ namespace DefaultNamespace
 	{
 		private EntityData _data;
 
-		public EntityTag Tags => _data.Tags;
+		public HashSet<EntityTag> Tags => _data.Tags.ToHashSet();
 		public EntityEvents Events = new EntityEvents();
 
 		private float _currentHealthPercent = 1f;

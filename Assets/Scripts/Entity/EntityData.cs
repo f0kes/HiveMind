@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Enums;
 using Stats;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace DefaultNamespace
 	{
 		public Sprite Icon;
 		public string Name;
-		public EntityTag Tags;
+		public List<EntityTag> Tags = new ();
 		public SerializableCharacterStats Stats;
 		public uint Level;
 

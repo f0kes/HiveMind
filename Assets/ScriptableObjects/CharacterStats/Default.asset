@@ -36,44 +36,26 @@ MonoBehaviour:
       _baseValue: 25
       _scalingRange:
         _min: 80
-        _max: 400
-  - Name: 5
-    Value:
-      _baseValue: 5
-      _scalingRange:
-        _min: 1
-        _max: 1000
-  - Name: 6
-    Value:
-      _baseValue: 5
-      _scalingRange:
-        _min: 1
-        _max: 1000
-  - Name: 7
-    Value:
-      _baseValue: 100
-      _scalingRange:
-        _min: 1
-        _max: 1000
+        _max: 800
   - Name: 4
     Value:
       _baseValue: 100
       _scalingRange:
         _min: 1000
-        _max: 10000
+        _max: 20000
   - Name: 5
     Value:
       _baseValue: 1
       _scalingRange:
         _min: 1
         _max: 20
-  - Name: 28
+  - Name: 6
     Value:
       _baseValue: 1
       _scalingRange:
         _min: 0
         _max: 0
-  - Name: 29
+  - Name: 7
     Value:
       _baseValue: 1
       _scalingRange:

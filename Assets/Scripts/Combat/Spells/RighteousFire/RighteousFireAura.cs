@@ -14,9 +14,11 @@ namespace Combat.Spells.RighteousFire
 	public class RighteousFireAura : BaseAura
 	{
 		[SerializeField] private MinMaxStatRange _damageBonus;
+
 		private StatModifierAdd _damageBonusModifier;
 		protected override void PopulateParams()
 		{
+			base.PopulateParams();
 			AddParam(CS.DamageBonus, _damageBonus);
 		}
 

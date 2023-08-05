@@ -24,7 +24,7 @@ namespace Combat.Spells.Finisher
 		{
 			base.OnAttachedToCharacter();
 			var atkSpeedPenalty = GetParam(CS.FireRate);
-			var modfier = ScriptableObject.CreateInstance<StatModifierMultiply>();
+			var modfier = CreateInstance<StatModifierMultiply>();
 			modfier.Value = atkSpeedPenalty;
 			GetOwnerCharacter().Stats.GetStat(CS.FireRate)
 				.AddMod(modfier);

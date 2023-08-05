@@ -15,18 +15,24 @@ MonoBehaviour:
   Level: 10
   _icon: {fileID: 21300000, guid: 9d854caeb9ea38e409534cce648e9ae0, type: 3}
   _name: Bloodlust
+  _lifetime:
+    _min: 3
+    _max: 6
+  _permanent: 0
   _description: 'Whenever someone crits, give rogues +1
 
     Aura: crits'
-  _manaCost: 1
+  _manaCost: 2
+  _uses: 5
+  _isInfinite: 0
   Behaviour: 1
   Tags: 
   _levelsOnCrit:
-    _min: 1
+    _min: 2
     _max: 10
   _critChance:
-    _min: 0.1
+    _min: 0.2
     _max: 1
   _critDamageMultiplier:
-    _min: 2
+    _min: 3
     _max: 10

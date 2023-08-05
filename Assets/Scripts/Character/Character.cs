@@ -27,7 +27,9 @@ namespace Characters
 	{
 		private CharacterData _characterData;
 		private Character _swapTarget;
+		private int _maxMana = 0;
 		private int _currentMana;
+		private int _spellUsesLeft;
 
 		public CharacterControlsProvider ControlsProvider;
 		public CharacterMover CharacterMover{get; private set;}
@@ -40,7 +42,7 @@ namespace Characters
 		public BaseSpell ActiveSpell => _activeSpell;
 		public float AIDesirability => _characterData.AIDesirability;
 		public float AIThreat => _characterData.AIThreat;
-		public int MaxMana => _activeSpell != null ? _activeSpell.ManaCost : 0;
+		public int MaxMana => _maxMana;
 		public int CurrentMana => _currentMana;
 		public CharacterClass Class => _characterData.Class;
 
@@ -125,32 +127,22 @@ namespace Characters
 			foreach(var spell in _spells)
 			{
 				var activeSpellSet = false;
-				switch(spell.Behaviour)
+				if(spell.ManaCost > 0)
 				{
-					case SpellBehaviour.Default:
-						break;
-					case SpellBehaviour.Passive:
-						break;
-					case SpellBehaviour.UnitTarget:
-						_activeSpell = spell;
-						activeSpellSet = true;
-						break;
-					case SpellBehaviour.PointTarget:
-						_activeSpell = spell;
-						activeSpellSet = true;
-						break;
-					case SpellBehaviour.Active:
-						_activeSpell = spell;
-						activeSpellSet = true;
-						break;
-					default:
-						break;
+					SetActiveSpell(spell);
+					activeSpellSet = true;
 				}
 				if(activeSpellSet)
 				{
 					break;
 				}
 			}
+		}
+		private void SetActiveSpell(BaseSpell spell)
+		{
+			_maxMana = spell.ManaCost;
+			_spellUsesLeft = spell.Uses;
+			_activeSpell = spell;
 		}
 
 		public void InitSpell(BaseSpell spell)
@@ -228,13 +220,22 @@ namespace Characters
 		{
 			SetMana(CurrentMana - manaCost);
 		}
+		public void SpendUse()
+		{
+			_spellUsesLeft--;
+			if(_spellUsesLeft <= 0)
+			{
+				_spellUsesLeft = 0;
+			}
+			Events.SpellUsesChanged?.Invoke(_spellUsesLeft);
+		}
 		public void SetMana(int characterCurrentMana)
 		{
 			characterCurrentMana = Mathf.Clamp(characterCurrentMana, 0, MaxMana);
 			_currentMana = characterCurrentMana;
 			Events.ManaChanged?.Invoke(characterCurrentMana);
 		}
-		public TaskResult ReadyToCast(BaseSpell spell = null)
+		public TaskResult ReadyToCast(BaseSpell spell = null) //todo: move to cast system
 		{
 			if(spell == null)
 			{
@@ -259,9 +260,13 @@ namespace Characters
 				result.Message = "Not enough mana";
 				return result;
 			}
+			if(!spell.IsInfinite && _spellUsesLeft <= 0)
+			{
+				result.IsResultSuccess = false;
+				result.Message = "No uses left";
+				return result;
+			}
 			return result;
 		}
-
-
 	}
 }

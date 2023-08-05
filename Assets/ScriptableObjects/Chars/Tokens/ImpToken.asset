@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8da376ccfd974cca8495975e86784afb, type: 3}
+  m_Name: ImpToken
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 3299008662807429576, guid: 53bfaf141b2f3284b8b6611154d5178c, type: 3}
+  EntityData:
+    Icon: {fileID: 21300000, guid: 3484e5a9e3218d049a4754a76b69965e, type: 3}
+    Name: Imp
+    Tags: 
+    Stats: {fileID: 11400000, guid: 4d44390da360a73449104a3beb72d5c8, type: 2}
+    Level: 0
+  Spells: []
+  AIDesirability: 1
+  AIThreat: 1
+  MaxMana: 10
+  Class: 2
+  IsToken: 1

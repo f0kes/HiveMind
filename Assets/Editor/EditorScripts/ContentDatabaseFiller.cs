@@ -29,6 +29,10 @@ namespace Editor.EditorScripts
 		{
 			container.Characters = GetAssetsOfType<CharacterData>("Assets/ScriptableObjects/Chars");
 			container.Spells = GetAssetsOfType<BaseSpell>("Assets/ScriptableObjects/Spells/");
+			//save changes
+
+			EditorUtility.SetDirty(container);
+			AssetDatabase.SaveAssets();
 		}
 		private static List<T> GetAssetsOfType<T>(string path) where T : ScriptableObject
 		{

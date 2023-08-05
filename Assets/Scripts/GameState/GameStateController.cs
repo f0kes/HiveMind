@@ -4,6 +4,7 @@ using System.Linq;
 using Characters;
 using Combat;
 using Combat.Battle;
+using Combat.Spells;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using DefaultNamespace.Configs;
@@ -36,15 +37,20 @@ namespace GameState
 		private List<IBattleSystem> _combatSystems = new List<IBattleSystem>();
 		private Battle _battle;
 		private ICharacterFactory _characterFactory;
+		private ProjectileSystem _projectileSystem;
+		private ActivatorSystem _activatorSystem;
 		private FatigueSystem _fatigueSystem;
 		private ManaSystem _manaSystem;
 
 		public static GameStateController Instance{get; private set;}
+		public static ActivatorSystem ActivatorSystem => Instance._activatorSystem;
 		public static PlayerData PlayerData => Instance._playerData;
 		public static GameData GameData => Instance._gameData;
 		public static ContentDatabase ContentDatabase => Instance._contentDatabase;
 
 		public static Battle Battle => Instance._battle;
+		public static ICharacterFactory CharacterFactory => Instance._characterFactory;
+		public static ProjectileSystem ProjectileSystem => Instance._projectileSystem;
 
 
 		private void Awake()
@@ -61,8 +67,9 @@ namespace GameState
 				Destroy(gameObject);
 				return;
 			}
-			ResetPlayerData();
+
 			_contentDatabase.Init();
+			ResetPlayerData();
 		}
 		private void OnDestroy()
 		{
@@ -77,7 +84,7 @@ namespace GameState
 				(int)_gameData.StartingGold,
 				_gameData.StartingBattleLevel,
 				_gameData.StartingShopLevel,
-				shopPool: _contentDatabase.GenerateCharacterPool(_gameData.ShopRepeats));
+				shopPool: _contentDatabase.GenerateCharacterPool(_gameData.ShopRepeats, ContentDatabase.Purchasable));
 		}
 		public StartBattleResult TryStartBattle(List<CharacterData> party, List<CharacterData> enemies)
 		{
@@ -94,7 +101,7 @@ namespace GameState
 				return new StartBattleResult
 				{
 					Success = false,
-					ErrorMessage = "Party has invalid characters"
+					ErrorMessage = "Party has unusable characters"
 				};
 			}
 			if(enemies.Count == 0)
@@ -119,6 +126,7 @@ namespace GameState
 
 			_characterFactory = new CharacterFactory();
 			_battle = new Battle();
+			
 
 			InitBattleSystems(_battle);
 
@@ -138,12 +146,18 @@ namespace GameState
 				_gameData.FatigueTickTime,
 				_gameData.FatigueStartValue,
 				_gameData.FatigueIncrement);
-
-			_manaSystem = new ManaSystem(battle, _gameData.ManaPerSwap);
-
 			_combatSystems.Add(_fatigueSystem);
+			
+			_manaSystem = new ManaSystem(battle, _gameData.ManaPerSwap);
 			_combatSystems.Add(_manaSystem);
+			
+			_activatorSystem = new ActivatorSystem(battle);
+			_combatSystems.Add(_activatorSystem);
+			
+			_projectileSystem = new ProjectileSystem(battle);
+			_combatSystems.Add(_activatorSystem);
 
+			
 			foreach(var system in _combatSystems)
 			{
 				system.Start();
@@ -153,7 +167,7 @@ namespace GameState
 		private async void OnBattleEnded(BattleResult battleResult)
 		{
 			HandleRoundEnd(battleResult);
-
+			await UniTask.Delay(1000);
 			await SceneManager.LoadSceneAsync(_shopScene);
 
 			_battle.BattleEnded -= OnBattleEnded;

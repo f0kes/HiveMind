@@ -1,30 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using Enums;
 using GameState;
 using Stats;
 using UnityEngine;
+using VFX;
 
 namespace Combat.Spells
 {
 	public abstract class BaseAura : BaseSpell
 	{
-		[SerializeField] private MinMaxStatRange _duration;
+		
 		private HashSet<Entity> _targets = new HashSet<Entity>();
-		private bool _active;
-		protected override void PopulateParams()
-		{
-			AddParam(CS.AuraDuration, _duration);
-		}
-
+		
 		public override void OnTick(Ticker.OnTickEventArgs obj)
 		{
 			base.OnTick(obj);
-			if(!_active) return;
 			var oldTargets = _targets;
 			var newTargets = GetTargets();
-			foreach(var oldTarget in oldTargets.Where(oldTarget => !newTargets.Contains(oldTarget))) 
+			foreach(var oldTarget in oldTargets.Where(oldTarget => !newTargets.Contains(oldTarget)))
 			{
 				RemoveAura(oldTarget);
 			}
@@ -34,7 +30,7 @@ namespace Combat.Spells
 			}
 			_targets = newTargets;
 		}
-		
+
 
 		public override void OnDestroyed()
 		{
@@ -43,6 +39,27 @@ namespace Combat.Spells
 			{
 				RemoveAura(target);
 			}
+		} 
+
+		protected override void OnActivated()
+		{
+			base.OnActivated();
+			Debug.Log("Aura activated");
+			
+		}
+
+		protected override void OnDeactivated()
+		{
+			base.OnDeactivated();
+			RemoveFromAll();
+		}
+		private void RemoveFromAll()
+		{
+			foreach(var target in _targets)
+			{
+				RemoveAura(target);
+			}
+			_targets.Clear();
 		}
 
 		protected abstract HashSet<Entity> GetTargets();

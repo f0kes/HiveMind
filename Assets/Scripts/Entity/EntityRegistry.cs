@@ -154,8 +154,6 @@ namespace DefaultNamespace
 			{
 				_graveyards.Add(entity.Team, new EntityTeam(entity.Team) { entity });
 			}
-			//todo: remove this
-			Debug.Log("Death");
 			if(GetAliveTeamsCount() == 1)
 			{
 				OneRemainingTeam?.Invoke(_teams.Values.FirstOrDefault(x => x.Count > 0));

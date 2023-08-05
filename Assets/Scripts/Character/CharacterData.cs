@@ -18,11 +18,12 @@ namespace Characters
 		public float AIThreat = 1;
 		public int MaxMana = 10;
 		public CharacterClass Class;
+		public bool IsToken = false;
 
 		private int _currentUseCooldown = 0;
 		private int _nextUseCooldown = 1;
-		[SerializeField] private int _maxUseCooldown = 10;
-		
+		private int _maxUseCooldown = 5;
+
 		public int CurrentUseCooldown => _currentUseCooldown;
 		public static CharacterData Copy(CharacterData original)
 		{

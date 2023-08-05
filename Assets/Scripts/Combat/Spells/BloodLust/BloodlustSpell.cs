@@ -35,15 +35,15 @@ namespace Combat.Spells.BloodLust
 			_critDamageModifier.SetValFunc(() => GetParam(CS.BloodlustCritDamageMultiplier));
 		}
 
-		protected override void SubscribeToEvents()
+		protected override void OnActivated()
 		{
-			base.SubscribeToEvents();
+			base.OnActivated();
 			CritEvent.Subscribe(OnCrit);
 		}
 
-		protected override void UnsubscribeFromEvents()
+		protected override void OnDeactivated()
 		{
-			base.UnsubscribeFromEvents();
+			base.OnDeactivated();
 			CritEvent.Unsubscribe(OnCrit);
 		}
 

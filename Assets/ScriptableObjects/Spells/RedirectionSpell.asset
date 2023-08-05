@@ -15,10 +15,19 @@ MonoBehaviour:
   Level: 10
   _icon: {fileID: 0}
   _name: 
+  _lifetime:
+    _min: 3
+    _max: 9
+  _permanent: 0
   _description: Whenever a friend damages this, damage random enemy instead
-  _manaCost: 0
+  _manaCost: 1
+  _uses: 5
+  _isInfinite: 0
   Behaviour: 1
   Tags: 
   _damageMultiplier:
-    _min: 1
-    _max: 2
+    _min: 1.1
+    _max: 3
+  _duration:
+    _min: 6
+    _max: 12

@@ -65,7 +65,7 @@ namespace Combat.Battle
 				_spawnPoints[teamId].Add(spawnPoint);
 			}
 		}
-		public void Spawn()
+		private void Spawn()
 		{
 			GetSpawnPointsOnScene();
 			var count = _toSpawn.Count;

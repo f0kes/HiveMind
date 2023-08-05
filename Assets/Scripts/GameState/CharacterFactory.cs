@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Characters;
+using UnityEngine;
 
 namespace GameState
 {
@@ -26,6 +27,15 @@ namespace GameState
 			character.gameObject.SetActive(false);
 			return character;
 		}
+
+		public Character CreateInstant(CharacterData data, ushort teamId, Vector3 position)
+		{
+			var character = Create(data, teamId);
+			character.transform.position = position;
+			character.gameObject.SetActive(true);
+			return character;
+		}
+
 		public List<CharacterData> QueryOriginals(Func<Character, bool> predicate)
 		{
 			return (from kvp in _characters where predicate(kvp.Value) select kvp.Key).ToList();

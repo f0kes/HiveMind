@@ -33,7 +33,7 @@ namespace VFX
 			spellIcon.Follow(target);
 			Destroy(spellIcon.gameObject, _spellIconDuration);
 		}
-		private T PlayEffect<T>(T effect) where T : VFXEffect
+		private T PlayEffect<T>(T effect, float duration = -1) where T : VFXEffect
 		{
 			if(effect == null)
 			{
@@ -50,8 +50,12 @@ namespace VFX
 				Destroy(_pool[^1].gameObject);
 			}
 			instance.OnDestroyEvent += e => _pool.Remove(e);
-			if(effect.Duration > 0)
-				Destroy(instance.gameObject, effect.Duration);
+			if(duration > 0)
+			{
+				instance.SetDuration(duration);
+			}
+			if(instance.Duration > 0)
+				Destroy(instance.gameObject, instance.Duration);
 			return instance;
 		}
 		public VFXEffect PlayEffectFollow(VFXEffect effect, Transform target)
@@ -60,7 +64,12 @@ namespace VFX
 			instance.Follow(target);
 			return instance;
 		}
-
+		public VFXEffect PlayEffectFollow(VFXEffect effect, Transform target, float duration)
+		{
+			var instance = PlayEffect(effect, duration);
+			instance.Follow(target);
+			return instance;
+		}
 		public VFXEffect PlayEffectPoint(VFXEffect effect, Vector3 point)
 		{
 			var instance = PlayEffect(effect);

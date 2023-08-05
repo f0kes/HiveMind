@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Characters;
 using Cysharp.Threading.Tasks;
 using Misc;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,7 @@ namespace UI
 		[SerializeField] private float _animationTime = 0.2f;
 		[SerializeField] private float _animationDelay = 0.1f;
 		[SerializeField] private float _glowPower = 2f;
+		[SerializeField] private TextMeshProUGUI _spellUsesText;
 		private Character _character;
 
 		private List<ManaSegment> _allSegments = new();
@@ -39,6 +41,7 @@ namespace UI
 			}
 			_maxMana = character.ActiveSpell.ManaCost;
 			_character.Events.ManaChanged += OnManaChanged;
+			_character.Events.SpellUsesChanged += OnSpellUsesChanged;
 			for(int i = 0; i < _maxMana; i++)
 			{
 				var instance = Instantiate(_manaSegmentPrefab, transform);
@@ -47,7 +50,15 @@ namespace UI
 				instance.Disable();
 			}
 			_previousMana = 0;
+
 			OnManaChanged(_character.CurrentMana);
+			OnSpellUsesChanged(_character.ActiveSpell.Uses);
+		}
+
+		private void OnSpellUsesChanged(int newUses)
+		{
+			if(_character.ActiveSpell.IsInfinite) return;
+			_spellUsesText.text = newUses.ToString();
 		}
 
 

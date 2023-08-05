@@ -10,5 +10,6 @@ namespace VFX
 		public VFXEffect DivingShieldEffect;
 		public VFXEffect HellfireEffect;
 		public VFXMultiplePointEffect RedirectionEffect;
+		public VFXEffect Aura;
 	}
 }

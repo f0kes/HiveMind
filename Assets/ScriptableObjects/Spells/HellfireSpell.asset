@@ -15,10 +15,16 @@ MonoBehaviour:
   Level: 10
   _icon: {fileID: 21300000, guid: 266c3e7b42f548e45a77ae3ce9291155, type: 3}
   _name: Hellfire
+  _lifetime:
+    _min: 3
+    _max: 9
+  _permanent: 1
   _description: Deal damage to all
   _manaCost: 1
+  _uses: 2
+  _isInfinite: 0
   Behaviour: 4
   Tags: 
   _damage:
-    _min: 120
+    _min: 240
     _max: 1200

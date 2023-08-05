@@ -15,10 +15,16 @@ MonoBehaviour:
   Level: 10
   _icon: {fileID: 0}
   _name: Righteous Fire
+  _lifetime:
+    _min: 6
+    _max: 12
+  _permanent: 0
   _description: Your divine shield characters have more damage
-  _manaCost: 0
+  _manaCost: 2
+  _uses: 5
+  _isInfinite: 0
   Behaviour: 1
   Tags: 
   _damageBonus:
-    _min: 80
-    _max: 300
+    _min: 200
+    _max: 800

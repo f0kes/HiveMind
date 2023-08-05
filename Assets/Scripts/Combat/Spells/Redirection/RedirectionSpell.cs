@@ -13,9 +13,11 @@ namespace Combat.Spells.Redirection
 	public class RedirectionSpell : BaseSpell
 	{
 		[SerializeField] private MinMaxStatRange _damageMultiplier;
+		[SerializeField] private MinMaxStatRange _duration;
 		protected override void PopulateParams()
 		{
 			AddParam(CS.RedirectionDamageMultiplier, _damageMultiplier);
+			AddParam(CS.RedirectionDuration, _duration);
 		}
 
 		public override void OnBeforeDamageReceived(Entity attacker, Damage damage)
@@ -48,6 +50,16 @@ namespace Combat.Spells.Redirection
 			//var effect = VFXSystem.I.PlayMultiplePointEffect(VFXSystem.Data.RedirectionEffect);
 			//effect.SetEffectBehaviour(new VFXFollow(effect, owner.transform), 0);
 			//effect.SetEffectBehaviour(new VFXFollow(effect, randomEnemy.transform), 1);
+		}
+
+		public override bool IsPermanent()
+		{
+			return false;
+		}
+
+		public override float GetLifetime()
+		{
+			return GetParam(CS.RedirectionDuration);
 		}
 	}
 }

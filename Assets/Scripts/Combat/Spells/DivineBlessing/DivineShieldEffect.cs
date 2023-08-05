@@ -28,15 +28,15 @@ namespace Combat.Spells.DivineBlessing
 			_vfxEffect.Stop();
 		}
 
-		protected override void SubscribeToEvents()
+		protected override void OnActivated()
 		{
-			base.SubscribeToEvents();
+			base.OnActivated();
 			Target.Events.BeforeDamageReceived += TargetOnBeforeDamageReceived;
 		}
 
-		protected override void UnsubscribeFromEvents()
+		protected override void OnDeactivated()
 		{
-			base.UnsubscribeFromEvents();
+			base.OnDeactivated();
 			Target.Events.BeforeDamageReceived -= TargetOnBeforeDamageReceived;
 		}
 		

@@ -9,34 +9,54 @@
 		Health,
 		Armor,
 
-		DOT,
+		CritChance,
+		CritDamage,
+
 		Duration,
-		Radius,
-		SplashDamage,
 		Bonus,
 		Heal,
-		PoisonDamage,
+
 		AttackSpeedPenalty,
 		DamageBonus,
 		Interval,
+		AuraDuration,
+
 		BlessingMinHealAmount,
 		BlessingLevelIncreaseAmount,
+		BlessingDuration,
+
 		EnrageMinDamage,
 		EnrageLevelUpAmount,
+		EnrageDuration,
+
 		ExecuteDamagePerMissingHP,
+
 		DivineShieldHP,
 		DivineShieldDuration,
+
 		RedirectionDamageMultiplier,
+		RedirectionDuration,
+
 		HellfireDamage,
+
 		BloodlustCritDamageMultiplier,
 		BloodlustCritChance,
 		BloodlustLevelsOnCrit,
-		CritChance,
-		CritDamage,
+
 		RagePotionAtkSpeedBonus,
 		RagePotionDamagePenalty,
 		RagePotionBonusDuration,
 		RagePotionPenaltyDuration,
-		AuraDuration
+
+		ImpHealth,
+		ImpDamage,
+		ImpExplosionDamage,
+		ImpExplosionRadius,
+		ImpLevel,
+
+		HookRange,
+		HookSpeed,
+		HookDamage,
+
 	}
 }

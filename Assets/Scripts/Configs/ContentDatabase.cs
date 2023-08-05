@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Characters;
 using Combat.Spells;
+using Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -33,10 +35,12 @@ namespace DefaultNamespace.Configs
 		{
 			_charactersCopy = _characters.Select(CharacterData.Copy).ToList();
 		}
-		public List<CharacterData> GenerateCharacterPool(int repeats)
+		public List<CharacterData> GenerateCharacterPool(int repeats, Func<CharacterData, bool> predicate = null)
 		{
 			var result = new List<CharacterData>();
-			foreach(var characterData in _characters)
+			predicate ??= _ => true;
+			var filteredCharacters = _charactersCopy.Where(characterData => predicate(characterData)).ToList();
+			foreach(var characterData in filteredCharacters)
 			{
 				for(var i = 0; i < repeats; i++)
 				{
@@ -46,5 +50,12 @@ namespace DefaultNamespace.Configs
 			}
 			return result;
 		}
+		public static Func<CharacterData, bool> Purchasable => data =>
+		{
+			var result = true;
+			result &= !data.EntityData.Tags.Contains(EntityTag.TokenCharacter);
+			return result;
+		}; 
+		
 	}
 }

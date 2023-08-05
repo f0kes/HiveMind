@@ -19,7 +19,6 @@ namespace Combat
 		private float _timeSinceLastFatigueTick;
 		private int _currentFatigueValue;
 
-		private bool _working;
 
 		public FatigueSystem(IBattle battle, float timeToStartFatigue, float fatigueTickTime, int startFatigueValue, int fatigueIncrement) : base(battle)
 		{
@@ -35,16 +34,7 @@ namespace Combat
 		{
 			UnsubscribeFromEvents();
 		}
-		public override void Start()
-		{
-			_working = true;
-			SubscribeToEvents();
-		}
-		public override void Stop()
-		{
-			_working = false;
-			UnsubscribeFromEvents();
-		}
+
 		public override void SubscribeToEvents()
 		{
 			Ticker.OnTick += OnTick;
@@ -56,10 +46,11 @@ namespace Combat
 		}
 		private void OnTick(Ticker.OnTickEventArgs obj)
 		{
-			if(!_working) return;
+			if(!Working) return;
 			_timeSinceStart += Ticker.TickInterval;
 			_timeSinceLastFatigueTick += Ticker.TickInterval;
 			if(!(_timeSinceStart >= _timeToStartFatigue) || !(_timeSinceLastFatigueTick >= _fatigueTickTime)) return;
+			
 			TextMessageRenderer.Instance.ShowMessage("Fatigue tick, -" + _currentFatigueValue);
 			_timeSinceLastFatigueTick = 0;
 			var fatigueData = new FatigueEventData(_currentFatigueValue);

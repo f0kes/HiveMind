@@ -5,6 +5,8 @@ using AI.SteeringBehaviours;
 using Characters;
 using DefaultNamespace;
 using DefaultNamespace.AI;
+using Events;
+using Events.EventData;
 using GameState;
 using UnityEngine;
 
@@ -38,12 +40,18 @@ namespace AI
 		{
 			base.Start();
 			Ticker.OnTick += Tick;
+			GameEvent<AggroEventData>.Subscribe(OnAggro);
 		}
 		private void OnDestroy()
 		{
 			Ticker.OnTick -= Tick;
+			GameEvent<AggroEventData>.Unsubscribe(OnAggro);
 		}
-
+		private void OnAggro(AggroEventData obj)
+		{
+			if(obj.AggroFilter(ControlledCharacter))
+				_currentEnemy = obj.Target;
+		}
 
 		protected virtual void PopulateBehaviours()
 		{

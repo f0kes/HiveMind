@@ -5,6 +5,7 @@ namespace VFX
 {
 	public class VFXEffect : MonoBehaviour
 	{
+		private Transform _target;
 		public event Action<VFXEffect> OnDestroyEvent;
 
 		[SerializeField] private float _duration = 1f;
@@ -23,6 +24,10 @@ namespace VFX
 		public void SetBehaviour(VFXBehaviour behaviour)
 		{
 			Behaviour = behaviour;
+		}
+		public void SetDuration(float duration)
+		{
+			_duration = duration;
 		}
 		private void Update()
 		{

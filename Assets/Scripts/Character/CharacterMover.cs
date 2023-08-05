@@ -95,5 +95,9 @@ namespace Characters
 		}
 
 
+		public void SetPosition(Vector3 transformPosition)
+		{
+			transform.position = transformPosition;
+		}
 	}
 }

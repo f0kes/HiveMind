@@ -70,7 +70,7 @@ namespace UI.Inventory
 			SetIcon(newIcon);
 		}
 
-		private async void OnIconPointerExit(PointerEventData obj)
+		private void OnIconPointerExit(PointerEventData obj)
 		{
 			_breakTooltipTimer = true;
 			if(_tooltipInstance == null) return;

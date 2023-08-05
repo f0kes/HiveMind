@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 980f9ff51aa548978d7e67fd59e5b694, type: 3}
+  m_Name: HookSpell
+  m_EditorClassIdentifier: 
+  Level: 10
+  _icon: {fileID: 21300000, guid: 96a0a19ad07f31f4ba59a2339b60ce97, type: 3}
+  _name: Hook
+  _lifetime:
+    _min: 3
+    _max: 9
+  _permanent: 1
+  _description: Hooks an enemy lol
+  _manaCost: 2
+  _uses: 1
+  _isInfinite: 0
+  Behaviour: 1
+  Tags: 
+  _projectilePrefab: {fileID: 6113933811473875282, guid: 640648942007d0140af93dad4d2ec3a1, type: 3}
+  _hookRange:
+    _min: 15
+    _max: 60
+  _hookSpeed:
+    _min: 30
+    _max: 1000
+  _hookDamage:
+    _min: 100
+    _max: 1000

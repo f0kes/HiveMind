@@ -13,22 +13,22 @@ MonoBehaviour:
   m_Name: GameData
   m_EditorClassIdentifier: 
   EnemyToPlayerLevelScaling:
-    Numerator: 4
+    Numerator: 5
     Denominator: 3
   MaxLevel: 1000
   StartingBattleLevel: 1
-  StartingShopLevel: 2
+  StartingShopLevel: 25
   LevelsPerBattle: 2
   GoldPerBattle: 18
-  StartingGold: 20
+  StartingGold: 22
   RollCost: 2
   BuyCost: 3
-  MaxGold: 26
+  MaxGold: 50
   ShopRepeats: 8
   MaxStatValue: 1000
   SwapCooldown: 3
   ManaPerSwap: 1
   TimeToStartFatigue: 60
-  FatigueTickTime: 3
+  FatigueTickTime: 4
   FatigueIncrement: 1
   FatigueStartValue: 1

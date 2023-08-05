@@ -2,12 +2,9 @@
 {
 	public enum SpellBehaviour
 	{
-		Default,
-		Passive,
 		UnitTarget,
 		PointTarget,
-
-		Active,
-		ActiveAura,
+		NoTarget,
+		
 	}
 }

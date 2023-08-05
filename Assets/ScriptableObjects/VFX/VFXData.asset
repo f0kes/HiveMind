@@ -17,3 +17,4 @@ MonoBehaviour:
   DivingShieldEffect: {fileID: 1658529159525656230, guid: 7a77dcfde90a8c54ea9afa72035585cf, type: 3}
   HellfireEffect: {fileID: 1261517207242911396, guid: d48906d08f947564fb8fa0d6108a9b7f, type: 3}
   RedirectionEffect: {fileID: 0}
+  Aura: {fileID: 6552808562782457674, guid: d61b9d0c39f8727418aad7e7cbb1e292, type: 3}

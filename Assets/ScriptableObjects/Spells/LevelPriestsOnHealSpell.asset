@@ -15,8 +15,14 @@ MonoBehaviour:
   Level: 10
   _icon: {fileID: 21300000, guid: 5355d280be503a843a6354068a35d0fd, type: 3}
   _name: LevelOnHeal
+  _lifetime:
+    _min: 6
+    _max: 9
+  _permanent: 0
   _description: Whenever a character is healed, give +1 lvl to all priests
-  _manaCost: 0
+  _manaCost: 3
+  _uses: 5
+  _isInfinite: 0
   Behaviour: 1
   Tags: 00000000
   _minHealAmount:
@@ -25,3 +31,6 @@ MonoBehaviour:
   _levelIncreaseAmount:
     _min: 1
     _max: 10
+  _duration:
+    _min: 6
+    _max: 9

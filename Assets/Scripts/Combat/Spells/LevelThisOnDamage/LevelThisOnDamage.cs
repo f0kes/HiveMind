@@ -10,22 +10,34 @@ namespace Combat.Spells.LevelThisOnDamage
 	{
 		[SerializeField] private MinMaxStatRange _minDamage;
 		[SerializeField] private MinMaxStatRange _levelUpAmount;
+		[SerializeField] private MinMaxStatRange _duration;
 
 		protected override void PopulateParams()
 		{
 			AddParam(CS.EnrageMinDamage, _minDamage);
 			AddParam(CS.EnrageLevelUpAmount, _levelUpAmount);
+			AddParam(CS.EnrageDuration, _duration);
 		}
-		protected override void SubscribeToEvents()
+		protected override void OnActivated()
 		{
-			base.SubscribeToEvents();
+			base.OnActivated();
 			DamageEvent.Subscribe(OnDamage);
 		}
 
-		protected override void UnsubscribeFromEvents()
+		protected override void OnDeactivated()
 		{
-			base.UnsubscribeFromEvents();
+			base.OnDeactivated();
 			DamageEvent.Unsubscribe(OnDamage);
+		}
+
+		public override bool IsPermanent()
+		{
+			return false;
+		}
+
+		public override float GetLifetime()
+		{
+			return GetParam(CS.EnrageDuration);
 		}
 
 		private void OnDamage(Damage obj)

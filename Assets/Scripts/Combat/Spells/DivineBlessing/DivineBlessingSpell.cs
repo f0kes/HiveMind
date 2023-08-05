@@ -23,7 +23,11 @@ namespace Combat.Spells.DivineBlessing
 			base.OnSpellStart();
 			var owner = GetOwnerCharacter();
 			if(owner == null) return;
-			var targets = owner.GetTeam().GetListCopy().Where(c => !c.IsDead).ToList();
+			var targets = 
+				owner.GetTeam()
+					.GetListCopy()
+					.Where(c => !c.IsDead)
+					.ToList();
 			foreach(var target in targets)
 			{
 				var effect = CreateInstance<DivineShieldEffect>();

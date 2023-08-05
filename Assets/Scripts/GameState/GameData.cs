@@ -36,7 +36,7 @@ namespace GameState
 
 		[Header("Fatigue")]
 		public float TimeToStartFatigue = 30f;
-		public float FatigueTickTime = 3f;
+		public float FatigueTickTime = 6f;
 		public int FatigueIncrement = 1;
 		public int FatigueStartValue = 1;
 

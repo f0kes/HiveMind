@@ -15,8 +15,14 @@ MonoBehaviour:
   Level: 10
   _icon: {fileID: 0}
   _name: Divine Blessing
+  _lifetime:
+    _min: 3
+    _max: 9
+  _permanent: 1
   _description: Give your characters  Divine Shield
   _manaCost: 3
+  _uses: 5
+  _isInfinite: 0
   Behaviour: 4
   Tags: 
   _divineShieldHP:

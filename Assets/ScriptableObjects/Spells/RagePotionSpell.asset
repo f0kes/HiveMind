@@ -15,8 +15,14 @@ MonoBehaviour:
   Level: 10
   _icon: {fileID: 0}
   _name: 
+  _lifetime:
+    _min: 3
+    _max: 9
+  _permanent: 1
   _description: 
   _manaCost: 0
+  _uses: 5
+  _isInfinite: 0
   Behaviour: 0
   Tags: 
   _atkSpeedBonus:

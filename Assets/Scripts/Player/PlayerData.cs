@@ -67,6 +67,10 @@ namespace Player
 		{
 			_party = data;
 		}
+		public void AddToPool(CharacterData data)
+		{
+			_shopPool.Add(data);
+		}
 
 		public void AddToParty(CharacterData data)
 		{
@@ -128,10 +132,11 @@ namespace Player
 			{
 				characterData.DecrementCooldown();
 			}
+			foreach(var characterData in _shopPool)
+			{
+				characterData.DecrementCooldown();
+			}
 		}
-		public void AddToPool(CharacterData data)
-		{
-			_shopPool.Add(data);
-		}
+
 	}
 }
