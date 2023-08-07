@@ -27,11 +27,11 @@ MonoBehaviour:
   Tags: 
   _projectilePrefab: {fileID: 6113933811473875282, guid: 640648942007d0140af93dad4d2ec3a1, type: 3}
   _hookRange:
-    _min: 15
-    _max: 60
-  _hookSpeed:
     _min: 30
-    _max: 1000
+    _max: 90
+  _hookSpeed:
+    _min: 20
+    _max: 600
   _hookDamage:
     _min: 100
     _max: 1000

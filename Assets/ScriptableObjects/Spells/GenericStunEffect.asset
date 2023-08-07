@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c117161692174bb4a4f28ce1327d745b, type: 3}
+  m_Name: GenericStunEffect
+  m_EditorClassIdentifier: 
+  Level: 10
+  _icon: {fileID: 0}
+  _name: 
+  _lifetime:
+    _min: 3
+    _max: 9
+  _permanent: 1
+  _description: 
+  _manaCost: 0
+  _uses: 5
+  _isInfinite: 0
+  Behaviour: 0
+  Tags: 
+  Stackable: 1

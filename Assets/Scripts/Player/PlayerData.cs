@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Characters;
 using DefaultNamespace;
 using Misc;
@@ -28,6 +29,12 @@ namespace Player
 
 		public uint BattleLevel => (uint)Math.Round(_battleLevelPrecise);
 		public uint ShopLevel => (uint)Math.Round(_shopLevelPrecise);
+
+		public int LevelsBeaten{get; set;}
+
+		public int CurrentLevel{get; set;}
+
+		public string PlayerName{get; set;} = "Player";
 
 		public int Gold
 		{
@@ -107,9 +114,11 @@ namespace Player
 			if(container == null)
 				return TaskResult.Failure("Player does not contain this character, cannot move to shop pool");
 
+			_shopPool.Add(data);
+
 			data.SetLevel(ShopLevel);
 			container.Remove(data);
-			_shopPool.Add(data);
+
 
 			return TaskResult.Success;
 		}
@@ -137,6 +146,9 @@ namespace Player
 				characterData.DecrementCooldown();
 			}
 		}
-
+		public List<string> GetPartyNames()
+		{
+			return _party.Select(characterData => characterData.EntityData.Name).ToList();
+		}
 	}
 }

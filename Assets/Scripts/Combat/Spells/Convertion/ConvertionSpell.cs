@@ -1,0 +1,60 @@
+﻿using Enums;
+using Events.Implementations;
+using GameState;
+using Stats;
+using UnityEngine;
+
+namespace Combat.Spells.Convertion
+{
+	public class ConvertionSpell : BaseSpell
+	{
+		[SerializeField] private MinMaxStatRange _convertionDamageMultiplier;
+
+		protected override void PopulateParams()
+		{
+			base.PopulateParams();
+			Params.Add(CS.ConvertionDamageMultiplier, _convertionDamageMultiplier);
+		}
+
+		protected override void OnActivated()
+		{
+			base.OnActivated();
+			HealEvent.Subscribe(OnHeal);
+		}
+
+		protected override void OnDeactivated()
+		{
+			base.OnDeactivated();
+			HealEvent.Unsubscribe(OnHeal);
+		}
+
+		private void OnHeal(Combat.Heal data)
+		{
+			if(data.Target != GetOwnerCharacter()) return;
+			var damage = data.Value * GetParam(CS.ConvertionDamageMultiplier);
+			var filter = EntityFilterer.EnemyFilter.And(EntityFilterer.NotDeadFilter);
+			var enemies =
+				GameStateController
+					.Battle
+					.EntityRegistry
+					.GetAllCharacters()
+					.Filter(Owner, filter);
+			Debug.Log($"Found {enemies.Count} enemies");
+			damage /= enemies.Count;
+
+			foreach(var enemy in enemies)
+			{
+				var damageData = new Damage
+				{
+					Redirecrable = true,
+					Source = Owner,
+					Spell = this,
+					Target = enemy,
+					Value = damage,
+				};
+				BattleProcessor.ProcessHit(damageData);
+			}
+			Debug.Log($"Converted {data.Value} to {damage}");
+		}
+	}
+}

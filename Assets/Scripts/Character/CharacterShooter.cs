@@ -51,14 +51,9 @@ namespace Characters
 		}
 		public void Shoot()
 		{
-			
-
+			if(_character.IsStunned()) return;
 			if (_timeSinceShot < 1/_character.Stats[CS.FireRate] || IsReloading()) return;
-			/*if (!_character.AmmoContainer.SpendAmmo(
-				    _character.Stats[CS.RedAmmoCost],
-				    _character.Stats[CS.BlueAmmoCost],
-				     _character.Stats[CS.GreenAmmoCost])) return;*/
-
+			
 			var t = transform;
 			var offsetX = t.right * _offset.x;
 			var offsetY = t.up * _offset.y;

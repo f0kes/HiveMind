@@ -47,17 +47,23 @@ MonoBehaviour:
     Value:
       _baseValue: 1
       _scalingRange:
-        _min: 1
-        _max: 20
-  - Name: 6
-    Value:
-      _baseValue: 1
-      _scalingRange:
         _min: 0
         _max: 0
-  - Name: 7
+  - Name: 8
     Value:
       _baseValue: 1
       _scalingRange:
         _min: 1.1
         _max: 10
+  - Name: 7
+    Value:
+      _baseValue: 1
+      _scalingRange:
+        _min: 0
+        _max: 0
+  - Name: 6
+    Value:
+      _baseValue: 0.04
+      _scalingRange:
+        _min: 0.04
+        _max: 0.4

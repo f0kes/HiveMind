@@ -25,10 +25,9 @@ namespace Combat.Spells.Heal
 		{
 			base.OnSpellStart();
 			var target = Target as Characters.Character;
-			Debug.Log(name + " Target is " + target);
 			if(target == null) return;
+			
 			var effect = CreateInstance<BasicHealEffect>();
-
 			target.ApplyNewEffect(GetOwnerCharacter(), this, effect, GetParam(CS.Duration));
 		}
 
@@ -49,7 +48,7 @@ namespace Combat.Spells.Heal
 				return new CastResult(CastResultType.Fail, "Target is dead");
 			}
 
-			return EntityFilterer.FilterEntity(Owner, targetCharacter, TeamFilter.Friendly);
+			return EntityFilterer.FilterEntity(Owner, targetCharacter, EntityFilterer.FriendlyFilter);
 		}
 		public new static BasicHealSpell CreateDefault()
 		{

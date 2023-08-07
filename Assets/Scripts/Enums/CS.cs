@@ -8,6 +8,7 @@
 		Damage,
 		Health,
 		Armor,
+		Regen,
 
 		CritChance,
 		CritDamage,
@@ -58,5 +59,10 @@
 		HookSpeed,
 		HookDamage,
 
+		ConvertionDamageMultiplier,
+		
+		RetributionLevelsOnDeath,
+
+		HexquakeStunDuration
 	}
 }

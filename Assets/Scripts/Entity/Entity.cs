@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Combat;
 using Combat.Spells;
+using Combat.Spells.GenericStun;
 using DefaultNamespace.UI;
 using Enums;
+using Events.Implementations;
 using GameState;
 using Stats;
 using UnityEngine;
@@ -55,9 +57,26 @@ namespace DefaultNamespace
 		private void Start()
 		{
 			InitGizmo();
+			SubscribeToEvents();
 			ChildStart();
 		}
+		public virtual void OnDestroy()
+		{
+			UnSubscribeFromEvents();
+		}
+		private void SubscribeToEvents()
+		{
+			Ticker.OnTick += OnTick;
+		}
 
+		private void UnSubscribeFromEvents()
+		{
+			Ticker.OnTick -= OnTick;
+		}
+		private void OnTick(Ticker.OnTickEventArgs obj)
+		{
+			ProcessRegen();
+		}
 		private void InitGizmo()
 		{
 			Gizmo = Instantiate(_gizmoPrefab);
@@ -102,7 +121,18 @@ namespace DefaultNamespace
 			Stats.SetLevel(_level);
 		}
 
-
+		protected void ProcessRegen()
+		{
+			float regen = Stats[CS.Regen];
+			regen = Mathf.Clamp01(regen);
+			AddHealthPercent(regen * Ticker.TickInterval);
+		}
+		protected void AddHealthPercent(float percent)
+		{
+			_currentHealthPercent += percent;
+			_currentHealthPercent = Mathf.Clamp01(_currentHealthPercent);
+			Events.HealthChanged?.Invoke(_currentHealthPercent);
+		}
 		protected void TakeDamage(float damage)
 		{
 			var newHealth = CurrentHealth - damage;
@@ -128,6 +158,7 @@ namespace DefaultNamespace
 		{
 			_isDead = true;
 			Events.Death?.Invoke(this);
+			DeathEvent.Invoke(new DeathData { Target = this });
 			gameObject.SetActive(false);
 		}
 
@@ -186,6 +217,10 @@ namespace DefaultNamespace
 		public BaseEffect GetEffectOfType<T>() where T : BaseEffect
 		{
 			return _effects.OfType<T>().FirstOrDefault();
+		}
+		public bool IsStunned()
+		{
+			return GetEffectOfType<GenericStunEffect>() != null;
 		}
 	}
 }

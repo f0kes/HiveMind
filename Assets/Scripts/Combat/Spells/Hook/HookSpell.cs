@@ -42,8 +42,7 @@ namespace Combat.Spells.Hook
 				Spell = this,
 			};
 			_forwardProjectile = GameStateController.ProjectileSystem.LaunchProjectile(_projectilePrefab, data, this);
-			_forwardProjectile.AddTargetFilter(EntityFilterer.NotSelfFilter);
-			_forwardProjectile.AddTargetFilter(EntityFilterer.CharacterFilter);
+			_forwardProjectile.AddTargetFilter(EntityFilterer.NotSelfFilter.And(EntityFilterer.CharacterFilter));
 		}
 
 		public void OnProjectileHit(Projectile projectile)
@@ -56,11 +55,14 @@ namespace Combat.Spells.Hook
 				Destroy(_forwardProjectile);
 				return;
 			}
-			GameEvent<AggroEventData>.Invoke(new AggroEventData
+			if(_target.Team != Owner.Team)
 			{
-				Target = _target,
-				AggroFilter = (character) => character.Team == Owner.Team,
-			});
+				GameEvent<AggroEventData>.Invoke(new AggroEventData
+				{
+					Target = _target,
+					AggroFilter = (character) => character.Team == Owner.Team,
+				});
+			}
 			Destroy(_forwardProjectile);
 			var targetToOwner = Owner.transform.position - _target.transform.position;
 			_backwardProjectile = GameStateController.ProjectileSystem.LaunchProjectile(_projectilePrefab, new ProjectileData
@@ -83,7 +85,6 @@ namespace Combat.Spells.Hook
 				return;
 			}
 			_target.CharacterMover.SetPosition(projectile.transform.position);
-
 			return;
 		}
 	}

@@ -6,9 +6,10 @@ using Combat;
 using Combat.Battle;
 using Combat.Spells;
 using Cysharp.Threading.Tasks;
-using DefaultNamespace;
 using DefaultNamespace.Configs;
 using Events;
+using FireBase;
+using FireBase.Models;
 using Misc;
 using Player;
 using UnityEngine;
@@ -23,6 +24,9 @@ namespace GameState
 			public bool Success;
 			public string ErrorMessage;
 		}
+
+		public event Action<GameEntryModel> OnGameOver;
+
 		[SerializeField] private GameData _gameData;
 
 		[SerializeField] private SceneField _battleScene;
@@ -33,7 +37,10 @@ namespace GameState
 
 
 		private uint _goldPerBattle;
+
 		private PlayerData _playerData;
+		private GameEntryModel _currentGameEntry = new GameEntryModel();
+
 		private List<IBattleSystem> _combatSystems = new List<IBattleSystem>();
 		private Battle _battle;
 		private ICharacterFactory _characterFactory;
@@ -69,6 +76,7 @@ namespace GameState
 			}
 
 			_contentDatabase.Init();
+			_currentGameEntry = new GameEntryModel();
 			ResetPlayerData();
 		}
 		private void OnDestroy()
@@ -86,6 +94,11 @@ namespace GameState
 				_gameData.StartingShopLevel,
 				shopPool: _contentDatabase.GenerateCharacterPool(_gameData.ShopRepeats, ContentDatabase.Purchasable));
 		}
+		public void SetPlayerName(string playerName)
+		{
+			_playerData.PlayerName = playerName;
+		}
+
 		public StartBattleResult TryStartBattle(List<CharacterData> party, List<CharacterData> enemies)
 		{
 			if(party.Count == 0)
@@ -122,11 +135,13 @@ namespace GameState
 		{
 			await SceneManager.LoadSceneAsync(_battleScene);
 
+			_currentGameEntry.OnHeroesUse(party);
+
 			Instantiate(_singletonsPrefab);
 
 			_characterFactory = new CharacterFactory();
 			_battle = new Battle();
-			
+
 
 			InitBattleSystems(_battle);
 
@@ -147,17 +162,17 @@ namespace GameState
 				_gameData.FatigueStartValue,
 				_gameData.FatigueIncrement);
 			_combatSystems.Add(_fatigueSystem);
-			
+
 			_manaSystem = new ManaSystem(battle, _gameData.ManaPerSwap);
 			_combatSystems.Add(_manaSystem);
-			
+
 			_activatorSystem = new ActivatorSystem(battle);
 			_combatSystems.Add(_activatorSystem);
-			
+
 			_projectileSystem = new ProjectileSystem(battle);
 			_combatSystems.Add(_activatorSystem);
 
-			
+
 			foreach(var system in _combatSystems)
 			{
 				system.Start();
@@ -166,9 +181,15 @@ namespace GameState
 
 		private async void OnBattleEnded(BattleResult battleResult)
 		{
+			const int winDelay = 1000;
+			const int loseDelay = 1000;
+
 			HandleRoundEnd(battleResult);
-			await UniTask.Delay(1000);
-			await SceneManager.LoadSceneAsync(_shopScene);
+			var delay = battleResult.ResultType == BattleResult.BattleResultType.Win ? winDelay : loseDelay; //TODO: fix this
+			if(battleResult.ResultType == BattleResult.BattleResultType.Win) //todo: fix this
+			{
+				await LoadShopScene(delay);
+			}
 
 			_battle.BattleEnded -= OnBattleEnded;
 			StopCombatSystems();
@@ -189,13 +210,32 @@ namespace GameState
 					_playerData.MoveToShopPool(dead);
 				}
 				_playerData.SetGold(_playerData.Gold + (int)_goldPerBattle);
-				_playerData.BattleLevelPrecise += 1 * GameData.LevelsPerBattle;
-				_playerData.ShopLevelPrecise += GameData.EnemyToPlayerLevelScaling.ReverseValue * GameData.LevelsPerBattle;
+				ProgressLevels();
+				_playerData.LevelsBeaten = _playerData.CurrentLevel;
 			}
 			else
 			{
-				ResetPlayerData();
+				ResetGame();
 			}
+		}
+		private void ResetGame()
+		{
+			_currentGameEntry.PlayerName = _playerData.PlayerName;
+			_currentGameEntry.LevelsBeaten = _playerData.LevelsBeaten;
+			_currentGameEntry.SetLastParty(_playerData.Party);
+			if(FirebaseTest.Instance != null)
+			{
+				FirebaseTest.Instance.PushGameEntry(_currentGameEntry);
+			}
+			OnGameOver?.Invoke(_currentGameEntry);
+			ResetPlayerData();
+			_currentGameEntry = new GameEntryModel();
+		}
+		private void ProgressLevels()
+		{
+			_playerData.BattleLevelPrecise += 1 * GameData.LevelsPerBattle;
+			_playerData.ShopLevelPrecise += GameData.EnemyToPlayerLevelScaling.ReverseValue * GameData.LevelsPerBattle;
+			_playerData.CurrentLevel += 1;
 		}
 		private void StopCombatSystems()
 		{
@@ -204,6 +244,12 @@ namespace GameState
 				combatSystem.Stop();
 			}
 			_combatSystems.Clear();
+		}
+
+		public async UniTask LoadShopScene(int delay)
+		{
+			await UniTask.Delay(delay);
+			await SceneManager.LoadSceneAsync(_shopScene);
 		}
 	}
 }

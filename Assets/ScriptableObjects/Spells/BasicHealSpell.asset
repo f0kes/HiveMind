@@ -23,11 +23,11 @@ MonoBehaviour:
   _manaCost: 1
   _uses: 5
   _isInfinite: 0
-  Behaviour: 2
+  Behaviour: 0
   Tags: 
   _healVal:
-    _min: 120
-    _max: 400
+    _min: 1000
+    _max: 10000
   _healInterval:
     _min: 6
     _max: 3

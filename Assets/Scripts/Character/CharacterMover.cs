@@ -16,6 +16,7 @@ namespace Characters
 
 		private Vector3 _lookAt = new Vector2(0, 0);
 		private Vector2 _moveDirection = new Vector2(0f, 0f);
+		private Entity _controlTarget;
 
 		private Rigidbody _rigidbody;
 
@@ -25,6 +26,7 @@ namespace Characters
 		private void Awake()
 		{
 			_rigidbody = GetComponent<Rigidbody>();
+			_controlTarget = GetComponent<Entity>();
 		}
 		private void OnEnable()
 		{
@@ -65,6 +67,11 @@ namespace Characters
 
 		private void Move()
 		{
+			if(_controlTarget.IsStunned())
+			{
+				_rigidbody.velocity = Vector3.zero;
+				return;
+			}
 			_moveDirection.Normalize();
 			Vector3 dir = new Vector3(_moveDirection.x, 0, _moveDirection.y) * _acceleration;
 			if(dir == Vector3.zero)

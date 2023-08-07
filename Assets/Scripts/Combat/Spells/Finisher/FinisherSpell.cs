@@ -32,7 +32,7 @@ namespace Combat.Spells.Finisher
 		
 		public override CastResult CanCastTarget(Entity target)
 		{
-			return EntityFilterer.FilterEntity(Owner, target, TeamFilter.Enemy);
+			return EntityFilterer.FilterEntity(Owner, target, EntityFilterer.EnemyFilter);
 		}
 
 		protected override void OnSpellStart()

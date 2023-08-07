@@ -56,6 +56,11 @@ namespace Shop
 			_entryPool.Remove(entry);
 			_pool.Remove(entry.CharacterData);
 		}
+		public void MoveShopToPool()
+		{
+			AddRangeToPool(_shop);
+			_shop.Clear();
+		}
 		private void AddRangeToPool(IReadOnlyCollection<ShopEntry> entries)
 		{
 			_entryPool.AddRange(entries);

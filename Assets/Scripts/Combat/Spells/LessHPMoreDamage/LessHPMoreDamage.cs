@@ -62,7 +62,7 @@ namespace Combat.Spells.LessHPMoreDamage
 				result.Message = "Cannot cast on self";
 				return result;
 			}
-			result = EntityFilterer.FilterEntity(Owner, targetCharacter, TeamFilter.Enemy);
+			result = EntityFilterer.FilterEntity(Owner, targetCharacter, EntityFilterer.EnemyFilter);
 			return result;
 		}
 	}

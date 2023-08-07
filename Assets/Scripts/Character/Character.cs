@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Characters;
 using Combat;
+using Combat.Battle;
 using Combat.Spells;
 using Combat.Spells.AutoAttack;
 using Combat.Spells.Heal;
@@ -80,8 +81,9 @@ namespace Characters
 			base.ChildStart();
 			SubscribeToEvents();
 		}
-		private void OnDestroy()
+		public override void OnDestroy()
 		{
+			base.OnDestroy();
 			UnSubscribeFromEvents();
 			DestroySpells();
 		}
@@ -121,7 +123,7 @@ namespace Characters
 				InitSpell(copy);
 			}
 
-			var attack = AutoAttackSpell.CreateDefault();
+			var attack = BaseSpell.CreateDefault();
 			InitSpell(attack);
 
 			foreach(var spell in _spells)
@@ -246,6 +248,12 @@ namespace Characters
 			{
 				result.IsResultSuccess = false;
 				result.Message = "Character is dead";
+				return result;
+			}
+			if(IsStunned())
+			{
+				result.IsResultSuccess = false;
+				result.Message = "Character is stunned";
 				return result;
 			}
 			if(spell == null)

@@ -9,6 +9,7 @@ using Shop;
 using TMPro;
 using UI.Inventory;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace UI.Shop
@@ -32,6 +33,8 @@ namespace UI.Shop
 		{
 			var rollCost = GameStateController.GameData.RollCost;
 			var charCost = GameStateController.GameData.BuyCost;
+			
+			SceneManager.sceneUnloaded += OnSceneUnloaded;
 
 			_levelText.text = $"Shop level: {GameStateController.PlayerData.ShopLevel}";
 			_shop = new RollShop(
@@ -42,6 +45,13 @@ namespace UI.Shop
 				charCost);
 			Display();
 		}
+
+		private void OnSceneUnloaded(Scene arg0)
+		{
+			SceneManager.sceneUnloaded -= OnSceneUnloaded;
+			_shop.MoveShopToPool();
+		}
+
 		private void Display()
 		{
 			var shopEntries = _shop.GetShop();

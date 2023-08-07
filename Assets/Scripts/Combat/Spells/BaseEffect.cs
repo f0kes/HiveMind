@@ -21,6 +21,7 @@ namespace Combat.Spells
 
 		public virtual void ApplyEffect(Entity owner, Entity target, BaseSpell source, float duration)
 		{
+			Debug.Log($"Applying {Name} to {target.name}");
 			if(!Stackable)
 			{
 				var otherEffect = target.GetEffectOfType(this);
@@ -37,6 +38,7 @@ namespace Combat.Spells
 			SetTimeLeft(duration);
 			SetOwner(owner);
 			OnCreated();
+			Debug.Log($"Applied {Name} to {target.name}");
 			Applied?.Invoke(this);
 		}
 		public override float GetParam(CS statName)
@@ -62,6 +64,11 @@ namespace Combat.Spells
 		{
 			Destroyed?.Invoke(this);
 			OnDestroyed();
+		}
+
+		public override bool IsPermanent()
+		{
+			return true;
 		}
 	}
 }
