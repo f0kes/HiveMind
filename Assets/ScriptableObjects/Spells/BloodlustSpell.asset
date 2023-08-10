@@ -19,17 +19,17 @@ MonoBehaviour:
     _min: 3
     _max: 6
   _permanent: 0
-  _description: 'Whenever someone crits, give rogues +1
+  _description: 'Aura: Whenever someone crits, give rogues levels
 
     Aura: crits'
   _manaCost: 2
   _uses: 5
   _isInfinite: 0
-  Behaviour: 1
+  Behaviour: 2
   Tags: 
   _levelsOnCrit:
     _min: 2
-    _max: 10
+    _max: 2
   _critChance:
     _min: 0.2
     _max: 1

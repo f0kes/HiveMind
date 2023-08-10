@@ -56,8 +56,10 @@ namespace FireBase
 		{
 			var path = "/Players";
 			FirebaseDatabase.GetJSON(path, gameObject.name, "GetLeaderboardCallback", "DisplayErrorObject");
-			await _leaderboardTask.Task;
-			return _leaderboardTask.Task.Result;
+			Debug.Log("waiting for leaderboard");
+			_leaderboardTask = new TaskCompletionSource<LeaderboardModel>();
+			Debug.Log("waiting for leaderboard 2");
+			return await _leaderboardTask.Task;
 		}
 
 		#endregion
@@ -80,16 +82,28 @@ namespace FireBase
 		}
 		public void GetLeaderboardCallback(string json)
 		{
+			Debug.Log("json: " + json);
 			var players = JsonConvert.DeserializeObject<Dictionary<string, PlayerModel>>(json);
 			if(players == null)
 				return;
-
-			foreach(var player in players.Values)
+			Debug.Log("players: " + players.Count);
+			_leaderboard = new LeaderboardModel();
+			Debug.Log("leaderboard: " + _leaderboard);
+			foreach(var (playerName, value) in players)
 			{
-				_leaderboard.GameEntries.AddRange(player.GameEntries.Values);
+				var gameEntries = value.GameEntries;
+				if(gameEntries == null)
+					continue;
+				foreach(var (id, model) in gameEntries)
+				{
+					_leaderboard.AddEntry(playerName, model);
+				}
 			}
+			Debug.Log("leaderboard 2: " + _leaderboard);
 			_leaderboard.Sort();
+			Debug.Log("leaderboard 3: " + _leaderboard);
 			_leaderboardTask.SetResult(_leaderboard);
+			Debug.Log("leaderboard 4: " + _leaderboard);
 		}
 
 		#endregion

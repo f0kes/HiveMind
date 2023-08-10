@@ -19,7 +19,10 @@ MonoBehaviour:
     _min: 3
     _max: 9
   _permanent: 0
-  _description: Whenever a friend damages this, damage random enemy instead
+  _description: 'Aura: Whenever a friend damages this, damage random enemy instead
+
+    Active:
+    Deal damage to owner'
   _manaCost: 1
   _uses: 5
   _isInfinite: 0
@@ -31,3 +34,6 @@ MonoBehaviour:
   _duration:
     _min: 6
     _max: 12
+  _initialSelfDamage:
+    _min: 300
+    _max: 30000

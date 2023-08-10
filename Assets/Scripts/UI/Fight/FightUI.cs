@@ -13,9 +13,13 @@ namespace UI.Fight
 	public class FightUI : MonoBehaviour
 	{
 		[SerializeField] private Button _startButton;
+		[SerializeField] private Button _skipButton;
+
 		[SerializeField] private List<InventorySlotUI> _enemySlots;
 		[SerializeField] private List<InventorySlotUI> _partySlots;
+
 		[SerializeField] private TextMeshProUGUI _levelText;
+		[SerializeField] private TextMeshProUGUI _nextBattleGoldText;
 
 
 		private FightGenerator _fightGenerator;
@@ -27,8 +31,7 @@ namespace UI.Fight
 		private void Start()
 		{
 			UpdateParty();
-			InitFightGenerator();
-			RenderContent();
+			Refresh();
 			foreach(var slot in _partySlots)
 			{
 				slot.SetConditions(() => false, () => false);
@@ -38,8 +41,21 @@ namespace UI.Fight
 				slot.SetConditions(() => false, () => false);
 			}
 			_startButton.onClick.AddListener(StartBattle);
+			_skipButton.onClick.AddListener(SkipBattle);
 			_initialized = true;
 		}
+
+		private void SkipBattle()
+		{
+			var result = GameStateController.Instance.TrySkipBattle();
+			if(!result)
+			{
+				TextMessageRenderer.Instance.ShowMessage(result.Message);
+				return;
+			}
+			Refresh();
+		}
+
 		private void OnEnable()
 		{
 			if(!_initialized) return;
@@ -59,15 +75,17 @@ namespace UI.Fight
 				return;
 			}
 		}
-		private void InitFightGenerator()
+		private void Refresh()
 		{
 			var pool = GameStateController.ContentDatabase.Characters;
 			_fightGenerator = new FightGenerator(pool, _enemySlots.Count, GameStateController.PlayerData.BattleLevel);
 			_enemies = _fightGenerator.Generate();
+			RenderContent();
 		}
 		private void RenderContent()
 		{
 			_levelText.text = $"Level: {GameStateController.PlayerData.BattleLevel}";
+			_nextBattleGoldText.text = $"Yo will get {GameStateController.NextBattleGoldReward} gold";
 			InventoryRendererUI.FillSlotList(_partySlots, _party);
 			InventoryRendererUI.FillSlotList(_enemySlots, _enemies);
 		}

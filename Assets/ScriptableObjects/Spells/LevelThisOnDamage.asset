@@ -19,7 +19,10 @@ MonoBehaviour:
     _min: 6
     _max: 6
   _permanent: 0
-  _description: Whenever warrior takes damage, get  levels
+  _description: 'Aura: Whenever warrior takes damage, get  levels
+
+    Active: Give
+    owner levels'
   _manaCost: 3
   _uses: 5
   _isInfinite: 0
@@ -30,7 +33,10 @@ MonoBehaviour:
     _max: 400
   _levelUpAmount:
     _min: 2
-    _max: 15
+    _max: 2
   _duration:
     _min: 6
     _max: 6
+  _initialLevelUpAmount:
+    _min: 2
+    _max: 15

@@ -18,3 +18,8 @@ MonoBehaviour:
   HellfireEffect: {fileID: 1261517207242911396, guid: d48906d08f947564fb8fa0d6108a9b7f, type: 3}
   RedirectionEffect: {fileID: 0}
   Aura: {fileID: 6552808562782457674, guid: d61b9d0c39f8727418aad7e7cbb1e292, type: 3}
+  HealEffect: {fileID: 8230444231138990149, guid: 706104876670b6849a4d682e589c94ab, type: 3}
+  DamageBuff: {fileID: 8125374347053750301, guid: 1056c41bac6a4c84cbdbbbb219225068, type: 3}
+  CritBuff: {fileID: 4017540564128641544, guid: 8e868d0f3fa2aef46b820dd69eb73646, type: 3}
+  TriggerBuff: {fileID: 0}
+  OnCritNotification: {fileID: 7651522630222586179, guid: ef444f67a226b734391661d0d608e2fa, type: 3}

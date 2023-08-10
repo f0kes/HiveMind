@@ -54,6 +54,7 @@ namespace DefaultNamespace.Configs
 		{
 			var result = true;
 			result &= !data.EntityData.Tags.Contains(EntityTag.TokenCharacter);
+			result &= !data.IsToken;
 			return result;
 		}; 
 		

@@ -6,6 +6,7 @@ using Events.Implementations;
 using Stats;
 using Stats.Modifiers;
 using UnityEngine;
+using VFX;
 
 namespace Combat.Spells.BloodLust
 {
@@ -81,12 +82,15 @@ namespace Combat.Spells.BloodLust
 		{
 			target.Stats.GetStat(CS.CritChance).AddMod(_critChanceModifier);
 			target.Stats.GetStat(CS.CritDamage).AddMod(_critDamageModifier);
+			VFXSystem.I.PlayBuffPopup(VFXSystem.Data.CritBuff, BuffPopup.PopupType.Buff, target.transform.position);
 		}
 
 		protected override void RemoveAura(Entity target)
 		{
 			target.Stats.GetStat(CS.CritChance).RemoveMod(_critChanceModifier);
 			target.Stats.GetStat(CS.CritDamage).RemoveMod(_critDamageModifier);
+			if(target == null) return;
+			VFXSystem.I.PlayBuffPopup(VFXSystem.Data.CritBuff, BuffPopup.PopupType.Debuff, target.transform.position);
 		}
 
 

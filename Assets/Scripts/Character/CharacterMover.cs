@@ -1,6 +1,7 @@
 using System;
 using DefaultNamespace;
 using GameState;
+using Misc;
 using UnityEngine;
 
 namespace Characters
@@ -72,8 +73,8 @@ namespace Characters
 				_rigidbody.velocity = Vector3.zero;
 				return;
 			}
-			_moveDirection.Normalize();
-			Vector3 dir = new Vector3(_moveDirection.x, 0, _moveDirection.y) * _acceleration;
+			_moveDirection.NormalizeClamp();
+			var dir = new Vector3(_moveDirection.x, 0, _moveDirection.y) * _acceleration;
 			if(dir == Vector3.zero)
 			{
 				AccelerateTowards(-_rigidbody.velocity.normalized, _deceleration);
@@ -94,8 +95,8 @@ namespace Characters
 		{
 			var rbVelocity = _rigidbody.velocity;
 			var accel = dir * acceleration;
-			var newVel = rbVelocity + accel * Time.deltaTime;
-
+			var newVel = rbVelocity + accel * Ticker.TickInterval;
+			newVel.NormalizeClamp(_moveSpeed);
 			rbVelocity = rbVelocity.magnitude * newVel.normalized;
 
 			_rigidbody.velocity = newVel.magnitude <= _moveSpeed ? newVel : rbVelocity;

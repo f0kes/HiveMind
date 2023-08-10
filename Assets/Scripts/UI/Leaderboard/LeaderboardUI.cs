@@ -45,7 +45,8 @@ public class LeaderboardUI : MonoBehaviour
 		}
 		leaderboard.Sort();
 		_playerEntryText.text = GetEntryText(leaderboard, player);
-		for(var i = 0; i < _entriesTexts.Count; i++)
+		var count = Mathf.Min(leaderboard.GameEntries.Count, _entriesTexts.Count);
+		for(var i = 0; i < count; i++)
 		{
 			var entry = leaderboard.GameEntries[i];
 			_entriesTexts[i].text = GetEntryText(leaderboard, entry);

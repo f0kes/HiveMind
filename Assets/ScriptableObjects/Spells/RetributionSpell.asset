@@ -19,7 +19,10 @@ MonoBehaviour:
     _min: 12
     _max: 24
   _permanent: 0
-  _description: 'Whenever any character dies, give your paladins levels
+  _description: 'Aura: Whenever any character dies, give your paladins levels
+
+    Active:
+    Give paladins levels
 
 '
   _manaCost: 2
@@ -29,4 +32,7 @@ MonoBehaviour:
   Tags: 
   _levelsOnDeath:
     _min: 5
-    _max: 30
+    _max: 5
+  _initialLevels:
+    _min: 5
+    _max: 5

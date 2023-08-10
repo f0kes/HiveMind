@@ -29,7 +29,7 @@ namespace VFX
 		{
 			_duration = duration;
 		}
-		private void Update()
+		protected virtual void Update()
 		{
 			Behaviour?.Execute();
 		}

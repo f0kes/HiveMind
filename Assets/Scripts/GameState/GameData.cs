@@ -28,6 +28,8 @@ namespace GameState
 		public int BuyCost = 3;
 		public int MaxGold = 26;
 		public int ShopRepeats = 8;
+		public int SkipBattleCost = 0;
+		public uint SkipAdditionalGold = 1;
 
 		[Header("Battle")]
 		public float MaxStatValue = 1000f;
@@ -39,9 +41,6 @@ namespace GameState
 		public float FatigueTickTime = 6f;
 		public int FatigueIncrement = 1;
 		public int FatigueStartValue = 1;
-
-
-
 
 	}
 }

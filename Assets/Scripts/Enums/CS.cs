@@ -63,6 +63,14 @@
 		
 		RetributionLevelsOnDeath,
 
-		HexquakeStunDuration
+		HexquakeStunDuration,
+		ConvertionHealValue,
+		HexquakeLevelPenalty,
+		BlessingHealAmount,
+		EnrageInitialLevelUpAmount,
+		RedirectionInitialSelfDamage,
+		RetributionInitialLevels,
+		RF_DivineShieldHP,
+		RF_DivineShieldDuration
 	}
 }

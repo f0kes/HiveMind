@@ -19,7 +19,10 @@ MonoBehaviour:
     _min: 6
     _max: 12
   _permanent: 0
-  _description: Whenever a warlock dies, stun all enemies
+  _description: 'Aura: Whenever a warlock dies, stun all enemies
+
+    Active: give
+    ALL -levels'
   _manaCost: 1
   _uses: 5
   _isInfinite: 0
@@ -27,4 +30,7 @@ MonoBehaviour:
   Tags: 
   _stunDuration:
     _min: 6
-    _max: 18
+    _max: 12
+  _levelPenalty:
+    _min: 4
+    _max: 4

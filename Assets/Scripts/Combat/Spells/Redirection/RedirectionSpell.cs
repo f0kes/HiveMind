@@ -14,10 +14,28 @@ namespace Combat.Spells.Redirection
 	{
 		[SerializeField] private MinMaxStatRange _damageMultiplier;
 		[SerializeField] private MinMaxStatRange _duration;
+		[SerializeField] private MinMaxStatRange _initialSelfDamage;
 		protected override void PopulateParams()
 		{
 			AddParam(CS.RedirectionDamageMultiplier, _damageMultiplier);
 			AddParam(CS.RedirectionDuration, _duration);
+			AddParam(CS.RedirectionInitialSelfDamage, _initialSelfDamage);
+		}
+
+		protected override void OnSpellStart()
+		{
+			base.OnSpellStart();
+			var owner = GetOwnerCharacter();
+			if(owner == null) return;
+			var damage = new Damage
+			{
+				Source = owner,
+				Target = owner,
+				Spell = this,
+				Value = GetParam(CS.RedirectionInitialSelfDamage),
+				Redirecrable = true
+			};
+			BattleProcessor.ProcessHit(damage);
 		}
 
 		public override void OnBeforeDamageReceived(Entity attacker, Damage damage)

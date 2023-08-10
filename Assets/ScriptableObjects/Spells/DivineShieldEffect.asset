@@ -23,6 +23,6 @@ MonoBehaviour:
   _manaCost: 1
   _uses: 5
   _isInfinite: 0
-  Behaviour: 0
+  Behaviour: 2
   Tags: 
   Stackable: 1

@@ -207,7 +207,14 @@ namespace DefaultNamespace
 		public void LevelUp(int levelIncreaseAmount)
 		{
 			SetLevel((int)Level + levelIncreaseAmount);
-			VFXSystem.I.PlayEffectFollow(VFXSystem.Data.LevelUpEffect, transform);
+			if(levelIncreaseAmount > 0)
+			{
+				VFXSystem.I.PlayEffectFollow(VFXSystem.Data.LevelUpEffect, transform);
+			}
+			else
+			{
+				//VFXSystem.I.PlayEffectFollow(VFXSystem.Data.LevelDownEffect, transform);
+			}
 		}
 
 		public BaseEffect GetEffectOfType(BaseEffect effect)

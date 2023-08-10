@@ -31,6 +31,7 @@ namespace Combat.Spells.DivineBlessing
 			foreach(var target in targets)
 			{
 				var effect = CreateInstance<DivineShieldEffect>();
+				effect.SetMaxHealth(GetParam(CS.DivineShieldHP));
 				target.ApplyNewEffect(owner, this, effect, GetParam(CS.DivineShieldDuration));
 			}
 		}

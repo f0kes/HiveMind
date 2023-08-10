@@ -33,6 +33,7 @@ namespace Player
 		public int LevelsBeaten{get; set;}
 
 		public int CurrentLevel{get; set;}
+		public uint NextBattleGoldReward{get; set;}
 
 		public string PlayerName{get; set;} = "Player";
 

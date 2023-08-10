@@ -138,10 +138,6 @@ namespace Combat.Spells
 				case SpellBehaviour.PointTarget:
 					var point = GetCursor() == Vector3.zero ? Owner.transform.position : GetCursor();
 					result = CanCastPoint(point);
-					if(result)
-					{
-						OnSpellStart();
-					}
 					break;
 
 				case SpellBehaviour.UnitTarget:
@@ -154,20 +150,20 @@ namespace Combat.Spells
 					if(result)
 					{
 						Target = target;
-						Debug.Log("Casting on " + target.name);
-						OnSpellStart();
 					}
 					break;
 				case SpellBehaviour.NoTarget:
 				default:
-					OnSpellStart();
 					break;
 			}
 			if(result)
 			{
 				Owner.Events.SpellCasted?.Invoke(this);
 				VFXSystem.I.SpawnSpellIcon(_icon, Owner.transform);
+
 				GameStateController.ActivatorSystem.Activate(this);
+				OnSpellStart();
+
 				character.SpendMana(ManaCost);
 				if(!_isInfinite) character.SpendUse();
 			}
@@ -195,6 +191,16 @@ namespace Combat.Spells
 			{
 				return Params.ContainsKey(statName);
 			}
+		}
+		protected List<Character> FilterCharacters(EntityFilter filter)
+		{
+			var filteredCharacters =
+				GameStateController //todo: make a method for this
+					.Battle
+					.EntityRegistry
+					.GetAllCharacters()
+					.Filter(Owner, filter);
+			return filteredCharacters;
 		}
 		public virtual float GetParam(CS statName)
 		{

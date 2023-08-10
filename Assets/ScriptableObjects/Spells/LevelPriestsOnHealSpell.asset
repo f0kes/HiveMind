@@ -19,7 +19,10 @@ MonoBehaviour:
     _min: 6
     _max: 9
   _permanent: 0
-  _description: Whenever a character is healed, give +1 lvl to all priests
+  _description: 'Aura: Whenever a character is healed, give +1 lvl to all priests
+
+    Active:
+    Heal all friendly'
   _manaCost: 3
   _uses: 5
   _isInfinite: 0
@@ -30,7 +33,10 @@ MonoBehaviour:
     _max: 400
   _levelIncreaseAmount:
     _min: 1
-    _max: 10
+    _max: 1
   _duration:
     _min: 6
     _max: 9
+  _healAmount:
+    _min: 100
+    _max: 20000

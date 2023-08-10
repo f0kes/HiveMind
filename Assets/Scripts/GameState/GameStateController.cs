@@ -38,7 +38,9 @@ namespace GameState
 
 		private uint _goldPerBattle;
 
+
 		private PlayerData _playerData;
+		private string _playerName;
 		private GameEntryModel _currentGameEntry = new GameEntryModel();
 
 		private List<IBattleSystem> _combatSystems = new List<IBattleSystem>();
@@ -58,6 +60,8 @@ namespace GameState
 		public static Battle Battle => Instance._battle;
 		public static ICharacterFactory CharacterFactory => Instance._characterFactory;
 		public static ProjectileSystem ProjectileSystem => Instance._projectileSystem;
+		public bool PlayerNameSet{get; private set;}
+		public static uint NextBattleGoldReward => Instance._playerData.NextBattleGoldReward;
 
 
 		private void Awake()
@@ -93,10 +97,14 @@ namespace GameState
 				_gameData.StartingBattleLevel,
 				_gameData.StartingShopLevel,
 				shopPool: _contentDatabase.GenerateCharacterPool(_gameData.ShopRepeats, ContentDatabase.Purchasable));
+			_playerData.NextBattleGoldReward = _goldPerBattle;
+			_playerData.PlayerName = _playerName;
 		}
 		public void SetPlayerName(string playerName)
 		{
+			_playerName = playerName;
 			_playerData.PlayerName = playerName;
+			PlayerNameSet = true;
 		}
 
 		public StartBattleResult TryStartBattle(List<CharacterData> party, List<CharacterData> enemies)
@@ -199,26 +207,37 @@ namespace GameState
 		{
 			if(battleResult.ResultType == BattleResult.BattleResultType.Win)
 			{
-				_playerData.DecrementCooldowns();
-				foreach(var data in _playerData.Party)
-				{
-					data.LaunchCooldown();
-				}
-				var playerDead = _characterFactory.QueryOriginals(x => x.Team == 0 && x.IsDead);
-				foreach(var dead in playerDead)
-				{
-					_playerData.MoveToShopPool(dead);
-				}
-				_playerData.SetGold(_playerData.Gold + (int)_goldPerBattle);
-				ProgressLevels();
-				_playerData.LevelsBeaten = _playerData.CurrentLevel;
+				OnWin();
 			}
 			else
 			{
-				ResetGame();
+				OnLose();
 			}
 		}
-		private void ResetGame()
+		private void OnWin()
+		{
+			_playerData.DecrementCooldowns();
+			foreach(var data in _playerData.Party)
+			{
+				data.LaunchCooldown();
+			}
+			var playerDead = _characterFactory.QueryOriginals(x => x.Team == 0 && x.IsDead);
+			foreach(var dead in playerDead)
+			{
+				_playerData.MoveToShopPool(dead);
+			}
+
+			if(_playerData.NextBattleGoldReward < _gameData.GoldPerBattle)
+			{
+				_playerData.NextBattleGoldReward = _gameData.GoldPerBattle;
+			}
+			_playerData.SetGold(_playerData.Gold + (int)_playerData.NextBattleGoldReward);
+			_playerData.LevelsBeaten = _playerData.CurrentLevel;
+
+			_playerData.NextBattleGoldReward = 0;
+			ProgressLevels();
+		}
+		private void OnLose()
 		{
 			_currentGameEntry.PlayerName = _playerData.PlayerName;
 			_currentGameEntry.LevelsBeaten = _playerData.LevelsBeaten;
@@ -231,11 +250,12 @@ namespace GameState
 			ResetPlayerData();
 			_currentGameEntry = new GameEntryModel();
 		}
-		private void ProgressLevels()
+		private void ProgressLevels(uint additionalGold = 0)
 		{
 			_playerData.BattleLevelPrecise += 1 * GameData.LevelsPerBattle;
 			_playerData.ShopLevelPrecise += GameData.EnemyToPlayerLevelScaling.ReverseValue * GameData.LevelsPerBattle;
 			_playerData.CurrentLevel += 1;
+			_playerData.NextBattleGoldReward += _goldPerBattle + additionalGold;
 		}
 		private void StopCombatSystems()
 		{
@@ -250,6 +270,21 @@ namespace GameState
 		{
 			await UniTask.Delay(delay);
 			await SceneManager.LoadSceneAsync(_shopScene);
+		}
+
+		public TaskResult TrySkipBattle()
+		{
+			var result = TaskResult.Success;
+			if(_playerData.Gold < _gameData.SkipBattleCost)
+			{
+				result.IsResultSuccess = false;
+			}
+			else
+			{
+				_playerData.SetGold(_playerData.Gold - _gameData.SkipBattleCost);
+				ProgressLevels(_gameData.SkipAdditionalGold);
+			}
+			return result;
 		}
 	}
 }

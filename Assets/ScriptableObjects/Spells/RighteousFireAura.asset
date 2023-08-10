@@ -19,7 +19,10 @@ MonoBehaviour:
     _min: 6
     _max: 12
   _permanent: 0
-  _description: Your divine shield characters have more damage
+  _description: 'Aura: Your divine shield characters have more damage
+
+    Active:
+    Get divine shield'
   _manaCost: 2
   _uses: 5
   _isInfinite: 0
@@ -28,3 +31,9 @@ MonoBehaviour:
   _damageBonus:
     _min: 200
     _max: 800
+  _divineShieldHP:
+    _min: 250
+    _max: 1000
+  _divineShieldDuration:
+    _min: 3
+    _max: 100

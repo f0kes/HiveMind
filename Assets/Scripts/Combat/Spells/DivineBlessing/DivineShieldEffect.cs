@@ -9,14 +9,19 @@ namespace Combat.Spells.DivineBlessing
 	{
 		private float _health;
 		private VFXEffect _vfxEffect;
+		private float _maxHealth = 100;
 		protected override void PopulateParams()
 		{
+		}
+		public void SetMaxHealth(float maxHealth)
+		{
+			_maxHealth = maxHealth;
 		}
 
 		public override void OnCreated()
 		{
 			base.OnCreated();
-			_health = GetParam(CS.DivineShieldHP);
+			_health = _maxHealth;
 			_vfxEffect = VFXSystem.I.PlayEffectFollow(VFXSystem.Data.DivingShieldEffect, Target.transform);
 		}
 		

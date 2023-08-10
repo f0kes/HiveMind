@@ -19,11 +19,11 @@ MonoBehaviour:
     _min: 3
     _max: 9
   _permanent: 1
-  _description: Less hp this has, more damage
+  _description: 'Active: Less hp owner character has, more damage '
   _manaCost: 1
   _uses: 5
   _isInfinite: 0
-  Behaviour: 2
+  Behaviour: 0
   Tags: 
   _damagePerMissingHealth:
     _min: 1

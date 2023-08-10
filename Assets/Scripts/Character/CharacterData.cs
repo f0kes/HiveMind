@@ -38,6 +38,7 @@ namespace Characters
 			result._currentUseCooldown = original._currentUseCooldown;
 			result._nextUseCooldown = original._nextUseCooldown;
 			result._maxUseCooldown = original._maxUseCooldown;
+			result.IsToken = original.IsToken;
 			return result;
 		}
 		public TaskResult LaunchCooldown()

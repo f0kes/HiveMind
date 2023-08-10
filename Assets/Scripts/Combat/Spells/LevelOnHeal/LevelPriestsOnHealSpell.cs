@@ -1,6 +1,7 @@
 ﻿using Characters;
 using Enums;
 using Events.Implementations;
+using GameState;
 using Stats;
 using UnityEngine;
 
@@ -11,12 +12,14 @@ namespace Combat.Spells.LevelOnHeal
 		[SerializeField] private MinMaxStatRange _minHealAmount;
 		[SerializeField] private MinMaxStatRange _levelIncreaseAmount;
 		[SerializeField] private MinMaxStatRange _duration;
+		[SerializeField] private MinMaxStatRange _healAmount;
 
 		protected override void PopulateParams()
 		{
 			AddParam(CS.BlessingMinHealAmount, _minHealAmount);
 			AddParam(CS.BlessingLevelIncreaseAmount, _levelIncreaseAmount);
 			AddParam(CS.BlessingDuration, _duration);
+			AddParam(CS.BlessingHealAmount, _healAmount);
 		}
 		protected override void OnActivated()
 		{
@@ -38,6 +41,25 @@ namespace Combat.Spells.LevelOnHeal
 		public override float GetLifetime()
 		{
 			return GetParam(CS.BlessingDuration);
+		}
+
+		protected override void OnSpellStart()
+		{
+			base.OnSpellStart();
+			var healValue = GetParam(CS.BlessingHealAmount);
+			var friendlyFilter = EntityFilterer.FriendlyFilter.And(EntityFilterer.NotDeadFilter);
+			var friendlyCharacters = FilterCharacters(friendlyFilter);
+			foreach(var character in friendlyCharacters)
+			{
+				var healData = new Combat.Heal
+				{
+					Source = Owner,
+					Target = character,
+					Value = healValue,
+				};
+				Debug.Log($"Healing {character.name} for {healValue}");
+				BattleProcessor.ProcessHeal(Owner, character, healData);
+			}
 		}
 
 		private void OnHeal(Combat.Heal obj)

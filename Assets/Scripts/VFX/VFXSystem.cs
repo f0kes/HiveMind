@@ -76,6 +76,13 @@ namespace VFX
 			instance.transform.position = point;
 			return instance;
 		}
+		public BuffPopup PlayBuffPopup(BuffPopup popup, BuffPopup.PopupType type, Vector3 point)
+		{
+			var instance = PlayEffect(popup);
+			instance.SetType(type);
+			instance.transform.position = point;
+			return instance;
+		}
 		public VFXMultiplePointEffect PlayMultiplePointEffect(VFXMultiplePointEffect effect)
 		{
 			var instance = PlayEffect(effect);

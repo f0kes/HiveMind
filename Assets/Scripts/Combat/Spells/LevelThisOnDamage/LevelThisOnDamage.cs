@@ -11,12 +11,14 @@ namespace Combat.Spells.LevelThisOnDamage
 		[SerializeField] private MinMaxStatRange _minDamage;
 		[SerializeField] private MinMaxStatRange _levelUpAmount;
 		[SerializeField] private MinMaxStatRange _duration;
+		[SerializeField] private MinMaxStatRange _initialLevelUpAmount;
 
 		protected override void PopulateParams()
 		{
 			AddParam(CS.EnrageMinDamage, _minDamage);
 			AddParam(CS.EnrageLevelUpAmount, _levelUpAmount);
 			AddParam(CS.EnrageDuration, _duration);
+			AddParam(CS.EnrageInitialLevelUpAmount, _initialLevelUpAmount);
 		}
 		protected override void OnActivated()
 		{
@@ -38,6 +40,13 @@ namespace Combat.Spells.LevelThisOnDamage
 		public override float GetLifetime()
 		{
 			return GetParam(CS.EnrageDuration);
+		}
+
+		protected override void OnSpellStart()
+		{
+			base.OnSpellStart();
+			var levelUpAmount = GetParam(CS.EnrageInitialLevelUpAmount);
+			GetOwnerCharacter().LevelUp((int)levelUpAmount);
 		}
 
 		private void OnDamage(Damage obj)

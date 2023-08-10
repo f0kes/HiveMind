@@ -8,6 +8,7 @@ using DefaultNamespace.AI;
 using Events;
 using Events.EventData;
 using GameState;
+using Misc;
 using UnityEngine;
 
 namespace AI
@@ -89,14 +90,13 @@ namespace AI
 			}
 
 			desirabiltityMap.Remap();
-
+			/*
 			var maxValue = desirabiltityMap.DirectionMap.Values.Max();
-			var maxDirection = desirabiltityMap.DirectionMap.First(x => x.Value == maxValue).Key;
+			var maxDirection = desirabiltityMap.DirectionMap.First(x => x.Value == maxValue).Key;*/
 
-			if(maxValue <= 0.3f)
-			{
-				maxDirection = Vector2.zero;
-			}
+			var sum = desirabiltityMap.DirectionMap.Aggregate(Vector3.zero, (current, kv) => current + kv.Key * kv.Value);
+			var maxValue = sum.magnitude;
+			Vector3 maxDirection = sum.NormalizeClamp();
 
 
 			//draw lines

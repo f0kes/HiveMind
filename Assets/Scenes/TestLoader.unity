@@ -233,19 +233,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerCharacters:
-  - {fileID: 11400000, guid: 4fe78eff0f5867b4dbc85fc7c0696c19, type: 2}
-  - {fileID: 11400000, guid: 4fe78eff0f5867b4dbc85fc7c0696c19, type: 2}
-  - {fileID: 11400000, guid: 4fe78eff0f5867b4dbc85fc7c0696c19, type: 2}
-  - {fileID: 11400000, guid: 4fe78eff0f5867b4dbc85fc7c0696c19, type: 2}
-  - {fileID: 11400000, guid: 4fe78eff0f5867b4dbc85fc7c0696c19, type: 2}
-  - {fileID: 11400000, guid: 4fe78eff0f5867b4dbc85fc7c0696c19, type: 2}
+  - {fileID: 11400000, guid: ae12337086fed3142b3d1f11e0b31a45, type: 2}
+  - {fileID: 11400000, guid: ae12337086fed3142b3d1f11e0b31a45, type: 2}
+  - {fileID: 11400000, guid: ae12337086fed3142b3d1f11e0b31a45, type: 2}
+  - {fileID: 11400000, guid: ae12337086fed3142b3d1f11e0b31a45, type: 2}
+  - {fileID: 11400000, guid: ae12337086fed3142b3d1f11e0b31a45, type: 2}
+  - {fileID: 11400000, guid: ae12337086fed3142b3d1f11e0b31a45, type: 2}
   _enemyCharacters:
-  - {fileID: 11400000, guid: 2f812e0811dfee2499dfa0356559dcad, type: 2}
-  - {fileID: 11400000, guid: 2f812e0811dfee2499dfa0356559dcad, type: 2}
-  - {fileID: 11400000, guid: 2f812e0811dfee2499dfa0356559dcad, type: 2}
-  - {fileID: 11400000, guid: 2f812e0811dfee2499dfa0356559dcad, type: 2}
-  - {fileID: 11400000, guid: 2f812e0811dfee2499dfa0356559dcad, type: 2}
-  - {fileID: 11400000, guid: b4880a9024e788c47ba7d8be8bae6d55, type: 2}
+  - {fileID: 11400000, guid: 83f9e473796396a48a86210b10bebbcc, type: 2}
+  - {fileID: 11400000, guid: 83f9e473796396a48a86210b10bebbcc, type: 2}
+  - {fileID: 11400000, guid: 83f9e473796396a48a86210b10bebbcc, type: 2}
+  - {fileID: 11400000, guid: 83f9e473796396a48a86210b10bebbcc, type: 2}
+  - {fileID: 11400000, guid: 83f9e473796396a48a86210b10bebbcc, type: 2}
+  - {fileID: 11400000, guid: 83f9e473796396a48a86210b10bebbcc, type: 2}
   _level: 1
   _enemyLevel: 20
 --- !u!1 &317596126

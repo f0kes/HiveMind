@@ -8,18 +8,34 @@ using GameState;
 using Stats;
 using Stats.Modifiers;
 using UnityEngine;
+using VFX;
 
 namespace Combat.Spells.RighteousFire
 {
 	public class RighteousFireAura : BaseAura
 	{
 		[SerializeField] private MinMaxStatRange _damageBonus;
+		[SerializeField] private MinMaxStatRange _divineShieldHP;
+		[SerializeField] private MinMaxStatRange _divineShieldDuration;
 
 		private StatModifierAdd _damageBonusModifier;
 		protected override void PopulateParams()
 		{
 			base.PopulateParams();
 			AddParam(CS.DamageBonus, _damageBonus);
+			AddParam(CS.RF_DivineShieldHP, _divineShieldHP);
+			AddParam(CS.RF_DivineShieldDuration, _divineShieldDuration);
+		}
+
+		protected override void OnSpellStart()
+		{
+			base.OnSpellStart();
+			var owner = GetOwnerCharacter();
+			if(owner == null) return;
+
+			var effect = CreateInstance<DivineShieldEffect>();
+			effect.SetMaxHealth(GetParam(CS.RF_DivineShieldHP));
+			owner.ApplyNewEffect(owner, this, effect, GetParam(CS.RF_DivineShieldDuration));
 		}
 
 		public override void OnCreated()
@@ -45,7 +61,6 @@ namespace Combat.Spells.RighteousFire
 			var targets = owner.GetTeam().GetListCopy();
 			foreach(var target in
 			        from target in targets
-			        where target != owner
 			        where target.GetEffectOfType<DivineShieldEffect>() != null
 			        select target)
 			{
@@ -57,11 +72,13 @@ namespace Combat.Spells.RighteousFire
 		protected override void ApplyAura(Entity target)
 		{
 			target.Stats.GetStat(CS.Damage).AddMod(_damageBonusModifier);
+			VFXSystem.I.PlayBuffPopup(VFXSystem.Data.DamageBuff, BuffPopup.PopupType.Buff, target.transform.position); //todo: should be on all aura spells
 		}
 
 		protected override void RemoveAura(Entity target)
 		{
 			target.Stats.GetStat(CS.Damage).RemoveMod(_damageBonusModifier);
+			VFXSystem.I.PlayBuffPopup(VFXSystem.Data.DamageBuff, BuffPopup.PopupType.Debuff, target.transform.position);
 		}
 	}
 }

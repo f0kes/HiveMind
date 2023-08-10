@@ -19,13 +19,16 @@ MonoBehaviour:
     _min: 12
     _max: 24
   _permanent: 0
-  _description: ' Whenever this character is healed, split amount healed amongst
-    enemies '
+  _description: " Aura: Whenever this character is healed, split amount healed amongst
+    enemies \nActive: Heal owner"
   _manaCost: 1
   _uses: 5
   _isInfinite: 0
   Behaviour: 2
   Tags: 
   _convertionDamageMultiplier:
-    _min: 4
-    _max: 40
+    _min: 1
+    _max: 2
+  _healValue:
+    _min: 300
+    _max: 6000

@@ -19,12 +19,14 @@ MonoBehaviour:
   StartingBattleLevel: 1
   StartingShopLevel: 25
   LevelsPerBattle: 2
-  GoldPerBattle: 18
-  StartingGold: 22
+  GoldPerBattle: 0
+  StartingGold: 200
   RollCost: 2
   BuyCost: 3
-  MaxGold: 50
+  MaxGold: 1000
   ShopRepeats: 8
+  SkipBattleCost: 0
+  SkipAdditionalGold: 0
   MaxStatValue: 1000
   SwapCooldown: 3
   ManaPerSwap: 1

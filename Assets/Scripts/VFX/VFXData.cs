@@ -11,5 +11,12 @@ namespace VFX
 		public VFXEffect HellfireEffect;
 		public VFXMultiplePointEffect RedirectionEffect;
 		public VFXEffect Aura;
+		public VFXEffect HealEffect;
+		
+		public BuffPopup DamageBuff;
+		public BuffPopup CritBuff;
+		public BuffPopup TriggerBuff;
+		public BuffPopup OnCritNotification;
+
 	}
 }

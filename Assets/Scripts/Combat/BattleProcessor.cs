@@ -4,6 +4,7 @@ using Events;
 using Events.Implementations;
 using UI;
 using UnityEngine;
+using VFX;
 
 namespace Combat
 {
@@ -41,6 +42,7 @@ namespace Combat
 				string msg = $"Crit, chance: {critChance}, roll: {random}, damage: {critDamage}!";
 				Debug.Log(msg);
 				GameEvent<CritData>.Invoke(new CritData { Damage = damage, CritChance = critChance, CritDamage = critDamage });
+				VFXSystem.I.PlayBuffPopup(VFXSystem.Data.OnCritNotification, BuffPopup.PopupType.Neutral, target.transform.position);
 			}
 		}
 
@@ -56,6 +58,7 @@ namespace Combat
 			heal.Source = healer;
 			target.TakeHeal(heal);
 			GameEvent<Heal>.Invoke(heal);
+			VFXSystem.I.PlayEffectFollow(VFXSystem.Data.HealEffect, target.transform, 1f);
 		}
 	}
 }
