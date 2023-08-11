@@ -20,14 +20,14 @@ MonoBehaviour:
     _max: 9
   _permanent: 1
   _description: 'Active: Give your characters  Divine Shield'
-  _manaCost: 3
+  _manaCost: 2
   _uses: 5
   _isInfinite: 0
   Behaviour: 2
   Tags: 
   _divineShieldHP:
-    _min: 250
-    _max: 1000
+    _min: 666.6667
+    _max: 13333.333
   _divineShieldDuration:
     _min: 3
     _max: 100

@@ -22,7 +22,7 @@ MonoBehaviour:
   _description: 'Active: Hooks a character. If character is enemy, aggro team to
     it'
   _manaCost: 2
-  _uses: 1
+  _uses: 2
   _isInfinite: 0
   Behaviour: 1
   Tags: 

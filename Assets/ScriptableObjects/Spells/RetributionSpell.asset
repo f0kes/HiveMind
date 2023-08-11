@@ -25,14 +25,14 @@ MonoBehaviour:
     Give paladins levels
 
 '
-  _manaCost: 2
+  _manaCost: 6
   _uses: 5
   _isInfinite: 0
   Behaviour: 2
   Tags: 
   _levelsOnDeath:
-    _min: 5
-    _max: 5
+    _min: 30
+    _max: 30
   _initialLevels:
-    _min: 5
-    _max: 5
+    _min: 30
+    _max: 30

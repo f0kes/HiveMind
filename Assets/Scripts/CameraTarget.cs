@@ -6,6 +6,9 @@ using UnityEngine;
 public class CameraTarget : MonoBehaviour
 {
 	[SerializeField] private float _threshold = 0.1f;
+	[SerializeField] private float _lerpStep = 0.7f;
+	[SerializeField] private bool _followPlayer = true;
+	[SerializeField] private Transform _anchorTarget;
 	private Camera _mainCamera;
 	private Vector3 _mousePos;
 
@@ -21,13 +24,18 @@ public class CameraTarget : MonoBehaviour
 		var (success, position) = GetMousePosition();
 		if(success)
 			_mousePos = position;
-		var character = InputHandler.Instance.GetControlledCharacter();
-		if(character == null) return;
-		Vector3 playerPos = character.transform.position;
-		Vector3 targetPos = (playerPos + _mousePos) / 2;
+		var anchor = _anchorTarget;
+		if(_followPlayer)
+		{
+			var character = InputHandler.Instance.GetControlledCharacter();
+			if(character == null) return;
+			anchor = character.transform;
+		}
+		var anchorPosition = anchor.position;
+		var targetPos = Vector3.Lerp(anchorPosition, _mousePos, _lerpStep);
 
-		targetPos.x = Mathf.Clamp(targetPos.x, -_threshold + playerPos.x, _threshold + playerPos.x);
-		targetPos.z = Mathf.Clamp(targetPos.z, -_threshold + playerPos.z, _threshold + playerPos.z);
+		targetPos.x = Mathf.Clamp(targetPos.x, -_threshold + anchorPosition.x, _threshold + anchorPosition.x);
+		targetPos.z = Mathf.Clamp(targetPos.z, -_threshold + anchorPosition.z, _threshold + anchorPosition.z);
 
 		transform.position = targetPos;
 	}

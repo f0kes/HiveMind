@@ -16,14 +16,14 @@ MonoBehaviour:
   _icon: {fileID: 0}
   _name: Revenge
   _lifetime:
-    _min: 6
-    _max: 6
+    _min: 12
+    _max: 12
   _permanent: 0
   _description: 'Aura: Whenever warrior takes damage, get  levels
 
     Active: Give
     owner levels'
-  _manaCost: 3
+  _manaCost: 6
   _uses: 5
   _isInfinite: 0
   Behaviour: 1
@@ -35,8 +35,8 @@ MonoBehaviour:
     _min: 2
     _max: 2
   _duration:
-    _min: 6
-    _max: 6
+    _min: 12
+    _max: 12
   _initialLevelUpAmount:
-    _min: 2
-    _max: 15
+    _min: 180
+    _max: 180

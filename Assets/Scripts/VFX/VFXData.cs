@@ -12,7 +12,8 @@ namespace VFX
 		public VFXMultiplePointEffect RedirectionEffect;
 		public VFXEffect Aura;
 		public VFXEffect HealEffect;
-		
+		public VFXEffect DeathEffect;
+
 		public BuffPopup DamageBuff;
 		public BuffPopup CritBuff;
 		public BuffPopup TriggerBuff;

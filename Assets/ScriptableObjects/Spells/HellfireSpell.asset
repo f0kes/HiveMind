@@ -20,11 +20,11 @@ MonoBehaviour:
     _max: 9
   _permanent: 1
   _description: 'Active: Deal damage to all'
-  _manaCost: 1
-  _uses: 2
+  _manaCost: 4
+  _uses: 1
   _isInfinite: 0
   Behaviour: 4
   Tags: 
   _damage:
-    _min: 240
-    _max: 1200
+    _min: 500
+    _max: 10000

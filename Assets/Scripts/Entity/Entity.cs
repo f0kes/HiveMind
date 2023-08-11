@@ -159,6 +159,7 @@ namespace DefaultNamespace
 			_isDead = true;
 			Events.Death?.Invoke(this);
 			DeathEvent.Invoke(new DeathData { Target = this });
+			VFXSystem.I.PlayEffectPoint(VFXSystem.Data.DeathEffect, transform.position);
 			gameObject.SetActive(false);
 		}
 

@@ -56,7 +56,7 @@ namespace Stats
 			}
 
 
-			public float GetValue(bool forceUpdate)
+			public virtual float GetValue(bool forceUpdate)
 			{
 				var result = _baseValue;
 				foreach(var mod in _modifiers)

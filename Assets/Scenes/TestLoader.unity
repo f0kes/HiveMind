@@ -247,7 +247,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 83f9e473796396a48a86210b10bebbcc, type: 2}
   - {fileID: 11400000, guid: 83f9e473796396a48a86210b10bebbcc, type: 2}
   _level: 1
-  _enemyLevel: 20
+  _enemyLevel: 50
 --- !u!1 &317596126
 GameObject:
   m_ObjectHideFlags: 0

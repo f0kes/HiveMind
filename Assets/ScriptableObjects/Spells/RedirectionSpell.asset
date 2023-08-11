@@ -16,24 +16,24 @@ MonoBehaviour:
   _icon: {fileID: 0}
   _name: 
   _lifetime:
-    _min: 3
-    _max: 9
+    _min: 10
+    _max: 10
   _permanent: 0
   _description: 'Aura: Whenever a friend damages this, damage random enemy instead
 
     Active:
     Deal damage to owner'
-  _manaCost: 1
-  _uses: 5
+  _manaCost: 5
+  _uses: 1
   _isInfinite: 0
   Behaviour: 1
   Tags: 
   _damageMultiplier:
-    _min: 1.1
-    _max: 3
+    _min: 2
+    _max: 4
   _duration:
-    _min: 6
-    _max: 12
+    _min: 10
+    _max: 10
   _initialSelfDamage:
-    _min: 300
-    _max: 30000
+    _min: 500
+    _max: 2500

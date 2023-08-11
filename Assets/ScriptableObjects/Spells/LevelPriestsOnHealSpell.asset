@@ -23,7 +23,7 @@ MonoBehaviour:
 
     Active:
     Heal all friendly'
-  _manaCost: 3
+  _manaCost: 7
   _uses: 5
   _isInfinite: 0
   Behaviour: 1

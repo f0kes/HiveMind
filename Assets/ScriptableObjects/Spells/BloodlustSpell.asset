@@ -23,7 +23,7 @@ MonoBehaviour:
 
     Aura: crits'
   _manaCost: 2
-  _uses: 5
+  _uses: 1
   _isInfinite: 0
   Behaviour: 2
   Tags: 

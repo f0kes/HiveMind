@@ -16,13 +16,13 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: fe299e927a1614e4d9272095d1ad03a4, type: 3}
   _name: Convertion
   _lifetime:
-    _min: 12
-    _max: 24
+    _min: 24
+    _max: 48
   _permanent: 0
   _description: " Aura: Whenever this character is healed, split amount healed amongst
     enemies \nActive: Heal owner"
-  _manaCost: 1
-  _uses: 5
+  _manaCost: 4
+  _uses: 1
   _isInfinite: 0
   Behaviour: 2
   Tags: 
