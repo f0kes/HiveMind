@@ -10,6 +10,7 @@ namespace VFX
 
 		[SerializeField] private float _duration = 1f;
 		protected VFXBehaviour Behaviour;
+		private bool _destroyed;
 
 		public float Duration => _duration;
 
@@ -36,11 +37,13 @@ namespace VFX
 
 		public void Stop()
 		{
+			if(_destroyed) return;
 			Destroy(gameObject);
 		}
 		private void OnDestroy()
 		{
 			OnDestroyEvent?.Invoke(this);
+			_destroyed = true;
 		}
 	}
 }

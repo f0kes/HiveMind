@@ -26,8 +26,16 @@ namespace UI.HealthBars.Bars.Charge
 			_charger = charger;
 			_charger.OnChargeStarted += OnChargeStarted;
 			_charger.OnCharged += OnCharged;
+			_charger.OnBreak += OnChargeBreak;
 			_charger.OnChargeLost += OnChargeLost;
 		}
+
+		private void OnChargeLost(IChargable obj)
+		{
+			if(obj != _chargable) return;
+			DisableGlow();
+		}
+
 		public void SetManaBar(ManaBar manaBar)
 		{
 			_manaBar = manaBar;
@@ -79,7 +87,7 @@ namespace UI.HealthBars.Bars.Charge
 			_outline.material.color = _outlineColor * _currentGlow;
 		}
 
-		private void OnChargeLost(IChargable obj)
+		private void OnChargeBreak(IChargable obj)
 		{
 			if(obj != _chargable) return;
 			Disable();
@@ -88,7 +96,7 @@ namespace UI.HealthBars.Bars.Charge
 		private void OnCharged(IChargable obj)
 		{
 			if(obj != _chargable) return;
-			Glow(10f);
+			Glow(15f);
 		}
 
 		private void OnChargeStarted(IChargable obj)

@@ -43,7 +43,7 @@ namespace Characters
 		public Vector3 GetCursorPosition()
 		{
 			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			if (Physics.Raycast(ray, out var hit))
+			if(Physics.Raycast(ray, out var hit))
 			{
 				return hit.point;
 			}
@@ -52,22 +52,36 @@ namespace Characters
 		public void Shoot()
 		{
 			if(_character.IsStunned()) return;
-			if (_timeSinceShot < 1/_character.Stats[CS.FireRate] || IsReloading()) return;
-			
+			if(_timeSinceShot < 1 / _character.Stats[CS.FireRate] || IsReloading()) return;
+
 			var t = transform;
 			var offsetX = t.right * _offset.x;
 			var offsetY = t.up * _offset.y;
 			var offsetZ = t.forward * _offset.z;
 			var offsetVector = offsetX + offsetY + offsetZ;
-			for (int i = 0; i < _character.Stats[CS.BulletsPerShot]; i++)
+			for(int i = 0; i < _character.Stats[CS.BulletsPerShot]; i++)
 			{
 				var spread = Random.Range(-_character.Stats[CS.Spread], _character.Stats[CS.Spread]);
 				var rotationOffset = Quaternion.Euler(0, spread, 0);
+				//ray forward 
+				var mask = LayerMask.GetMask("Character","Ground");
+				var transform1 = transform;
+				var result = Physics.Raycast(transform1.position, transform1.forward, out var hit, 1000, mask);
 
-				var bullet = Instantiate(BulletPrefab, t.position + offsetVector, t.rotation * rotationOffset);
-				bullet.Init(_character,_character.Stats[CS.Damage], _character.Team);
+				if(!result) continue;
+				var bullet = Instantiate(BulletPrefab, t.position + t.forward * hit.distance / 2, t.rotation * rotationOffset);
+				if(!hit.collider.gameObject.TryGetComponent(out Character damaged)) continue;
+				if(damaged.Team == _character.Team) continue;
+
+				_character.Events.BulletHit?.Invoke(damaged);
+
+				var bulletTransform = bullet.transform;
+				var bulletScale = bulletTransform.localScale;
+				bulletTransform.localScale = new Vector3(bulletScale.x, bulletScale.y, hit.distance);
+				bullet.Init(_character, _character.Stats[CS.Damage], _character.Team);
 			}
-			
+
+
 			OnShoot?.Invoke(_weapon);
 			_timeSinceShot = 0;
 		}

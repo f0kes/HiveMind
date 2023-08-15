@@ -23,6 +23,10 @@ namespace AI
 		[SerializeField] private float _avoidWallBehaivourWeight = 1f;
 		[SerializeField] private float _alignBehaivourWeight = 0f;
 
+		[SerializeField] private float _shootRandomness = 0.002f;
+		private float _timeSinceLastShoot = 0f;
+		private float _shootInterval = 0f;
+
 		[SerializeField] private bool _debugDraw;
 
 		private Entity _currentEnemy;
@@ -42,6 +46,7 @@ namespace AI
 			base.Start();
 			Ticker.OnTick += Tick;
 			GameEvent<AggroEventData>.Subscribe(OnAggro);
+			_shootInterval = Random.Range(0, _shootRandomness);
 		}
 		private void OnDestroy()
 		{
@@ -73,6 +78,7 @@ namespace AI
 
 		private void Tick(Ticker.OnTickEventArgs obj)
 		{
+			_timeSinceLastShoot += Ticker.TickInterval;
 			var entities = GetEntitiesInRange(_viewDistance).OfType<Character>().ToList();
 			if(_currentEnemy == null || _currentEnemy.IsDead)
 				_currentEnemy = GetClosestEnemy(GameStateController
@@ -109,11 +115,16 @@ namespace AI
 			}
 
 
-			Vector3 lookAt = Vector3.zero;
+			var lookAt = Vector3.zero;
 			if(_currentEnemy != null)
 			{
 				lookAt = _currentEnemy.transform.position;
+			}
+			if(_currentEnemy != null && _timeSinceLastShoot > _shootInterval)
+			{
 				ControlledCharacter.CharacterShooter.Shoot();
+				_timeSinceLastShoot = 0f;
+				_shootInterval = Random.Range(0, _shootRandomness);
 			}
 
 			ControlledCharacter.CharacterMover.SetInput(maxDirection, lookAt);

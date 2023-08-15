@@ -8,6 +8,7 @@ namespace Combat.ChargeSystem
 	{
 		public event Action<IChargable> OnChargeStarted; 
 		public event Action<IChargable> OnCharged;
+		public event Action<IChargable> OnBreak;
 		public event Action<IChargable> OnChargeLost;
 
 		TaskResult StartCharging(IChargable chargable);

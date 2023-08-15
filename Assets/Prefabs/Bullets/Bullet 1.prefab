@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 409446099406574218}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.02, z: 2}
+  m_LocalScale: {x: 0.1, y: 0.02, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -113,7 +113,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.44054037, b: 0, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.85
   m_Range: 20
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -192,7 +192,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 120
-  _lifeTime: 1
+  _lifeTime: 0.1
+  _renderer: {fileID: 409446099406574260}
 --- !u!114 &-1815337635076155448
 MonoBehaviour:
   m_ObjectHideFlags: 0

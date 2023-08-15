@@ -11,7 +11,15 @@ namespace VFX.VFXBehaviours
 		}
 		public override void Execute()
 		{
-			Effect.transform.position = _target.position;
+			if(_target.gameObject.activeInHierarchy)
+			{
+				Effect.gameObject.SetActive(true);
+				Effect.transform.position = _target.position;
+			}
+			else
+			{
+				Effect.gameObject.SetActive(false);
+			}
 		}
 	}
 }

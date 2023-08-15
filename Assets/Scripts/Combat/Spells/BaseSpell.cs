@@ -37,6 +37,7 @@ namespace Combat.Spells
 		[SerializeField] private int _manaCost;
 		[SerializeField] private int _uses = 5;
 		[SerializeField] private bool _isInfinite = false;
+		[SerializeField] private bool _breaks = true;
 
 		protected Dictionary<CS, MinMaxStatRange> Params = new();
 		protected StatDict<CS> Stats;
@@ -297,6 +298,11 @@ namespace Combat.Spells
 		public void SetTarget(Entity target)
 		{
 			Target = target;
+		}
+
+		public virtual bool Breaks()
+		{
+			return _breaks;
 		}
 	}
 }

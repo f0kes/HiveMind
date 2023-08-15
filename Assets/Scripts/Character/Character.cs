@@ -241,6 +241,24 @@ namespace Characters
 			_currentMana = characterCurrentMana;
 			Events.ManaChanged?.Invoke(characterCurrentMana);
 		}
+
+		public override void TakeDamage(Damage damage)
+		{
+			base.TakeDamage(damage);
+			if(ActiveSpell != null && damage.Spell.Breaks())
+			{
+				var currentCharge = GameStateController.ChargeSystem.GetCharge(ActiveSpell);
+				GameStateController.ChargeSystem.SetCharge(ActiveSpell, currentCharge - damage.Value * 5); //todo: make this a constant
+			}
+		}
+		public void Break()
+		{
+			if(ActiveSpell != null)
+			{
+				GameStateController.ChargeSystem.SetCharge(ActiveSpell, -1);
+			}
+		}
+
 		public TaskResult ReadyToCharge(BaseSpell spell = null)
 		{
 			if(spell == null)
@@ -297,6 +315,7 @@ namespace Characters
 			return result;
 		}
 
-		
+
+
 	}
 }

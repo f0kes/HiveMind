@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 292761712}
   - component: {fileID: 292761711}
   - component: {fileID: 292761710}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1431,7 +1431,7 @@ GameObject:
   - component: {fileID: 781127380}
   - component: {fileID: 781127379}
   - component: {fileID: 781127378}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2778,7 +2778,7 @@ GameObject:
   - component: {fileID: 1724561207}
   - component: {fileID: 1724561206}
   - component: {fileID: 1724561205}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3086,7 +3086,7 @@ GameObject:
   - component: {fileID: 1761881223}
   - component: {fileID: 1761881222}
   - component: {fileID: 1761881221}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3468,11 +3468,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2796240887144553902, guid: 8857a2281b65e594e8f2ceac3104dd1a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000029155224
+      value: 0.000000029155235
       objectReference: {fileID: 0}
     - target: {fileID: 2796240887144553902, guid: 8857a2281b65e594e8f2ceac3104dd1a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000020204585
+      value: -0.00000002020459
       objectReference: {fileID: 0}
     - target: {fileID: 2796240887144553902, guid: 8857a2281b65e594e8f2ceac3104dd1a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3552,11 +3552,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2796240888761994274, guid: 8857a2281b65e594e8f2ceac3104dd1a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000029155224
+      value: 0.000000029155235
       objectReference: {fileID: 0}
     - target: {fileID: 2796240888761994274, guid: 8857a2281b65e594e8f2ceac3104dd1a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000020204585
+      value: -0.00000002020459
       objectReference: {fileID: 0}
     - target: {fileID: 2796240888761994274, guid: 8857a2281b65e594e8f2ceac3104dd1a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3999,7 +3999,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2145232609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4051,7 +4051,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 606922279}
-  m_PlaneDistance: 399
+  m_PlaneDistance: 390
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0

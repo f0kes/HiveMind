@@ -18,11 +18,18 @@ MonoBehaviour:
   _lifetime:
     _min: 3
     _max: 9
+  _chargeNeeded:
+    _min: 1000
+    _max: 1000
+  _chargePerSecond:
+    _min: 500
+    _max: 500
   _permanent: 1
   _description: 'Buff: Heal target once in X seconds'
   _manaCost: 1
   _uses: 5
   _isInfinite: 0
+  _breaks: 1
   Behaviour: 0
   Tags: 
   _healVal:

@@ -5,7 +5,6 @@ namespace Combat.Spells.AutoAttack
 {
 	public class AutoAttackSpell : BaseSpell
 	{
-
 		protected override void PopulateParams()
 		{
 		}
@@ -13,6 +12,7 @@ namespace Combat.Spells.AutoAttack
 		public override void OnBulletHit(Entity target)
 		{
 			base.OnBulletHit(target);
+			if(target.Team == Owner.Team) return;
 			var damageValue = GetOwnerCharacter().Stats[CS.Damage];
 			var damage = new Damage
 			{
@@ -25,5 +25,9 @@ namespace Combat.Spells.AutoAttack
 			BattleProcessor.ProcessHit(Owner, target, damage);
 		}
 
+		public override bool Breaks()
+		{
+			return false;
+		}
 	}
 }

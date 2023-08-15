@@ -149,7 +149,7 @@ namespace DefaultNamespace
 				Die();
 			}
 		}
-		public void TakeDamage(Damage damage)
+		public virtual void TakeDamage(Damage damage)
 		{
 			float value = damage.Value;
 			float armor = Stats[CS.Armor];

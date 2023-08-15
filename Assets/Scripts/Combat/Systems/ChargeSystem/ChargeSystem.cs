@@ -9,6 +9,7 @@ using Combat.Spells;
 using GameState;
 using Misc;
 using UnityEngine;
+using VFX;
 
 namespace Combat.Systems.ChargeSystem
 {
@@ -16,6 +17,7 @@ namespace Combat.Systems.ChargeSystem
 	{
 		public event Action<IChargable> OnChargeStarted;
 		public event Action<IChargable> OnCharged;
+		public event Action<IChargable> OnBreak;
 		public event Action<IChargable> OnChargeLost;
 		private class ChargeData
 		{
@@ -35,16 +37,16 @@ namespace Combat.Systems.ChargeSystem
 		public override void SubscribeToEvents()
 		{
 			Ticker.OnTick += OnTick;
-			OnChargeLost += OnChargeLostAction;
+			OnBreak += BreakAction;
 		}
 
 		public override void UnsubscribeFromEvents()
 		{
 			Ticker.OnTick -= OnTick;
-			OnChargeLost -= OnChargeLostAction;
+			OnBreak -= BreakAction;
 		}
 
-		private void OnChargeLostAction(IChargable obj)
+		private void BreakAction(IChargable obj)
 		{
 			foreach(var action in _onChargeLostActions)
 			{
@@ -75,10 +77,15 @@ namespace Combat.Systems.ChargeSystem
 				{
 					OnCharged?.Invoke(chargable);
 				}
-				else if(charge.CurrentCharge <= 0 && charge.ChargeStarted)
+
+				else if(charge.CurrentCharge <= 0)
 				{
 					charge.ChargeStarted = false;
 					charge.Charging = false;
+					OnBreak?.Invoke(chargable);
+				}
+				if(charge.CurrentCharge < chargable.GetMaxCharge() && charge.Charged)
+				{
 					OnChargeLost?.Invoke(chargable);
 				}
 				charge.Charged = charge.CurrentCharge >= chargable.GetMaxCharge();
@@ -102,11 +109,15 @@ namespace Combat.Systems.ChargeSystem
 			if(!this[chargable].ChargeStarted && spell != null)
 			{
 				result = Invoke(spell);
+				if(result)
+				{
+					this[chargable].CurrentCharge = 0;
+				}
 			}
-			if(!result) return result;
-
-			this[chargable].Charging = true;
-			this[chargable].CurrentCharge = 0;
+			if(this[chargable].ChargeStarted)
+			{
+				this[chargable].Charging = true;
+			}
 
 			return result;
 		}
@@ -160,12 +171,25 @@ namespace Combat.Systems.ChargeSystem
 			if(!result) return result;
 			this[spell].ChargeStarted = true;
 			OnChargeStarted?.Invoke(spell);
-
+			SpawnVFX(spell);
 			foreach(var action in _castActions)
 			{
 				action.Execute(spell);
 			}
 			return result;
+		}
+		private void SpawnVFX(BaseSpell spell)
+		{
+			VFXSystem.I.PlayEffectFollow(VFXSystem.Data.SpellStartEffect, spell.Owner.transform);
+			var follow = VFXSystem.I.PlayEffectFollow(VFXSystem.Data.SpellChargeEffect, spell.Owner.transform);
+			OnBreak += chargable =>
+			{
+				if(chargable is not BaseSpell baseSpell) return;
+				if(baseSpell == spell)
+				{
+					follow.Stop();
+				}
+			};
 		}
 
 		public TaskResult CanInvoke(BaseSpell spell)

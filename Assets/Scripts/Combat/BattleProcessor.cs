@@ -1,6 +1,7 @@
 ﻿using DefaultNamespace;
 using Enums;
 using Events;
+using Events.EventData;
 using Events.Implementations;
 using UI;
 using UnityEngine;
@@ -24,6 +25,7 @@ namespace Combat
 
 			target.TakeDamage(damage);
 			GameEvent<Damage>.Invoke(damage);
+			GameEvent<AggroEventData>.Invoke(new AggroEventData { Target = target, AggroFilter = (c) => c.Team == attacker.Team });
 
 			attacker.Events.AfterDamageDealt?.Invoke(target, damage);
 			target.Events.AfterDamageReceived?.Invoke(attacker, damage);

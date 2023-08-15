@@ -13,6 +13,8 @@ namespace VFX
 		public VFXEffect Aura;
 		public VFXEffect HealEffect;
 		public VFXEffect DeathEffect;
+		public VFXEffect SpellStartEffect;
+		public VFXEffect SpellChargeEffect;
 
 		public BuffPopup DamageBuff;
 		public BuffPopup CritBuff;
