@@ -922,7 +922,7 @@ namespace RSG
         /// </summary>
         public static IPromise All(params IPromise[] promises)
         {
-            return All((IEnumerable<IPromise>)promises); // Cast is required to force use of the other All function.
+            return All((IEnumerable<IPromise>)promises); // Invoke is required to force use of the other All function.
         }
 
         /// <summary>
@@ -1061,7 +1061,7 @@ namespace RSG
         /// </summary>
         public static IPromise Race(params IPromise[] promises)
         {
-            return Race((IEnumerable<IPromise>)promises); // Cast is required to force use of the other function.
+            return Race((IEnumerable<IPromise>)promises); // Invoke is required to force use of the other function.
         }
 
         /// <summary>

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using Combat.Battle;
+using Combat.Spells;
 using GameState;
 
-namespace Combat.Spells
+namespace Combat.Systems.Activator
 {
 	public class ActivatorSystem : BattleSystem, IActivator
 	{

@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace Combat
 {
-	public class ManaSystem : BattleSystem
+	public class SwapManaSystem : BattleSystem
 	{
 		private int _manaOnSwap;
-		public ManaSystem(IBattle battle, int manaOnSwap) : base(battle) //TODO: list of characters, give mana to all of them
+		public SwapManaSystem(IBattle battle, int manaOnSwap) : base(battle) //TODO: list of characters, give mana to all of them
 		{
 			_manaOnSwap = manaOnSwap;
 		}

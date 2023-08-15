@@ -16,6 +16,10 @@ namespace DefaultNamespace
 {
 	public class Entity : MonoBehaviour
 	{
+		public static event Action<Entity> OnEntityCreated;
+		public static event Action<Entity> OnEntityDestroyed;
+
+
 		private EntityData _data;
 
 		public HashSet<EntityTag> Tags => _data.Tags.ToHashSet();
@@ -56,13 +60,15 @@ namespace DefaultNamespace
 		}
 		private void Start()
 		{
-			InitGizmo();
+			//InitGizmo();
 			SubscribeToEvents();
+			OnEntityCreated?.Invoke(this);
 			ChildStart();
 		}
 		public virtual void OnDestroy()
 		{
 			UnSubscribeFromEvents();
+			OnEntityDestroyed?.Invoke(this);
 		}
 		private void SubscribeToEvents()
 		{
@@ -83,7 +89,7 @@ namespace DefaultNamespace
 			var transform1 = Gizmo.transform;
 			transform1.position = transform.position + Vector3.up * 4f;
 
-			Gizmo.AttachTo(this);
+			//Gizmo.AttachTo(this);
 		}
 		protected virtual void ChildAwake()
 		{

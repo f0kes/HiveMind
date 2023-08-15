@@ -22,6 +22,7 @@ namespace Player
 		public bool Shoot;
 		public bool Swap;
 		public bool Cheats;
+		public bool Charge;
 		public void Flush()
 		{
 			Mouse = new MouseData();
@@ -31,6 +32,7 @@ namespace Player
 			Shoot = false;
 			Swap = false;
 			Cheats = false;
+			Charge = false;
 		}
 	}
 }

@@ -4,7 +4,10 @@ using System.Linq;
 using Characters;
 using Combat;
 using Combat.Battle;
+using Combat.CastSystem;
 using Combat.Spells;
+using Combat.Systems.Activator;
+using Combat.Systems.ChargeSystem;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace.Configs;
 using Events;
@@ -49,7 +52,10 @@ namespace GameState
 		private ProjectileSystem _projectileSystem;
 		private ActivatorSystem _activatorSystem;
 		private FatigueSystem _fatigueSystem;
-		private ManaSystem _manaSystem;
+		private SwapManaSystem _swapManaSystem;
+		private TimeManaSystem _tickManaSystem;
+		private ChargeSystem _chargeSystem;
+		private CastSystem _castSystem;
 
 		public static GameStateController Instance{get; private set;}
 		public static ActivatorSystem ActivatorSystem => Instance._activatorSystem;
@@ -60,6 +66,8 @@ namespace GameState
 		public static Battle Battle => Instance._battle;
 		public static ICharacterFactory CharacterFactory => Instance._characterFactory;
 		public static ProjectileSystem ProjectileSystem => Instance._projectileSystem;
+		public static ChargeSystem ChargeSystem => Instance._chargeSystem;
+		public static CastSystem CastSystem => Instance._castSystem;
 		public bool PlayerNameSet{get; private set;}
 		public static uint NextBattleGoldReward => Instance._playerData.NextBattleGoldReward;
 
@@ -171,14 +179,26 @@ namespace GameState
 				_gameData.FatigueIncrement);
 			_combatSystems.Add(_fatigueSystem);
 
-			_manaSystem = new ManaSystem(battle, _gameData.ManaPerSwap);
-			_combatSystems.Add(_manaSystem);
+
+			//_swapManaSystem = new SwapManaSystem(battle, _gameData.ManaPerSwap);
+			//_combatSystems.Add(_swapManaSystem);
+
+			_tickManaSystem = new TimeManaSystem(battle, _gameData.ManaPerSwap, _gameData.SwapCooldown);
+			_combatSystems.Add(_tickManaSystem);
 
 			_activatorSystem = new ActivatorSystem(battle);
 			_combatSystems.Add(_activatorSystem);
 
 			_projectileSystem = new ProjectileSystem(battle);
 			_combatSystems.Add(_activatorSystem);
+
+
+			_chargeSystem = new ChargeSystem(battle);
+			_chargeSystem.AddChargeRequirements();
+			_combatSystems.Add(_chargeSystem);
+
+			_castSystem = CastSystemFactory.CreateDefault(battle, _chargeSystem, _activatorSystem);
+			_combatSystems.Add(_castSystem);
 
 
 			foreach(var system in _combatSystems)

@@ -1,13 +1,14 @@
-﻿using System;
-using Characters;
+﻿using Characters;
+using DefaultNamespace;
 using Events.Implementations;
+using GameState;
 using Player;
 using TMPro;
-using UI;
+using UI.HealthBars.Bars.Charge;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefaultNamespace.UI
+namespace UI
 {
 	public class HealthBar : MonoBehaviour
 	{
@@ -20,16 +21,20 @@ namespace DefaultNamespace.UI
 		[SerializeField] private Color _playerColor = Color.green;
 		[SerializeField] private Color _enemyColor = Color.red;
 		[SerializeField] private Color _controlledColor = Color.yellow;
+		[SerializeField] private float _offset = 1f;
+		[SerializeField] private ChargeBar _chargeBar;
 
-
+		private Camera _camera;
 		private float _previousHealthPercent = 1f;
 		private Entity _entity;
 		private float _maxHealth;
 		private static readonly int CurrentMaxHealth = Shader.PropertyToID("_CurrentMaxHealth");
+		private RectTransform _rectTransform;
 
 		private void Awake()
 		{
 			_healthBarFill.material = Instantiate(_healthBarFill.material);
+			_rectTransform = GetComponent<RectTransform>();
 		}
 		public void SetEntity(Entity entity)
 		{
@@ -41,6 +46,8 @@ namespace DefaultNamespace.UI
 			CharacterSwappedEvent.Subscribe(OnCharacterSwapped);
 			var character = entity as Character;
 			InitManaBar(character);
+			InitChargeBar(character);
+			_camera = Camera.main;
 
 			if(character != null && character.ControlsProvider == InputHandler.Instance)
 				SetColor(_controlledColor);
@@ -48,12 +55,18 @@ namespace DefaultNamespace.UI
 				SetColor(_playerColor);
 			else
 				SetColor(_enemyColor);
+			
 		}
-
 		private void InitManaBar(Character character)
 		{
 			if(character == null) return;
 			_manaBar.SetCharacter(character);
+		}
+		private void InitChargeBar(Character character)
+		{
+			if(character == null) return;
+			_chargeBar.SetChargable(character.ActiveSpell, GameStateController.ChargeSystem);
+			_chargeBar.SetManaBar(_manaBar);
 		}
 
 
@@ -73,11 +86,17 @@ namespace DefaultNamespace.UI
 
 		private void Update()
 		{
-			if(_entity != null)
-			{
-				SetMaxHealth(_entity.MaxHealth);
-				SetLevel(_entity.Level);
-			}
+			if(_entity == null) return;
+			SetMaxHealth(_entity.MaxHealth);
+			SetLevel(_entity.Level);
+
+			if(_camera == null) return;
+			var pos = _entity.transform.position;
+			pos.y += _offset;
+			//canvas is in screen space camera
+			var viewportPos = _camera.WorldToViewportPoint(pos);
+			_rectTransform.anchorMin = viewportPos;
+			_rectTransform.anchorMax = viewportPos;
 		}
 		public void SetLevel(uint level)
 		{

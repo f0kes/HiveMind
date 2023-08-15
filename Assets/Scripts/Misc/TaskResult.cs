@@ -1,4 +1,6 @@
-﻿namespace Misc
+﻿using Combat;
+
+namespace Misc
 {
 	public struct TaskResult
 	{
@@ -11,6 +13,10 @@
 		public static implicit operator TaskResult(bool success)
 		{
 			return new TaskResult { IsResultSuccess = success };
+		}
+		public static implicit operator TaskResult(CastResult castResult)
+		{
+			return new TaskResult { IsResultSuccess = castResult, Message = castResult.Message };
 		}
 		public static TaskResult Failure(string message)
 		{

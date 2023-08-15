@@ -30,8 +30,9 @@ namespace UI
 		private void Start()
 		{
 			_image.color = _startColor;
+			_distToTravel = _rectTransform.sizeDelta.y * _distToTravel;
 		}
-		
+
 		private void Update()
 		{
 			_timer += Time.deltaTime;

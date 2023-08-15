@@ -139,6 +139,7 @@ namespace Player
 			_inputs.MouseOverCharacter = CollectMouseOverCharacterData();
 			_inputs.Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 			_inputs.Shoot = Input.GetMouseButton(0);
+			_inputs.Charge = Input.GetMouseButton(1);
 
 			_inputs.Cast |= Input.GetMouseButtonUp(1);
 			_inputs.Swap |= Input.GetKeyUp(KeyCode.Space);
@@ -166,6 +167,7 @@ namespace Player
 
 			HandleMouse();
 			HandleMove();
+			HandleCharge();
 			HandleCast();
 			HandleShoot();
 			HandleSwap();
@@ -198,12 +200,26 @@ namespace Player
 				ControlledCharacter.CharacterShooter.Shoot();
 			}
 		}
+		private void HandleCharge()
+		{
+			if(ControlledCharacter.ActiveSpell == null) return;
+			bool shouldCharge = _inputs.Charge;
+			if(shouldCharge)
+			{
+				GameStateController.ChargeSystem.Charge(ControlledCharacter.ActiveSpell);
+			}
+			else
+			{
+				GameStateController.ChargeSystem.StopCharging(ControlledCharacter.ActiveSpell);
+			}
+		}
 		private void HandleCast()
 		{
 			bool shouldCast = _inputs.Cast;
+
 			if(ControlledCharacter.ActiveSpell != null && shouldCast)
 			{
-				var result = ControlledCharacter.ActiveSpell.Cast();
+				var result = GameStateController.CastSystem.Invoke(ControlledCharacter.ActiveSpell);
 				if(!result)
 				{
 					TextMessageRenderer.Instance.ShowMessage(result.Message);

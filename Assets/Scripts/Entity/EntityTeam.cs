@@ -104,13 +104,13 @@ namespace DefaultNamespace
 		}
 		public bool CanSwap()
 		{
-			return _swapCooldownTimer >= SwapCooldown;
+			//return _swapCooldownTimer >= SwapCooldown;
+			return true;
 		}
 
 		public void Add(Entity entity)
 		{
 			_list.Add(entity);
-		
 		}
 		public void Remove(Entity entity)
 		{

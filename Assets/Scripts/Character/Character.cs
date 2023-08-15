@@ -146,6 +146,10 @@ namespace Characters
 			_spellUsesLeft = spell.Uses;
 			_activeSpell = spell;
 		}
+		public int GetUsesLeft()
+		{
+			return _spellUsesLeft;
+		}
 
 		public void InitSpell(BaseSpell spell)
 		{
@@ -237,7 +241,23 @@ namespace Characters
 			_currentMana = characterCurrentMana;
 			Events.ManaChanged?.Invoke(characterCurrentMana);
 		}
-		public TaskResult ReadyToCast(BaseSpell spell = null) //todo: move to cast system
+		public TaskResult ReadyToCharge(BaseSpell spell = null)
+		{
+			if(spell == null)
+			{
+				spell = ActiveSpell;
+			}
+			return GameStateController.ChargeSystem.CanInvoke(spell);
+		}
+		public TaskResult ReadyToCast(BaseSpell spell = null)
+		{
+			if(spell == null)
+			{
+				spell = ActiveSpell;
+			}
+			return GameStateController.CastSystem.CanInvoke(spell);
+		}
+		private TaskResult ReadyToCastDeprecated(BaseSpell spell = null) //todo: remove
 		{
 			if(spell == null)
 			{
@@ -276,5 +296,7 @@ namespace Characters
 			}
 			return result;
 		}
+
+		
 	}
 }

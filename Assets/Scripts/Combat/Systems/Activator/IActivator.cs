@@ -1,4 +1,4 @@
-﻿namespace Combat.Spells
+﻿namespace Combat.Systems.Activator
 {
 	public interface IActivator
 	{

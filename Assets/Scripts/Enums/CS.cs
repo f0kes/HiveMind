@@ -71,6 +71,8 @@
 		RedirectionInitialSelfDamage,
 		RetributionInitialLevels,
 		RF_DivineShieldHP,
-		RF_DivineShieldDuration
+		RF_DivineShieldDuration,
+		ChargeNeeded,
+		ChargePerSecond
 	}
 }

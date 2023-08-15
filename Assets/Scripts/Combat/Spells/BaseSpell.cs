@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Characters;
 using Combat.Spells.AutoAttack;
+using Combat.Systems.Activator;
+using Combat.Systems.ChargeSystem;
 using DefaultNamespace;
 using DefaultNamespace.Settings;
 using Enums;
@@ -20,7 +22,7 @@ namespace Combat.Spells
 	}
 
 
-	public abstract class BaseSpell : ScriptableObject, IParamProvider<CS>, IActivatable
+	public abstract class BaseSpell : ScriptableObject, IParamProvider<CS>, IActivatable, IChargable
 	{
 		public int Level = 10;
 		public Entity Owner{get; private set;}
@@ -28,6 +30,8 @@ namespace Combat.Spells
 		[SerializeField] private Sprite _icon;
 		[SerializeField] private string _name;
 		[SerializeField] private MinMaxStatRange _lifetime = new MinMaxStatRange(3f, 9f);
+		[SerializeField] private MinMaxStatRange _chargeNeeded = new MinMaxStatRange(1000f, 1000f);
+		[SerializeField] private MinMaxStatRange _chargePerSecond = new MinMaxStatRange(300f, 1000f);
 		[SerializeField] private bool _permanent = true;
 		[TextArea(4, 10)] [SerializeField] private string _description;
 		[SerializeField] private int _manaCost;
@@ -69,6 +73,8 @@ namespace Combat.Spells
 			Tags.Add(SpellTag.All);
 			PopulateParams();
 			AddParam(CS.Duration, _lifetime);
+			AddParam(CS.ChargeNeeded, _chargeNeeded);
+			AddParam(CS.ChargePerSecond, _chargePerSecond);
 			Stats = Owner.Stats;
 
 			Owner.Events.Death += OnDeath;
@@ -120,54 +126,9 @@ namespace Combat.Spells
 			var cursor = character.GetCursor();
 			return cursor;
 		}
-		public CastResult Cast() //todo: move to cast system
+		public void Cast() //todo: move to cast system
 		{
-			var result = CastResult.Success;
-			var character = Owner as Character; //TODO: make it work for other entities
-			if(character == null)
-			{
-				return new CastResult(CastResultType.Fail, "Owner is not a character");
-			}
-			var characterResult = character.ReadyToCast(this);
-			if(!characterResult)
-			{
-				return new CastResult(CastResultType.Fail, characterResult.Message);
-			}
-			switch(Behaviour) //todo: multiple behaviours
-			{
-				case SpellBehaviour.PointTarget:
-					var point = GetCursor() == Vector3.zero ? Owner.transform.position : GetCursor();
-					result = CanCastPoint(point);
-					break;
-
-				case SpellBehaviour.UnitTarget:
-					var target = GetCursorTarget();
-					if(target == null)
-					{
-						return CastResult.NoTarget;
-					}
-					result = CanCastTarget(target);
-					if(result)
-					{
-						Target = target;
-					}
-					break;
-				case SpellBehaviour.NoTarget:
-				default:
-					break;
-			}
-			if(result)
-			{
-				Owner.Events.SpellCasted?.Invoke(this);
-				VFXSystem.I.SpawnSpellIcon(_icon, Owner.transform);
-
-				GameStateController.ActivatorSystem.Activate(this);
-				OnSpellStart();
-
-				character.SpendMana(ManaCost);
-				if(!_isInfinite) character.SpendUse();
-			}
-			return result;
+			OnSpellStart();
 		}
 		public virtual CastResult CanCastTarget(Entity target)
 		{
@@ -316,6 +277,26 @@ namespace Combat.Spells
 		public static BaseSpell CreateDefault()
 		{
 			return CreateInstance<AutoAttackSpell>();
+		}
+
+		public float GetMaxCharge()
+		{
+			return GetParam(CS.ChargeNeeded);
+		}
+
+		public float GetChargeGain()
+		{
+			return GetParam(CS.ChargePerSecond);
+		}
+
+		public float GetChargeLoss()
+		{
+			return GetParam(CS.ChargePerSecond);
+		}
+
+		public void SetTarget(Entity target)
+		{
+			Target = target;
 		}
 	}
 }
